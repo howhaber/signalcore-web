@@ -1,0 +1,873 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SignalCore — Crypto Trading Terminal in Telegram</title>
+<meta name="description" content="Live liquidations, squeeze signals, and BTC analysis twice daily — all inside Telegram. SignalCore is a real-time crypto trading terminal.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700;800&family=Hanken+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0A0A0B; --card:#111113; --card2:#161618; --surface:rgba(255,255,255,.04);
+    --border:rgba(255,255,255,.08); --border2:rgba(255,255,255,.15);
+    --text:#F4F2EC; --dim:rgba(244,242,236,.56); --mute:rgba(244,242,236,.34);
+    --amber:#F0A92B; --amber-ink:#0A0A0B; --amber-soft:rgba(240,169,43,.13);
+    --green:#34C88A; --red:#F0556B; --grid:rgba(255,255,255,.03);
+  }
+  [data-theme="light"]{
+    --bg:#F3F0E9; --card:#FFFFFF; --card2:#FBF9F4; --surface:rgba(10,10,11,.035);
+    --border:rgba(10,10,11,.10); --border2:rgba(10,10,11,.17);
+    --text:#151310; --dim:rgba(21,19,16,.6); --mute:rgba(21,19,16,.4);
+    --amber:#B27716; --amber-ink:#FFFFFF; --amber-soft:rgba(178,119,22,.11);
+    --green:#1E9E67; --red:#D23A50; --grid:rgba(10,10,11,.05);
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;font-family:Hanken Grotesk,system-ui,sans-serif;background:var(--bg);color:var(--text);
+    -webkit-font-smoothing:antialiased;transition:background .4s ease,color .4s ease;overflow-x:hidden}
+  a{color:var(--amber);text-decoration:none;transition:color .2s}
+  a:hover{color:var(--text)}
+  ::selection{background:var(--amber);color:var(--amber-ink)}
+  @keyframes ticker{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+  @keyframes blink{0%,49%{opacity:1}50%,100%{opacity:0}}
+  @keyframes pulse{0%,100%{opacity:.5}50%{opacity:1}}
+  @keyframes scan{0%{transform:translateY(-100%)}100%{transform:translateY(100%)}}
+
+  /* accent palette — reshapes the whole neon identity, overrides theme defaults */
+  [data-accent="blue"]{--amber:#00D4FF;--amber-soft:rgba(0,212,255,.13);--amber-ink:#04121a}
+  [data-accent="violet"]{--amber:#B892FF;--amber-soft:rgba(184,146,255,.15);--amber-ink:#160B2E}
+  [data-theme="light"][data-accent="blue"]{--amber:#0090B5;--amber-soft:rgba(0,144,181,.1);--amber-ink:#FFFFFF}
+  [data-theme="light"][data-accent="violet"]{--amber:#7A4FD6;--amber-soft:rgba(122,79,214,.1);--amber-ink:#FFFFFF}
+
+  /* terminal intensity — grid density + scanline texture */
+  .grid-bg{opacity:.5;transition:opacity .4s}
+  [data-intensity="minimal"] .grid-bg{opacity:.18}
+  [data-intensity="maximal"] .grid-bg{opacity:1}
+  .scanline-layer{opacity:0;transition:opacity .4s}
+  [data-intensity="maximal"] .scanline-layer{opacity:1}
+
+  /* ── Hover utility classes — replace the removed style-hover DC attribute ── */
+  .hv-a:hover{border-color:var(--border2);color:var(--amber)}
+  .hv-b:hover{border-color:var(--border2);color:var(--text)}
+  .hv-c:hover{border-color:var(--amber);color:var(--amber)}
+  .hv-d:hover{transform:translateY(-1px);filter:brightness(1.08)}
+  .hv-e:hover{transform:translateY(-2px);filter:brightness(1.08)}
+  .hv-f:hover{transform:translateY(-4px);border-color:var(--border2)}
+</style>
+</head>
+<body>
+<div id="app" style="min-height:100vh;position:relative;background:var(--bg);color:var(--text);transition:background .4s ease,color .4s ease">
+
+  <div class="grid-bg" style="position:fixed;inset:0;z-index:0;pointer-events:none;background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:58px 58px"></div>
+  <div class="scanline-layer" style="position:fixed;inset:0;z-index:1;pointer-events:none;overflow:hidden">
+    <div style="position:absolute;left:0;right:0;height:140px;background:linear-gradient(180deg,transparent,color-mix(in srgb,var(--amber) 10%,transparent),transparent);animation:scan 5s linear infinite"></div>
+    <div style="position:absolute;inset:0;background:repeating-linear-gradient(0deg,color-mix(in srgb,var(--text) 3%,transparent) 0px,transparent 1px,transparent 3px)"></div>
+  </div>
+
+  <div style="position:relative;z-index:101;border-bottom:1px solid var(--border);background:var(--card);overflow:hidden;white-space:nowrap">
+    <div id="ticker-track" style="display:inline-flex;gap:34px;padding:9px 0;font-family:JetBrains Mono,monospace;font-size:12.5px;font-weight:500;animation:ticker 40s linear infinite"></div>
+  </div>
+
+  <header style="position:sticky;top:0;z-index:100;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);background:color-mix(in srgb,var(--bg) 78%,transparent);border-bottom:1px solid var(--border)">
+    <div style="max-width:1200px;margin:0 auto;padding:15px 28px;display:flex;align-items:center;justify-content:space-between;gap:22px">
+      <a href="#top" style="display:flex;align-items:center;gap:11px;color:var(--text)">
+        <span style="width:30px;height:30px;display:grid;place-items:center">
+          <span style="width:20px;height:20px;transform:rotate(45deg);border:2.5px solid var(--amber);border-radius:5px;display:grid;place-items:center">
+            <span style="width:5px;height:5px;background:var(--amber);border-radius:1px"></span>
+          </span>
+        </span>
+        <span style="font-family:Sora,sans-serif;font-weight:800;font-size:19px;letter-spacing:-.02em">Signal <span style="color:var(--amber)">Core</span></span>
+      </a>
+
+      <nav id="nav-links" style="display:flex;gap:28px;align-items:center;font-size:14.5px;font-weight:600"></nav>
+
+      <div style="display:flex;align-items:center;gap:12px">
+        <div style="display:flex;padding:3px;border-radius:9px;background:var(--surface);border:1px solid var(--border);font-family:JetBrains Mono,monospace;font-size:12px;font-weight:700">
+          <button id="lang-btn-bg" onclick="setLang('bg')" style="padding:5px 11px;border-radius:7px;border:none;cursor:pointer"></button>
+          <button id="lang-btn-en" onclick="setLang('en')" style="padding:5px 11px;border-radius:7px;border:none;cursor:pointer"></button>
+        </div>
+        <button onclick="toggleTheme()" aria-label="Toggle theme" class="hv-a" style="width:37px;height:37px;display:grid;place-items:center;border-radius:9px;background:var(--surface);border:1px solid var(--border);color:var(--text);cursor:pointer;transition:.2s">
+          <span id="theme-icon"></span>
+        </button>
+        <div id="auth-actions" style="display:flex;align-items:center;gap:12px"></div>
+      </div>
+    </div>
+  </header>
+  <section id="top" style="position:relative;z-index:2;max-width:1200px;margin:0 auto;padding:74px 28px 46px;display:grid;grid-template-columns:1.02fr .98fr;gap:52px;align-items:center">
+    <div>
+      <div id="hero-badge" style="display:inline-flex;align-items:center;gap:9px;padding:7px 13px;border-radius:999px;background:var(--amber-soft);border:1px solid color-mix(in srgb,var(--amber) 32%,transparent);font-family:JetBrains Mono,monospace;font-size:11px;font-weight:700;letter-spacing:.13em;color:var(--amber);white-space:nowrap">
+        <span style="width:7px;height:7px;border-radius:50%;background:var(--green);animation:pulse 1.6s ease infinite"></span>
+        <span id="hero-badge-text"></span>
+      </div>
+      <h1 style="font-family:Sora,sans-serif;font-weight:800;font-size:66px;line-height:1.02;letter-spacing:-.035em;margin:22px 0 0"><span id="hero-h1a"></span> <span style="color:var(--amber)" id="hero-h1b"></span></h1>
+      <p id="hero-desc" style="font-size:17px;line-height:1.62;color:var(--dim);margin:22px 0 0;max-width:480px;white-space:pre-line"></p>
+      <div style="display:flex;gap:13px;margin:30px 0 0;flex-wrap:wrap">
+        <a href="https://t.me/SignalCore_Free" target="_blank" class="hv-e" style="display:inline-flex;align-items:center;gap:9px;padding:14px 24px;border-radius:11px;font-weight:700;font-size:15.5px;color:var(--amber-ink);background:var(--amber);transition:transform .2s,filter .2s">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M21.9 4.3 2.9 11.6c-1.1.4-1 1 0 1.3l4.9 1.5 1.9 5.9c.2.6.4.9 1 .9.4 0 .6-.2.9-.5l2.5-2.4 4.9 3.6c.9.5 1.5.2 1.7-.8l3.1-14.6c.3-1.3-.5-1.9-1.8-1.7z"></path></svg>
+          <span id="hero-btn1-text"></span>
+        </a>
+        <a href="https://t.me/SignalCore_Free" target="_blank" id="hero-qr-hint" style="display:grid;place-items:center;width:50px;height:50px;border-radius:11px;background:#fff;border:1px solid var(--border2);padding:4px;flex-shrink:0">
+          <img src="https://api.qrserver.com/v1/create-qr-code/?size=160x160&margin=6&data=https%3A%2F%2Ft.me%2FSignalCore_Free" alt="QR" style="width:100%;height:100%;object-fit:cover;border-radius:4px">
+        </a>
+      </div>
+      <div style="display:flex;gap:40px;margin:44px 0 0;flex-wrap:wrap">
+        <div>
+          <div style="font-family:Sora,sans-serif;font-weight:800;font-size:34px;line-height:1"><span data-count="53">53</span></div>
+          <div id="stat1-label" style="font-family:JetBrains Mono,monospace;font-size:12px;color:var(--mute);margin-top:6px"></div>
+        </div>
+        <div>
+          <div style="font-family:Sora,sans-serif;font-weight:800;font-size:34px;line-height:1"><span data-count="7">7</span></div>
+          <div id="stat2-label" style="font-family:JetBrains Mono,monospace;font-size:12px;color:var(--mute);margin-top:6px"></div>
+        </div>
+        <div>
+          <div style="font-family:Sora,sans-serif;font-weight:800;font-size:34px;line-height:1">24/7</div>
+          <div id="stat3-label" style="font-family:JetBrains Mono,monospace;font-size:12px;color:var(--mute);margin-top:6px"></div>
+        </div>
+      </div>
+    </div>
+
+    <div id="hero-card"></div>
+  </section>
+
+  <div style="position:relative;z-index:2;border-top:1px solid var(--border);border-bottom:1px solid var(--border);background:var(--card);overflow:hidden;white-space:nowrap">
+    <div style="display: inline-flex; gap: 34px; padding: 11px 0; font-family: JetBrains Mono,monospace; font-size: 13px; font-weight: 500; animation: ticker 40s linear infinite; color: #ECF4F2; position: absolute; top: 0px">
+      <span style="color:var(--dim)">TIA $0.3986 <b style="color:var(--green)">▲ +2.71%</b></span>
+      <span style="color:var(--dim)">SEI $0.0480 <b style="color:var(--green)">▲ +2.41%</b></span>
+      <span style="color:var(--dim)">RUNE $0.3885 <b style="color:var(--green)">▲ +1.86%</b></span>
+      <span style="color:var(--dim)">BTC $62,639 <b style="color:var(--green)">▲ +0.12%</b></span>
+      <span style="color:var(--dim)">ETH $1,750 <b style="color:var(--red)">▼ -0.03%</b></span>
+      <span style="color:var(--dim)">SOL $78.3 <b style="color:var(--green)">▲ +0.01%</b></span>
+      <span style="color:var(--dim)">BNB $573.7 <b style="color:var(--green)">▲ +1.16%</b></span>
+      <span style="color:var(--dim)">XRP $1.1 <b style="color:var(--green)">▲ +0.95%</b></span>
+      <span style="color:var(--dim)">DOGE $0.0728 <b style="color:var(--green)">▲ +0.52%</b></span>
+      <span style="color:var(--dim)">ADA $0.1688 <b style="color:var(--red)">▼ -0.35%</b></span>
+      <span style="color:var(--dim)">AVAX $6.61 <b style="color:var(--green)">▲ +3.28%</b></span>
+      <span style="color:var(--dim)">LINK $7.73 <b style="color:var(--green)">▲ +0.60%</b></span>
+      <span style="color:var(--dim)">DOT $0.8370 <b style="color:var(--green)">▲ +0.40%</b></span>
+      <span style="color:var(--dim)">LTC $44.19 <b style="color:var(--green)">▲ +0.30%</b></span>
+      <span style="color:var(--dim)">TIA $0.3986 <b style="color:var(--green)">▲ +2.71%</b></span>
+      <span style="color:var(--dim)">SEI $0.0480 <b style="color:var(--green)">▲ +2.41%</b></span>
+      <span style="color:var(--dim)">RUNE $0.3885 <b style="color:var(--green)">▲ +1.86%</b></span>
+      <span style="color:var(--dim)">BTC $62,639 <b style="color:var(--green)">▲ +0.12%</b></span>
+      <span style="color:var(--dim)">ETH $1,750 <b style="color:var(--red)">▼ -0.03%</b></span>
+      <span style="color:var(--dim)">SOL $78.3 <b style="color:var(--green)">▲ +0.01%</b></span>
+      <span style="color:var(--dim)">BNB $573.7 <b style="color:var(--green)">▲ +1.16%</b></span>
+      <span style="color:var(--dim)">XRP $1.1 <b style="color:var(--green)">▲ +0.95%</b></span>
+      <span style="color:var(--dim)">DOGE $0.0728 <b style="color:var(--green)">▲ +0.52%</b></span>
+      <span style="color:var(--dim)">ADA $0.1688 <b style="color:var(--red)">▼ -0.35%</b></span>
+      <span style="color:var(--dim)">AVAX $6.61 <b style="color:var(--green)">▲ +3.28%</b></span>
+      <span style="color:var(--dim)">LINK $7.73 <b style="color:var(--green)">▲ +0.60%</b></span>
+      <span style="color:var(--dim)">DOT $0.8370 <b style="color:var(--green)">▲ +0.40%</b></span>
+      <span style="color:var(--dim)">LTC $44.19 <b style="color:var(--green)">▲ +0.30%</b></span>
+    </div>
+  </div>
+  <section id="analysis" style="position:relative;z-index:2;max-width:1200px;margin:0 auto;padding:96px 28px 40px">
+    <div data-reveal="">
+      <div id="an-eyebrow" style="font-family:JetBrains Mono,monospace;font-size:12.5px;letter-spacing:.16em;color:var(--amber);font-weight:700"></div>
+      <h2 id="an-title" style="font-family:Sora,sans-serif;font-weight:800;font-size:46px;letter-spacing:-.03em;margin:14px 0 0;line-height:1.05;max-width:560px"></h2>
+      <p id="an-desc" style="font-size:16px;line-height:1.6;color:var(--dim);margin:16px 0 0;max-width:520px"></p>
+    </div>
+
+    <div data-reveal="" style="margin-top:40px;border-radius:18px;background:var(--card);border:1px solid var(--border);overflow:hidden">
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:20px 24px;border-bottom:1px solid var(--border)">
+        <b style="font-family:Sora,sans-serif;font-size:20px">BTC / USDT</b>
+        <span style="font-family:JetBrains Mono,monospace;font-size:12px;color:var(--amber);display:flex;align-items:center;gap:6px"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path></svg>Daily 09:00 &amp; 15:00 EET</span>
+      </div>
+
+      <div id="tf-tabs" style="display:flex;gap:6px;padding:14px 24px 0"></div>
+      <div style="height:1px;background:var(--border);margin-top:-1px"></div>
+
+      <div id="btc-analysis-body" style="padding:22px 24px"></div>
+    </div>
+  </section>
+
+  <section id="alerts" style="position:relative;z-index:2;max-width:1200px;margin:0 auto;padding:96px 28px 40px">
+    <div data-reveal="">
+      <div id="al-eyebrow" style="font-family:JetBrains Mono,monospace;font-size:12.5px;letter-spacing:.16em;color:var(--amber);font-weight:700"></div>
+      <h2 id="al-title" style="font-family:Sora,sans-serif;font-weight:800;font-size:46px;letter-spacing:-.03em;margin:14px 0 0;line-height:1.05;max-width:560px"></h2>
+      <p id="al-desc" style="font-size:16px;line-height:1.6;color:var(--dim);margin:16px 0 0;max-width:520px"></p>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1.05fr .95fr;gap:26px;margin-top:44px;align-items:start">
+      <div data-reveal="" id="alerts-buttons" style="display:flex;flex-direction:column;gap:12px"></div>
+      <div data-reveal="" id="alerts-panel" style="padding:22px;border-radius:16px;background:var(--card);border:1px solid var(--border)"></div>
+    </div>
+  </section>
+  <section id="tabs" style="position:relative;z-index:2;max-width:1200px;margin:0 auto;padding:96px 28px 40px">
+    <div data-reveal="">
+      <div id="tabs-eyebrow" style="font-family:JetBrains Mono,monospace;font-size:12.5px;letter-spacing:.16em;color:var(--amber);font-weight:700"></div>
+      <h2 id="tabs-title" style="font-family:Sora,sans-serif;font-weight:800;font-size:46px;letter-spacing:-.03em;margin:14px 0 0;line-height:1.05;max-width:560px"></h2>
+      <p id="tabs-desc" style="font-size:16px;line-height:1.6;color:var(--dim);margin:16px 0 0;max-width:520px"></p>
+    </div>
+    <div id="tabs-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:44px"></div>
+  </section>
+
+  <section id="data" style="position:relative;z-index:2;max-width:1200px;margin:0 auto;padding:96px 28px 20px;text-align:center">
+    <div data-reveal="" id="data-eyebrow" style="font-family:JetBrains Mono,monospace;font-size:12.5px;letter-spacing:.18em;color:var(--mute);font-weight:700"></div>
+    <div data-reveal="" style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:34px">
+      <div style="text-align:left;padding:18px 22px;border-radius:14px;background:var(--card);border:1px solid var(--border);min-width:180px"><b style="font-family:Sora,sans-serif;font-size:17px">Bybit</b><div style="font-family:JetBrains Mono,monospace;font-size:11.5px;color:var(--mute);margin-top:5px">prices · funding · liquidations</div></div>
+      <div style="text-align:left;padding:18px 22px;border-radius:14px;background:var(--card);border:1px solid var(--border);min-width:180px"><b style="font-family:Sora,sans-serif;font-size:17px">TradingView</b><div style="font-family:JetBrains Mono,monospace;font-size:11.5px;color:var(--mute);margin-top:5px">charts · screenshots</div></div>
+      <div style="text-align:left;padding:18px 22px;border-radius:14px;background:var(--card);border:1px solid var(--border);min-width:180px"><b style="font-family:Sora,sans-serif;font-size:17px">FRED</b><div style="font-family:JetBrains Mono,monospace;font-size:11.5px;color:var(--mute);margin-top:5px">macro · CPI · NFP · rates</div></div>
+      <div style="text-align:left;padding:18px 22px;border-radius:14px;background:var(--card);border:1px solid var(--border);min-width:180px"><b style="font-family:Sora,sans-serif;font-size:17px">Alternative.me</b><div style="font-family:JetBrains Mono,monospace;font-size:11.5px;color:var(--mute);margin-top:5px">Fear &amp; Greed index</div></div>
+      <div style="text-align:left;padding:18px 22px;border-radius:14px;background:var(--card);border:1px solid var(--border);min-width:180px"><b style="font-family:Sora,sans-serif;font-size:17px">CoinMarketCal</b><div style="font-family:JetBrains Mono,monospace;font-size:11.5px;color:var(--mute);margin-top:5px">crypto events · news</div></div>
+    </div>
+  </section>
+
+  <section style="position:relative;z-index:2;max-width:900px;margin:60px auto 0;padding:0 28px 90px">
+    <div data-reveal="" style="position:relative;overflow:hidden;padding:64px 40px;border-radius:22px;text-align:center;background:var(--card);border:1px solid var(--border)">
+      <div style="position:absolute;top:-140px;left:50%;transform:translateX(-50%);width:420px;height:300px;background:radial-gradient(circle,var(--amber-soft),transparent 70%);pointer-events:none"></div>
+      <h2 id="cta-title" style="position:relative;font-family:Sora,sans-serif;font-weight:800;font-size:44px;letter-spacing:-.03em;margin:0;line-height:1.05"></h2>
+      <p id="cta-desc" style="position:relative;font-size:16.5px;color:var(--dim);margin:16px auto 0;max-width:420px;line-height:1.55"></p>
+      <a href="https://t.me/SignalCore_Free" target="_blank" class="hv-e" style="position:relative;display:inline-flex;align-items:center;gap:10px;margin-top:28px;padding:16px 30px;border-radius:12px;font-weight:700;font-size:16px;color:var(--amber-ink);background:var(--amber);transition:transform .2s,filter .2s">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M21.9 4.3 2.9 11.6c-1.1.4-1 1 0 1.3l4.9 1.5 1.9 5.9c.2.6.4.9 1 .9.4 0 .6-.2.9-.5l2.5-2.4 4.9 3.6c.9.5 1.5.2 1.7-.8l3.1-14.6c.3-1.3-.5-1.9-1.8-1.7z"></path></svg>
+        <span id="cta-btn-text"></span>
+      </a>
+      <div style="position:relative;font-family:JetBrains Mono,monospace;font-size:12px;color:var(--mute);margin-top:16px">t.me/SignalCore_Free · Telegram Mini App</div>
+    </div>
+  </section>
+
+  <footer style="position:relative;z-index:2;border-top:1px solid var(--border);padding:44px 28px 40px">
+    <div style="max-width:1200px;margin:0 auto">
+      <div style="padding:18px 22px;border-radius:12px;background:color-mix(in srgb,var(--red) 8%,transparent);border:1px solid color-mix(in srgb,var(--red) 22%,transparent);border-left:3px solid var(--red)">
+        <div id="risk-title" style="font-family:JetBrains Mono,monospace;font-size:11.5px;letter-spacing:.1em;color:var(--red);font-weight:700"></div>
+        <p id="risk-body" style="font-size:13.5px;line-height:1.6;color:var(--dim);margin:9px 0 0"></p>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:24px;margin-top:40px">
+        <div>
+          <div style="display:flex;align-items:center;gap:10px">
+            <span style="width:20px;height:20px;transform:rotate(45deg);border:2.5px solid var(--amber);border-radius:4px;display:grid;place-items:center"><span style="width:4px;height:4px;background:var(--amber)"></span></span>
+            <span style="font-family:Sora,sans-serif;font-weight:800;font-size:17px">Signal <span style="color:var(--amber)">Core</span></span>
+          </div>
+          <p id="foot-tag" style="font-size:14px;line-height:1.55;color:var(--dim);margin:14px 0 0;max-width:260px"></p>
+        </div>
+        <div>
+          <div id="foot-product-label" style="font-family:JetBrains Mono,monospace;font-size:11px;letter-spacing:.1em;color:var(--mute)"></div>
+          <div id="foot-product-links" style="display:flex;flex-direction:column;gap:10px;margin-top:14px;font-size:14px;font-weight:500"></div>
+        </div>
+        <div>
+          <div style="font-family:JetBrains Mono,monospace;font-size:11px;letter-spacing:.1em;color:var(--mute)">DATA</div>
+          <div id="foot-data-links" style="display:flex;flex-direction:column;gap:10px;margin-top:14px;font-size:14px;font-weight:500"></div>
+        </div>
+        <div>
+          <div id="foot-contact-label" style="font-family:JetBrains Mono,monospace;font-size:11px;letter-spacing:.1em;color:var(--mute)"></div>
+          <div style="display:flex;flex-direction:column;gap:10px;margin-top:14px;font-size:14px;font-weight:500"><a href="https://t.me/SignalCore_Free" target="_blank" style="color:var(--dim)">Telegram</a><a href="mailto:hi@signalcore.trading" style="color:var(--dim)">hi@signalcore.trading</a></div>
+        </div>
+      </div>
+
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:36px;padding-top:22px;border-top:1px solid var(--border);font-family:JetBrains Mono,monospace;font-size:12px;color:var(--mute);flex-wrap:wrap;gap:10px">
+        <span>© 2026 SignalCore · signalcore.trading</span>
+        <span id="foot-rights"></span>
+      </div>
+    </div>
+  </footer>
+
+</div>
+<script>
+// ══════════════════════════════════════════════
+//  SIGNALCORE — standalone vanilla JS (no framework)
+// ══════════════════════════════════════════════
+
+const TG_URL = 'https://t.me/SignalCore_Free';
+const QR_URL = 'https://api.qrserver.com/v1/create-qr-code/?size=160x160&margin=6&data=' + encodeURIComponent(TG_URL);
+const ACCENT_THEME = 'amber';   // was an editor-configurable DC prop; baked in as its default for the standalone build
+const INTENSITY    = 'standard';
+const TONE         = 'calm';
+
+const FALLBACK_MARKET = [
+  { id: 'bitcoin', symbol: 'btc', image: 'https://coin-images.coingecko.com/coins/images/1/large/bitcoin.png', current_price: 62639, market_cap: 1240000000000, total_volume: 28000000000, price_change_percentage_1h_in_currency: -0.09, price_change_percentage_24h_in_currency: -1.54 },
+  { id: 'ethereum', symbol: 'eth', image: 'https://coin-images.coingecko.com/coins/images/279/large/ethereum.png', current_price: 1777, market_cap: 214000000000, total_volume: 24320000000, price_change_percentage_1h_in_currency: -0.42, price_change_percentage_24h_in_currency: -0.89 },
+  { id: 'binancecoin', symbol: 'bnb', image: 'https://coin-images.coingecko.com/coins/images/825/large/bnb-icon2_2x.png', current_price: 567.49, market_cap: 82000000000, total_volume: 1400000000, price_change_percentage_1h_in_currency: -0.22, price_change_percentage_24h_in_currency: -0.58 },
+  { id: 'ripple', symbol: 'xrp', image: 'https://coin-images.coingecko.com/coins/images/44/large/xrp-symbol-white-128.png', current_price: 1.08, market_cap: 61000000000, total_volume: 2100000000, price_change_percentage_1h_in_currency: -0.12, price_change_percentage_24h_in_currency: -1.27 },
+  { id: 'solana', symbol: 'sol', image: 'https://coin-images.coingecko.com/coins/images/4128/large/solana.png', current_price: 76.33, market_cap: 39000000000, total_volume: 5000000000, price_change_percentage_1h_in_currency: 0.04, price_change_percentage_24h_in_currency: 0.41 },
+  { id: 'hyperliquid', symbol: 'hype', image: 'https://coin-images.coingecko.com/coins/images/50882/large/hyperliquid.jpg', current_price: 65.51, market_cap: 21000000000, total_volume: 900000000, price_change_percentage_1h_in_currency: 0.08, price_change_percentage_24h_in_currency: -1.97 },
+  { id: 'dogecoin', symbol: 'doge', image: 'https://coin-images.coingecko.com/coins/images/5/large/dogecoin.png', current_price: 0.0721, market_cap: 10600000000, total_volume: 700000000, price_change_percentage_1h_in_currency: -0.22, price_change_percentage_24h_in_currency: -0.88 },
+  { id: 'zcash', symbol: 'zec', image: 'https://coin-images.coingecko.com/coins/images/486/large/circle-zcash-color.png', current_price: 516.6, market_cap: 8100000000, total_volume: 2050000000, price_change_percentage_1h_in_currency: 0.01, price_change_percentage_24h_in_currency: 1.08 }
+];
+
+const TICKER_COINS = [
+  { id: 'celestia', symbol: 'TIA', price: '$0.3986', change: '+2.71%', up: true },
+  { id: 'sei-network', symbol: 'SEI', price: '$0.0480', change: '+2.41%', up: true },
+  { id: 'thorchain', symbol: 'RUNE', price: '$0.3885', change: '+1.86%', up: true },
+  { id: 'bitcoin', symbol: 'BTC', price: '$62,639', change: '+0.12%', up: true },
+  { id: 'ethereum', symbol: 'ETH', price: '$1,750', change: '-0.03%', up: false },
+  { id: 'solana', symbol: 'SOL', price: '$78.3', change: '+0.01%', up: true },
+  { id: 'binancecoin', symbol: 'BNB', price: '$573.7', change: '+1.16%', up: true },
+  { id: 'ripple', symbol: 'XRP', price: '$1.1', change: '+0.95%', up: true },
+  { id: 'dogecoin', symbol: 'DOGE', price: '$0.0728', change: '+0.52%', up: true },
+  { id: 'cardano', symbol: 'ADA', price: '$0.1688', change: '-0.35%', up: false },
+  { id: 'avalanche-2', symbol: 'AVAX', price: '$6.61', change: '+3.28%', up: true },
+  { id: 'chainlink', symbol: 'LINK', price: '$7.73', change: '+0.60%', up: true },
+  { id: 'polkadot', symbol: 'DOT', price: '$0.8370', change: '+0.40%', up: true },
+  { id: 'litecoin', symbol: 'LTC', price: '$44.19', change: '+0.30%', up: true }
+];
+
+const en = {
+  navFeatures: 'Features', navAlerts: 'Alerts', navAnalysis: 'Analysis', navData: 'Data', launch: 'Launch on Telegram',
+  openApp: 'Open Mini App', signIn: 'Sign In', signUp: 'Sign Up', signOut: 'Sign Out', qrHint: 'Scan to join on Telegram',
+  glTitle: 'Gainers & Losers', glSource: 'source: coingecko.com',
+  heroBadge: 'LIVE · REFRESHED EVERY 2 MINUTES',
+  h1a: "You don't follow the market.", h1b: 'You predict it.',
+  heroDesc: 'While others guess — you already know.\nLive liquidations. Squeeze signals. BTC analysis twice daily.\nOnly data. Only facts. No noise.',
+  heroBtn1: 'Join Telegram', heroBtn2: "See what's inside",
+  stat1: 'monitored coins', stat2: 'in-app tabs', stat3: 'monitoring',
+  tabsEyebrow: 'MINI APP · 7 TABS', tabsTitle: 'A full trading terminal inside Telegram',
+  tabsDesc: 'Every tab covers a distinct layer of the market — from our proprietary Squeeze Score to the macro calendar and news.',
+  c1t: 'Dashboard', c1d: 'A summary view of the market — leading coins, alert status and current market temperature on one screen.',
+  c2t: 'Squeeze', c2d: 'Our proprietary Squeeze Score with clear BUY / SELL signals computed from volume, volatility and momentum.',
+  c3t: 'Charts', c3d: 'Embedded TradingView charts for every monitored coin, without ever leaving Telegram.',
+  c4t: 'Signals', c4d: 'Concrete trading levels — Entry, Take-Profit and Stop-Loss, ready to execute.',
+  c5t: 'History', c5d: 'A full archive of past signals and alerts — transparent performance tracking.',
+  c6t: 'Calendar', c6d: 'Macro events from FRED — CPI, NFP, GDP and Fed rate decisions, ranked by importance.',
+  c7t: 'News', c7d: 'Crypto events from CoinMarketCal — upgrades, listings and token unlocks before you see them elsewhere.',
+  alertsEyebrow: 'MARKETMONITOR BOT · 5 ALERT TYPES', alertsTitle: 'Automated signals before the market reacts',
+  alertsDesc: 'The bot watches 53 coins around the clock via the Bybit API and fires an instant Telegram alert on every meaningful event.',
+  a1t: 'Liquidations', a1d: 'An instant signal on large liquidations — see where the market is flushing positions in real time.',
+  a2t: 'Funding Rate', a2d: 'An alert on extreme funding levels — an early sign of crowded long or short positioning.',
+  a3t: 'Long/Short Ratio', a3d: 'Tracks the balance of buyers vs sellers and warns you on a sharp imbalance.',
+  a4t: 'Fear & Greed', a4d: 'A notification when market sentiment shifts — from extreme fear to extreme greed.',
+  a5t: 'BTC Snapshots', a5d: 'Periodic BTC snapshots with real TradingView screenshot charts, straight into the chat.',
+  anEyebrow: 'AUTOMATED AI ANALYSIS · 09:00 & 15:00', anTitle: 'BTC analysis across 4 timeframes, twice a day',
+  anDesc: 'AI reads the live TradingView charts and returns a structured technical breakdown — indicators, key levels and a ready trade setup.',
+  dataEyebrow: 'POWERED EXCLUSIVELY BY REAL API SOURCES',
+  ctaTitle: 'Ready to trade with an edge?', ctaDesc: 'Join SignalCore straight inside Telegram. No installs, no complex setup.', ctaBtn: 'Launch SignalCore Bot',
+  riskTitle: 'RISK WARNING', riskBody: 'Crypto trading carries a high level of risk and may result in the loss of your entire invested capital. SignalCore provides informational tools and analysis — this is NOT financial advice, an investment recommendation or a guarantee of results. Every trading decision is entirely your own responsibility.',
+  footTag: 'A crypto trading terminal embedded in Telegram. Real data, real levels.', footProduct: 'PRODUCT', footContact: 'CONTACT', footRights: 'All rights reserved.'
+};
+
+const bg = {
+  navFeatures: 'Функции', navAlerts: 'Известия', navAnalysis: 'Анализ', navData: 'Данни', launch: 'Стартирай в Telegram',
+  openApp: 'Отвори Мини Приложението', signIn: 'Вход', signUp: 'Регистрация', signOut: 'Изход', qrHint: 'Сканирай, за да се присъединиш в Telegram',
+  glTitle: 'Печеливши и губещи', glSource: 'източник: coingecko.com',
+  heroBadge: 'НА ЖИВО · ОБНОВЯВА СЕ НА ВСЕКИ 2 МИНУТИ',
+  h1a: 'Не следваш пазара.', h1b: 'Предвиждаш го.',
+  heroDesc: 'Докато другите гадаят — ти вече знаеш.\nЖиви ликвидации. Squeeze сигнали. BTC анализ два пъти дневно.\nСамо данни. Само факти. Без шум.',
+  heroBtn1: 'Join Telegram', heroBtn2: 'Виж какво има вътре',
+  stat1: 'следени монети', stat2: 'таба в приложението', stat3: 'наблюдение',
+  tabsEyebrow: 'МИНИ ПРИЛОЖЕНИЕ · 7 ТАБА', tabsTitle: 'Пълноценен търговски терминал в Telegram',
+  tabsDesc: 'Всеки таб покрива отделен слой на пазара — от нашия собствен Squeeze Score до макро календара и новините.',
+  c1t: 'Табло', c1d: 'Обобщен изглед на пазара — водещи монети, статус на известията и текуща пазарна температура на един екран.',
+  c2t: 'Squeeze', c2d: 'Нашият собствен Squeeze Score с ясни BUY / SELL сигнали, изчислени от обем, волатилност и моментум.',
+  c3t: 'Графики', c3d: 'Вградени TradingView графики за всяка следена монета, без да напускаш Telegram.',
+  c4t: 'Сигнали', c4d: 'Конкретни търговски нива — Вход, Take-Profit и Stop-Loss, готови за изпълнение.',
+  c5t: 'История', c5d: 'Пълен архив на минали сигнали и известия — прозрачно проследяване на резултатите.',
+  c6t: 'Календар', c6d: 'Макро събития от FRED — CPI, NFP, GDP и решенията на Fed, подредени по важност.',
+  c7t: 'Новини', c7d: 'Крипто събития от CoinMarketCal — ъпгрейди, листвания и отключвания преди останалите.',
+  alertsEyebrow: 'MARKETMONITOR BOT · 5 ТИПА ИЗВЕСТИЯ', alertsTitle: 'Автоматични сигнали, преди пазарът да реагира',
+  alertsDesc: 'Ботът следи 53 монети денонощно чрез Bybit API и изпраща мигновено Telegram известие при всяко значимо събитие.',
+  a1t: 'Ликвидации', a1d: 'Мигновен сигнал при големи ликвидации — виж къде пазарът изчиства позиции в реално време.',
+  a2t: 'Funding Rate', a2d: 'Известие при екстремни funding нива — ранен знак за струпани long или short позиции.',
+  a3t: 'Long/Short Ratio', a3d: 'Следи баланса между купувачи и продавачи и те предупреждава при рязък дисбаланс.',
+  a4t: 'Fear & Greed', a4d: 'Известие при смяна на пазарното настроение — от екстремен страх до екстремна алчност.',
+  a5t: 'BTC Снимки', a5d: 'Периодични BTC снимки с реални TradingView графики, директно в чата.',
+  anEyebrow: 'АВТОМАТИЧЕН AI АНАЛИЗ · 09:00 & 15:00', anTitle: 'BTC анализ на 4 таймфрейма, два пъти дневно',
+  anDesc: 'AI чете живите TradingView графики и връща структуриран технически анализ — индикатори, ключови нива и готова търговска настройка.',
+  dataEyebrow: 'ЗАДВИЖВАНО ИЗЦЯЛО ОТ РЕАЛНИ API ИЗТОЧНИЦИ',
+  ctaTitle: 'Готов ли си да търгуваш с предимство?', ctaDesc: 'Присъедини се към SignalCore директно в Telegram. Без инсталации, без сложна настройка.', ctaBtn: 'Стартирай SignalCore Бот',
+  riskTitle: 'ПРЕДУПРЕЖДЕНИЕ ЗА РИСК', riskBody: 'Крипто търговията носи високо ниво на риск и може да доведе до загуба на целия ти инвестиран капитал. SignalCore предоставя информационни инструменти и анализ — това НЕ е финансов съвет, инвестиционна препоръка или гаранция за резултати. Всяко търговско решение е изцяло твоя отговорност.',
+  footTag: 'Крипто търговски терминал, вграден в Telegram. Реални данни, реални нива.', footProduct: 'ПРОДУКТ', footContact: 'КОНТАКТ', footRights: 'Всички права запазени.'
+};
+
+const toneOverrides = {
+  en: { urgent: { heroBadge: "LIVE · DON'T MISS THE NEXT MOVE", ctaBtn: 'Get In Before It Moves', ctaTitle: 'The market won\'t wait for you.' } },
+  bg: { urgent: { heroBadge: 'НА ЖИВО · НЕ ПРОПУСКАЙ СЛЕДВАЩИЯ ХОД', ctaBtn: 'Влез, преди да е станало късно', ctaTitle: 'Пазарът няма да те чака.' } }
+};
+
+function getT() {
+  return { ...(state.lang === 'bg' ? bg : en), ...((toneOverrides[state.lang] || {})[TONE] || {}) };
+}
+
+// ══════════════════════════════════════════════
+//  STATE
+// ══════════════════════════════════════════════
+const state = {
+  theme: 'dark', lang: 'en', tf: '15m', alert: 0,
+  logos: {}, loggedIn: false, market: FALLBACK_MARKET, btcAnalysis: null
+};
+
+// ══════════════════════════════════════════════
+//  FORMAT HELPERS
+// ══════════════════════════════════════════════
+function fmtPrice(p) { return p >= 1000 ? '$' + p.toLocaleString('en-US', { maximumFractionDigits: 0 }) : '$' + p.toLocaleString('en-US', { maximumFractionDigits: p >= 1 ? 2 : 4 }); }
+function fmtPct(p) { return (p == null ? '—' : (p >= 0 ? '+' : '') + p.toFixed(2) + '%'); }
+const G_ = 'var(--green)', R_ = 'var(--red)', M_ = 'var(--mute)', A_ = 'var(--amber)';
+
+function classifyOsc(v) {
+  if (v === undefined || v === null) return { label: '—', color: M_ };
+  if (v >= 70) return { label: 'overbought', color: R_ };
+  if (v <= 30) return { label: 'oversold', color: G_ };
+  return { label: 'neutral', color: M_ };
+}
+function biasColor(str) {
+  const s = (str || '').toLowerCase();
+  if (s.includes('bull') || s.includes('above')) return G_;
+  if (s.includes('bear') || s.includes('below')) return R_;
+  return M_;
+}
+function fmtLevel(v) { return (v || v === 0) ? Number(v).toLocaleString('en-US') : '—'; }
+
+function animateCount(el) {
+  const target = parseFloat(el.dataset.count), dur = 1100, t0 = performance.now();
+  const step = (now) => {
+    const p = Math.min(1, (now - t0) / dur), e = 1 - Math.pow(1 - p, 3);
+    el.textContent = Math.round(target * e).toLocaleString('en-US');
+    if (p < 1) requestAnimationFrame(step);
+  };
+  requestAnimationFrame(step);
+}
+
+// ══════════════════════════════════════════════
+//  RENDER — header, nav, lang, theme icon, auth
+// ══════════════════════════════════════════════
+function renderNav() {
+  const t = getT();
+  document.getElementById('nav-links').innerHTML = `
+    <a href="#tabs" style="color:var(--dim)">${t.navFeatures}</a>
+    <a href="#alerts" style="color:var(--dim)">${t.navAlerts}</a>
+    <a href="#analysis" style="color:var(--dim)">${t.navAnalysis}</a>
+    <a href="#data" style="color:var(--dim)">${t.navData}</a>`;
+}
+
+function renderLangButtons() {
+  const activeStyle = 'padding:5px 11px;border-radius:7px;border:none;cursor:pointer;color:var(--amber-ink);background:var(--amber)';
+  const inactiveStyle = 'padding:5px 11px;border-radius:7px;border:none;cursor:pointer;color:var(--dim);background:transparent';
+  const bgBtn = document.getElementById('lang-btn-bg');
+  const enBtn = document.getElementById('lang-btn-en');
+  bgBtn.textContent = 'BG';
+  enBtn.textContent = 'EN';
+  bgBtn.setAttribute('style', state.lang === 'bg' ? activeStyle : inactiveStyle);
+  enBtn.setAttribute('style', state.lang === 'en' ? activeStyle : inactiveStyle);
+}
+
+function renderThemeIcon() {
+  const icon = document.getElementById('theme-icon');
+  icon.innerHTML = state.theme === 'dark'
+    ? `<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 12.8A9 9 0 1 1 11.2 3 7 7 0 0 0 21 12.8z"></path></svg>`
+    : `<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"></circle><path d="M12 2v2M12 20v2M2 12h2M20 12h2M5 5l1.5 1.5M17.5 17.5L19 19M19 5l-1.5 1.5M6.5 17.5L5 19"></path></svg>`;
+}
+
+function renderAuthActions() {
+  const t = getT();
+  const el = document.getElementById('auth-actions');
+  if (state.loggedIn) {
+    el.innerHTML = `
+      <a href="${TG_URL}" target="_blank" class="hv-d" style="display:inline-flex;align-items:center;gap:8px;padding:10px 17px;border-radius:9px;font-weight:700;font-size:14px;white-space:nowrap;color:var(--amber-ink);background:var(--amber);transition:transform .2s,filter .2s">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M21.9 4.3 2.9 11.6c-1.1.4-1 1 0 1.3l4.9 1.5 1.9 5.9c.2.6.4.9 1 .9.4 0 .6-.2.9-.5l2.5-2.4 4.9 3.6c.9.5 1.5.2 1.7-.8l3.1-14.6c.3-1.3-.5-1.9-1.8-1.7z"></path></svg>
+        ${t.openApp}
+      </a>
+      <button onclick="signOut()" class="hv-b" style="padding:9px 12px;border-radius:9px;background:none;border:1px solid var(--border);color:var(--dim);font-family:Hanken Grotesk,sans-serif;font-weight:600;font-size:13px;cursor:pointer;white-space:nowrap">${t.signOut}</button>`;
+  } else {
+    el.innerHTML = `
+      <button onclick="signIn()" class="hv-c" style="padding:10px 17px;border-radius:9px;background:none;border:1px solid var(--border2);color:var(--text);font-family:Hanken Grotesk,sans-serif;font-weight:700;font-size:14px;cursor:pointer;white-space:nowrap;transition:.2s">${t.signIn}</button>
+      <button onclick="signIn()" class="hv-d" style="display:inline-flex;align-items:center;gap:8px;padding:10px 17px;border-radius:9px;font-weight:700;font-size:14px;white-space:nowrap;color:var(--amber-ink);background:var(--amber);border:none;cursor:pointer;transition:transform .2s,filter .2s">${t.signUp}</button>
+      <a href="${TG_URL}" target="_blank" title="${t.qrHint}" style="display:grid;place-items:center;width:37px;height:37px;border-radius:9px;background:#fff;border:1px solid var(--border);padding:3px;flex-shrink:0">
+        <img src="${QR_URL}" alt="QR" style="width:100%;height:100%;object-fit:cover;border-radius:3px">
+      </a>`;
+  }
+}
+
+// ══════════════════════════════════════════════
+//  RENDER — ticker, hero text, hero card (terminal / gainers-losers)
+// ══════════════════════════════════════════════
+function renderTicker() {
+  const tickerRow = TICKER_COINS.map((c) => ({
+    symbol: c.symbol, price: c.price, change: c.change,
+    arrow: c.up ? '▲' : '▼', color: c.up ? 'var(--green)' : 'var(--red)',
+    logo: state.logos[c.id] || ''
+  }));
+  const tickerList = tickerRow.concat(tickerRow);
+  document.getElementById('ticker-track').innerHTML = tickerList.map((c) => `
+    <span style="color:#FFFFFF;display:inline-flex;align-items:center;gap:7px">
+      <span style="width:20px;height:20px;border-radius:50%;background-color:var(--surface);background-image:url(${c.logo});background-size:cover;background-position:center;display:inline-block;vertical-align:middle;flex-shrink:0"></span>
+      ${c.symbol} ${c.price} <b style="color:${c.color}">${c.arrow} ${c.change}</b>
+    </span>`).join('');
+}
+
+function renderHeroText() {
+  const t = getT();
+  document.getElementById('hero-badge-text').textContent = t.heroBadge;
+  document.getElementById('hero-h1a').textContent = t.h1a;
+  document.getElementById('hero-h1b').textContent = t.h1b;
+  document.getElementById('hero-desc').textContent = t.heroDesc;
+  document.getElementById('hero-btn1-text').textContent = t.heroBtn1;
+  document.getElementById('hero-qr-hint').setAttribute('title', t.qrHint);
+  document.getElementById('stat1-label').textContent = t.stat1;
+  document.getElementById('stat2-label').textContent = t.stat2;
+  document.getElementById('stat3-label').textContent = t.stat3;
+}
+
+function renderHeroCard() {
+  const t = getT();
+  const el = document.getElementById('hero-card');
+
+  if (state.loggedIn) {
+    const btcRow = state.market.find((m) => m.id === 'bitcoin');
+    const btcPrice = btcRow ? fmtPrice(btcRow.current_price) : '$62,639';
+    const btcChangeVal = btcRow ? (btcRow.price_change_percentage_24h_in_currency ?? btcRow.price_change_percentage_24h) : 0.12;
+    const btcChange = fmtPct(btcChangeVal);
+    const btcChangeColor = (btcChangeVal || 0) >= 0 ? G_ : R_;
+
+    el.innerHTML = `
+      <div style="border-radius:16px;background:var(--card);border:1px solid var(--border);overflow:hidden;box-shadow:0 30px 70px -30px rgba(0,0,0,.6)">
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:13px 16px;border-bottom:1px solid var(--border)">
+          <div style="display:flex;align-items:center;gap:8px">
+            <span style="width:11px;height:11px;border-radius:50%;background:#F0556B"></span>
+            <span style="width:11px;height:11px;border-radius:50%;background:#F0A92B"></span>
+            <span style="width:11px;height:11px;border-radius:50%;background:#34C88A"></span>
+            <span style="font-family:JetBrains Mono,monospace;font-size:12px;color:var(--mute);margin-left:8px">signalcore@market — live</span>
+          </div>
+          <span style="font-family:JetBrains Mono,monospace;font-size:11px;color:var(--green);display:flex;align-items:center;gap:5px"><span style="width:6px;height:6px;border-radius:50%;background:var(--green);animation:pulse 1.6s infinite"></span>LIVE</span>
+        </div>
+        <div style="padding:18px 18px 20px;font-family:JetBrains Mono,monospace;font-size:13px;line-height:1.7">
+          <div><span style="color:var(--amber)">$</span> <span style="color:var(--text)">signalcore --live</span></div>
+          <div style="color:var(--mute)"># fetching market data…</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:1px;margin:14px 0;background:var(--border);border:1px solid var(--border);border-radius:10px;overflow:hidden">
+            <div style="background:var(--card2);padding:14px 15px"><div style="color:var(--mute);font-size:10.5px;letter-spacing:.08em">BTC PRICE</div><div style="color:var(--text);font-size:19px;font-weight:700;margin-top:5px">${btcPrice}</div></div>
+            <div style="background:var(--card2);padding:14px 15px"><div style="color:var(--mute);font-size:10.5px;letter-spacing:.08em">24H CHANGE</div><div style="color:${btcChangeColor};font-size:19px;font-weight:700;margin-top:5px">${btcChange}</div></div>
+            <div style="background:var(--card2);padding:14px 15px"><div style="color:var(--mute);font-size:10.5px;letter-spacing:.08em">FUNDING RATE</div><div style="color:var(--text);font-size:19px;font-weight:700;margin-top:5px">+0.01%</div></div>
+            <div style="background:var(--card2);padding:14px 15px"><div style="color:var(--mute);font-size:10.5px;letter-spacing:.08em">FEAR &amp; GREED</div><div style="color:var(--red);font-size:19px;font-weight:700;margin-top:5px">22 · Extreme Fear</div></div>
+          </div>
+          <div style="color:var(--mute)"># source: coingecko · alternative.me</div>
+          <div><span style="color:var(--amber)">$</span> <span style="color:var(--text)">done. live tracking active.</span><span style="display:inline-block;width:8px;height:15px;background:var(--amber);vertical-align:-2px;margin-left:3px;animation:blink 1.1s step-end infinite"></span></div>
+        </div>
+      </div>`;
+  } else {
+    const glList = state.market.map((m) => ({
+      symbol: (m.symbol || '').toUpperCase(),
+      logo: m.image || '',
+      price: fmtPrice(m.current_price || 0),
+      ch1h: fmtPct(m.price_change_percentage_1h_in_currency),
+      ch24h: fmtPct(m.price_change_percentage_24h_in_currency ?? m.price_change_percentage_24h),
+      c1h: (m.price_change_percentage_1h_in_currency || 0) >= 0 ? G_ : R_,
+      c24h: (m.price_change_percentage_24h_in_currency ?? m.price_change_percentage_24h ?? 0) >= 0 ? G_ : R_
+    }));
+
+    el.innerHTML = `
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div style="border-radius:16px;background:var(--card);border:1px solid var(--border);overflow:hidden;box-shadow:0 30px 70px -30px rgba(0,0,0,.6);padding:18px">
+          <div style="font-family:Sora,sans-serif;font-weight:700;font-size:15px;margin-bottom:12px">${t.glTitle}</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:9px">
+            ${glList.map((c) => `
+              <div style="border-radius:11px;background:var(--card2);border:1px solid var(--border);padding:11px 12px">
+                <div style="display:flex;align-items:center;gap:7px">
+                  <span style="width:18px;height:18px;border-radius:50%;background-color:var(--surface);background-image:url(${c.logo});background-size:cover;background-position:center;flex-shrink:0"></span>
+                  <b style="font-family:JetBrains Mono,monospace;font-size:12.5px">${c.symbol}</b>
+                  <span style="margin-left:auto;font-family:JetBrains Mono,monospace;font-size:12px;color:var(--dim)">${c.price}</span>
+                </div>
+                <div style="display:flex;justify-content:space-between;margin-top:7px;font-family:JetBrains Mono,monospace;font-size:11px">
+                  <span style="color:var(--mute)">1h <b style="color:${c.c1h}">${c.ch1h}</b></span>
+                  <span style="color:var(--mute)">24h <b style="color:${c.c24h}">${c.ch24h}</b></span>
+                </div>
+              </div>`).join('')}
+          </div>
+          <div style="font-family:JetBrains Mono,monospace;font-size:11px;color:var(--mute);margin-top:12px">${t.glSource}</div>
+        </div>
+      </div>`;
+  }
+}
+
+// ══════════════════════════════════════════════
+//  RENDER — BTC Analysis card (real data from btc-analysis.json)
+// ══════════════════════════════════════════════
+function renderAnalysisHeader() {
+  const t = getT();
+  document.getElementById('an-eyebrow').textContent = t.anEyebrow;
+  document.getElementById('an-title').textContent = t.anTitle;
+  document.getElementById('an-desc').textContent = t.anDesc;
+}
+
+function renderTfTabs() {
+  const tabs = [['15m', '15M'], ['1h', '1H'], ['4h', '4H'], ['daily', 'Daily']];
+  document.getElementById('tf-tabs').innerHTML = tabs.map(([key, label]) => {
+    const active = state.tf === key;
+    const color = active ? A_ : M_;
+    const border = active ? A_ : 'transparent';
+    return `<button onclick="setTf('${key}')" style="padding:9px 16px;border:none;background:none;cursor:pointer;font-family:JetBrains Mono,monospace;font-size:13px;font-weight:700;color:${color};border-bottom:2px solid ${border}">${label}</button>`;
+  }).join('');
+}
+
+function renderBtcAnalysisBody() {
+  // The endpoint gives ONE composite reading (not split per timeframe), so
+  // every tf tab shows the same real values — no fake per-timeframe split.
+  const ba = state.btcAnalysis;
+  const rsiCls = ba ? classifyOsc(ba.rsi) : { label: 'loading', color: M_ };
+  const stochCls = ba ? classifyOsc(ba.stoch) : { label: 'loading', color: M_ };
+  const d = {
+    rsi: ba ? String(ba.rsi) : '—', rsiL: rsiCls.label, rsiC: rsiCls.color,
+    stoch: ba ? String(ba.stoch) : '—', stochL: stochCls.label, stochC: stochCls.color,
+    macdL: ba ? ba.macd : 'loading', macdC: ba ? biasColor(ba.macd) : M_,
+    emaL: ba ? ba.ema : 'loading', emaC: ba ? biasColor(ba.ema) : M_,
+    r1: fmtLevel(ba?.r1), r2: fmtLevel(ba?.r2), r3: fmtLevel(ba?.r3),
+    s1: fmtLevel(ba?.s1), s2: fmtLevel(ba?.s2), s3: fmtLevel(ba?.s3),
+    bias: ba ? ba.bias : 'loading', biasC: ba ? biasColor(ba.bias) : M_,
+    updated: ba?.updated ? new Date(ba.updated).toLocaleString('en-GB', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' }) : '—'
+  };
+
+  document.getElementById('btc-analysis-body').innerHTML = `
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:12px;overflow:hidden">
+      <div style="background:var(--card2);padding:16px 18px"><div style="font-family:JetBrains Mono,monospace;font-size:10.5px;letter-spacing:.08em;color:var(--mute)">RSI</div><div style="font-family:JetBrains Mono,monospace;font-size:22px;font-weight:700;margin-top:6px">${d.rsi}</div><div style="font-family:JetBrains Mono,monospace;font-size:12px;margin-top:4px;color:${d.rsiC}">${d.rsiL}</div></div>
+      <div style="background:var(--card2);padding:16px 18px"><div style="font-family:JetBrains Mono,monospace;font-size:10.5px;letter-spacing:.08em;color:var(--mute)">STOCHASTIC</div><div style="font-family:JetBrains Mono,monospace;font-size:22px;font-weight:700;margin-top:6px;color:${d.stochC}">${d.stoch}</div><div style="font-family:JetBrains Mono,monospace;font-size:12px;margin-top:4px;color:${d.stochC}">${d.stochL}</div></div>
+      <div style="background:var(--card2);padding:16px 18px"><div style="font-family:JetBrains Mono,monospace;font-size:10.5px;letter-spacing:.08em;color:var(--mute)">MACD</div><div style="font-family:JetBrains Mono,monospace;font-size:22px;font-weight:700;margin-top:6px;color:${d.macdC}">—</div><div style="font-family:JetBrains Mono,monospace;font-size:12px;margin-top:4px;color:${d.macdC}">${d.macdL}</div></div>
+      <div style="background:var(--card2);padding:16px 18px"><div style="font-family:JetBrains Mono,monospace;font-size:10.5px;letter-spacing:.08em;color:var(--mute)">EMA 50/200</div><div style="font-family:JetBrains Mono,monospace;font-size:22px;font-weight:700;margin-top:6px;color:${d.emaC}">—</div><div style="font-family:JetBrains Mono,monospace;font-size:12px;margin-top:4px;color:${d.emaC}">${d.emaL}</div></div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px">
+      <div style="border:1px solid var(--border);border-radius:12px;overflow:hidden">
+        <div style="padding:11px 16px;font-family:JetBrains Mono,monospace;font-size:11px;letter-spacing:.08em;color:var(--mute);border-bottom:1px solid var(--border)">RESISTANCE</div>
+        <div style="padding:6px 16px 12px;font-family:JetBrains Mono,monospace;font-size:13px">
+          <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border)"><span style="color:var(--red)">R3</span><span style="color:var(--text)">${d.r3}</span></div>
+          <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border)"><span style="color:var(--red)">R2</span><span style="color:var(--text)">${d.r2}</span></div>
+          <div style="display:flex;justify-content:space-between;padding:8px 0"><span style="color:var(--red)">R1</span><span style="color:var(--text)">${d.r1}</span></div>
+        </div>
+      </div>
+      <div style="border:1px solid var(--border);border-radius:12px;overflow:hidden">
+        <div style="padding:11px 16px;font-family:JetBrains Mono,monospace;font-size:11px;letter-spacing:.08em;color:var(--mute);border-bottom:1px solid var(--border)">SUPPORT</div>
+        <div style="padding:6px 16px 12px;font-family:JetBrains Mono,monospace;font-size:13px">
+          <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border)"><span style="color:var(--green)">S1</span><span style="color:var(--text)">${d.s1}</span></div>
+          <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border)"><span style="color:var(--green)">S2</span><span style="color:var(--text)">${d.s2}</span></div>
+          <div style="display:flex;justify-content:space-between;padding:8px 0"><span style="color:var(--green)">S3</span><span style="color:var(--text)">${d.s3}</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div style="display:flex;align-items:center;gap:10px;margin-top:16px;flex-wrap:wrap">
+      <span style="font-family:JetBrains Mono,monospace;font-size:11px;letter-spacing:.08em;color:var(--mute)">OVERALL BIAS</span>
+      <span style="font-family:JetBrains Mono,monospace;font-size:12px;font-weight:700;padding:3px 10px;border-radius:6px;color:${d.biasC};background:color-mix(in srgb,${d.biasC} 12%,transparent);border:1px solid color-mix(in srgb,${d.biasC} 35%,transparent);text-transform:uppercase">${d.bias}</span>
+    </div>
+    <div style="font-family:JetBrains Mono,monospace;font-size:12px;color:var(--mute);margin-top:10px">AI breakdown over live TradingView data · last updated ${d.updated} · this is not financial advice</div>`;
+}
+
+// ══════════════════════════════════════════════
+//  RENDER — Alerts section
+// ══════════════════════════════════════════════
+function renderAlertsHeader() {
+  const t = getT();
+  document.getElementById('al-eyebrow').textContent = t.alertsEyebrow;
+  document.getElementById('al-title').textContent = t.alertsTitle;
+  document.getElementById('al-desc').textContent = t.alertsDesc;
+}
+
+function renderAlertsButtons() {
+  const t = getT();
+  const items = [
+    { t: t.a1t, d: t.a1d }, { t: t.a2t, d: t.a2d }, { t: t.a3t, d: t.a3d },
+    { t: t.a4t, d: t.a4d }, { t: t.a5t, d: t.a5d }
+  ];
+  document.getElementById('alerts-buttons').innerHTML = items.map((it, i) => {
+    const active = state.alert === i;
+    const bg = active ? 'color-mix(in srgb,var(--amber) 7%,transparent)' : 'transparent';
+    const border = active ? A_ : 'transparent';
+    return `<button onclick="setAlert(${i})" style="text-align:left;cursor:pointer;padding:18px 20px;border-radius:14px;background:${bg};border:1px solid var(--border);border-left:3px solid ${border};transition:.2s">
+      <div style="display:flex;align-items:center;gap:12px"><span style="font-family:JetBrains Mono,monospace;font-size:13px;font-weight:700;color:var(--amber)">0${i + 1}</span><b style="font-family:Sora,sans-serif;font-size:17px;color:var(--text)">${it.t}</b></div>
+      <p style="font-size:14px;line-height:1.5;color:var(--dim);margin:8px 0 0 26px">${it.d}</p>
+    </button>`;
+  }).join('');
+}
+
+function renderAlertsPanel() {
+  const alerts = [
+    { dot: R_, tag: 'LIQUIDATION', key: 'coin: BTCUSDT type: long · high volume', val: '', effect: 'downside pressure' },
+    { dot: A_, tag: 'FUNDING', key: 'coin: BTCUSDT rate: +0.09% · elevated', val: '', effect: 'crowded longs' },
+    { dot: A_, tag: 'L/S RATIO', key: 'coin: ETHUSDT ratio: 2.4 · longs heavy', val: '', effect: 'squeeze risk' },
+    { dot: G_, tag: 'SENTIMENT', key: 'index: 22 → 41 · shift up', val: '', effect: 'fear easing' },
+    { dot: A_, tag: 'BTC SNAPSHOT', key: 'tf: 4H · TradingView chart', val: '', effect: 'chart attached' }
+  ];
+  const m = alerts[state.alert];
+  document.getElementById('alerts-panel').innerHTML = `
+    <div style="display:flex;align-items:center;gap:11px">
+      <span style="width:38px;height:38px;border-radius:50%;background:var(--amber);display:grid;place-items:center;color:var(--amber-ink)"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M21.9 4.3 2.9 11.6c-1.1.4-1 1 0 1.3l4.9 1.5 1.9 5.9c.2.6.4.9 1 .9.4 0 .6-.2.9-.5l2.5-2.4 4.9 3.6c.9.5 1.5.2 1.7-.8l3.1-14.6c.3-1.3-.5-1.9-1.8-1.7z"></path></svg></span>
+      <div><b style="font-family:Sora,sans-serif;font-size:15px">SignalCore Bot</b><div style="font-family:JetBrains Mono,monospace;font-size:11px;color:var(--green)">· online</div></div>
+    </div>
+    <div style="margin-top:18px;padding:16px 17px;border-radius:12px 12px 12px 4px;background:var(--surface);border:1px solid var(--border);font-family:JetBrains Mono,monospace;font-size:13px;line-height:1.7">
+      <div><span style="display:inline-block;width:9px;height:9px;border-radius:50%;background:${m.dot};vertical-align:0;margin-right:7px"></span><b style="color:var(--amber)">${m.tag}</b> <span style="color:var(--mute)">${m.key}</span> <span style="color:var(--text)">${m.val}</span></div>
+      <div style="margin-top:4px;color:var(--mute)">effect: <span style="color:var(--text)">${m.effect}</span></div>
+    </div>
+    <div style="text-align:right;font-family:JetBrains Mono,monospace;font-size:11px;color:var(--mute);margin-top:8px">02:08</div>`;
+}
+
+// ══════════════════════════════════════════════
+//  RENDER — Tabs (7 feature cards), Data, CTA, Footer
+// ══════════════════════════════════════════════
+const TAB_ICONS = [
+  '<svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"></rect><rect x="14" y="3" width="7" height="7" rx="1.5"></rect><rect x="3" y="14" width="7" height="7" rx="1.5"></rect><rect x="14" y="14" width="7" height="7" rx="1.5"></rect></svg>',
+  '<svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h4l2 6 4-14 2 8h6"></path></svg>',
+  '<svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V4M4 20h16"></path><path d="M8 15l3-4 3 2 4-6"></path></svg>',
+  '<svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20V5M6 11l6-6 6 6"></path></svg>',
+  '<svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3.5 2"></path></svg>',
+  '<svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4.5" width="18" height="17" rx="2.5"></rect><path d="M3 9h18M8 2.5v4M16 2.5v4"></path></svg>',
+  '<svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2"></rect><path d="M8 8h8M8 12h8M8 16h5"></path></svg>'
+];
+const TAB_TAGS = ['overview', 'proprietary', 'live', 'entry/tp/sl', 'archive', 'FRED', 'CoinMarketCal'];
+
+function renderTabsSection() {
+  const t = getT();
+  document.getElementById('tabs-eyebrow').textContent = t.tabsEyebrow;
+  document.getElementById('tabs-title').textContent = t.tabsTitle;
+  document.getElementById('tabs-desc').textContent = t.tabsDesc;
+
+  const cards = [
+    [t.c1t, t.c1d], [t.c2t, t.c2d], [t.c3t, t.c3d], [t.c4t, t.c4d],
+    [t.c5t, t.c5d], [t.c6t, t.c6d], [t.c7t, t.c7d]
+  ];
+  document.getElementById('tabs-grid').innerHTML = cards.map(([title, desc], i) => `
+    <div data-reveal="" class="hv-f" style="position:relative;padding:26px;border-radius:16px;background:var(--card);border:1px solid var(--border);transition:transform .25s,border-color .25s">
+      <span style="position:absolute;top:22px;right:22px;font-family:JetBrains Mono,monospace;font-size:12px;color:var(--mute)">0${i + 1}</span>
+      <div style="width:44px;height:44px;border-radius:11px;display:grid;place-items:center;color:var(--amber);background:var(--amber-soft);border:1px solid color-mix(in srgb,var(--amber) 26%,transparent)">${TAB_ICONS[i]}</div>
+      <h3 style="font-family:Sora,sans-serif;font-weight:700;font-size:20px;margin:18px 0 0">${title}</h3>
+      <p style="font-size:14.5px;line-height:1.55;color:var(--dim);margin:9px 0 0">${desc}</p>
+      <div style="display:inline-block;margin-top:16px;padding:4px 10px;border-radius:6px;font-family:JetBrains Mono,monospace;font-size:11px;color:var(--amber);background:var(--amber-soft)">${TAB_TAGS[i]}</div>
+    </div>`).join('');
+}
+
+function renderDataSection() {
+  document.getElementById('data-eyebrow').textContent = getT().dataEyebrow;
+}
+
+function renderCta() {
+  const t = getT();
+  document.getElementById('cta-title').textContent = t.ctaTitle;
+  document.getElementById('cta-desc').textContent = t.ctaDesc;
+  document.getElementById('cta-btn-text').textContent = t.ctaBtn;
+}
+
+function renderFooter() {
+  const t = getT();
+  document.getElementById('risk-title').textContent = t.riskTitle;
+  document.getElementById('risk-body').textContent = t.riskBody;
+  document.getElementById('foot-tag').textContent = t.footTag;
+  document.getElementById('foot-product-label').textContent = t.footProduct;
+  document.getElementById('foot-product-links').innerHTML =
+    `<a href="#tabs" style="color:var(--dim)">${t.navFeatures}</a><a href="#alerts" style="color:var(--dim)">${t.navAlerts}</a><a href="#analysis" style="color:var(--dim)">${t.navAnalysis}</a>`;
+  document.getElementById('foot-data-links').innerHTML =
+    `<a href="#data" style="color:var(--dim)">${t.navData}</a><span style="color:var(--dim)">Bybit</span><span style="color:var(--dim)">TradingView</span>`;
+  document.getElementById('foot-contact-label').textContent = t.footContact;
+  document.getElementById('foot-rights').textContent = t.footRights;
+}
+
+// ══════════════════════════════════════════════
+//  MASTER RENDER — full rebuild (init + language change)
+// ══════════════════════════════════════════════
+function renderAll() {
+  document.getElementById('app').setAttribute('data-theme', state.theme);
+  document.getElementById('app').setAttribute('data-accent', ACCENT_THEME);
+  document.getElementById('app').setAttribute('data-intensity', INTENSITY);
+  document.documentElement.setAttribute('lang', state.lang);
+
+  renderNav();
+  renderLangButtons();
+  renderThemeIcon();
+  renderAuthActions();
+  renderTicker();
+  renderHeroText();
+  renderHeroCard();
+  renderAnalysisHeader();
+  renderTfTabs();
+  renderBtcAnalysisBody();
+  renderAlertsHeader();
+  renderAlertsButtons();
+  renderAlertsPanel();
+  renderTabsSection();
+  renderDataSection();
+  renderCta();
+  renderFooter();
+
+  setupRevealObservers();
+  setupCountObservers();
+}
+
+// ══════════════════════════════════════════════
+//  ACTIONS — replace the removed DC setState() bindings.
+//  Each mutates state then re-renders only the affected region(s),
+//  except setLang which touches nearly every string on the page.
+// ══════════════════════════════════════════════
+function setLang(l) { state.lang = l; renderAll(); }
+
+function toggleTheme() {
+  state.theme = state.theme === 'dark' ? 'light' : 'dark';
+  document.getElementById('app').setAttribute('data-theme', state.theme);
+  renderThemeIcon();
+}
+
+function signIn() { state.loggedIn = true; renderAuthActions(); renderHeroCard(); }
+function signOut() { state.loggedIn = false; renderAuthActions(); renderHeroCard(); }
+
+function setTf(tf) { state.tf = tf; renderTfTabs(); renderBtcAnalysisBody(); }
+function setAlert(i) { state.alert = i; renderAlertsButtons(); renderAlertsPanel(); }
+
+// ══════════════════════════════════════════════
+//  DATA FETCHING — real APIs only, no mock/fake values
+// ══════════════════════════════════════════════
+function fetchBtcAnalysis() {
+  fetch(`https://howhaber.github.io/signalcore/btc-analysis.json?t=${Date.now()}`, { cache: 'no-store' })
+    .then((r) => r.json())
+    .then((data) => { state.btcAnalysis = data; renderBtcAnalysisBody(); })
+    .catch(() => {});
+}
+
+function fetchLogosAndMarket() {
+  const ids = TICKER_COINS.map((c) => c.id).join(',');
+  fetch(`https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=${ids}`)
+    .then((r) => r.json())
+    .then((rows) => {
+      const logos = {};
+      rows.forEach((r) => { logos[r.id] = r.image; });
+      state.logos = logos;
+      renderTicker();
+    })
+    .catch(() => {});
+
+  const glIds = ['bitcoin', 'ethereum', 'solana', 'ripple', 'zcash', 'hyperliquid', 'dogecoin', 'binancecoin'].join(',');
+  const glUrl = `https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=${glIds}&price_change_percentage=1h,24h`;
+  const loadMarket = (retriesLeft) => {
+    fetch(glUrl)
+      .then((r) => r.json())
+      .then((rows) => {
+        if (Array.isArray(rows) && rows.length) { state.market = rows; renderHeroCard(); }
+        else if (retriesLeft > 0) setTimeout(() => loadMarket(retriesLeft - 1), 2000);
+      })
+      .catch(() => { if (retriesLeft > 0) setTimeout(() => loadMarket(retriesLeft - 1), 2000); });
+  };
+  loadMarket(2);
+}
+
+// ══════════════════════════════════════════════
+//  SCROLL-REVEAL + COUNT-UP — pure vanilla, unchanged from original
+// ══════════════════════════════════════════════
+function setupRevealObservers() {
+  const rObs = new IntersectionObserver((es) => {
+    es.forEach((e) => { if (e.isIntersecting) { e.target.style.opacity = '1'; e.target.style.transform = 'none'; rObs.unobserve(e.target); } });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('[data-reveal]').forEach((el) => {
+    if (el.dataset.revealed) return;
+    el.dataset.revealed = '1';
+    el.style.opacity = '0'; el.style.transform = 'translateY(24px)';
+    el.style.transition = 'opacity .7s cubic-bezier(.2,.7,.2,1),transform .7s cubic-bezier(.2,.7,.2,1)';
+    rObs.observe(el);
+  });
+}
+
+function setupCountObservers() {
+  const cObs = new IntersectionObserver((es) => {
+    es.forEach((e) => { if (e.isIntersecting) { animateCount(e.target); cObs.unobserve(e.target); } });
+  }, { threshold: 0.6 });
+  document.querySelectorAll('[data-count]').forEach((el) => {
+    if (el.dataset.counted) return;
+    el.dataset.counted = '1';
+    cObs.observe(el);
+  });
+}
+
+// ══════════════════════════════════════════════
+//  INIT
+// ══════════════════════════════════════════════
+document.addEventListener('DOMContentLoaded', () => {
+  renderAll();
+  fetchBtcAnalysis();
+  setInterval(fetchBtcAnalysis, 30000);
+  fetchLogosAndMarket();
+});
+</script>
+</body>
+</html>
