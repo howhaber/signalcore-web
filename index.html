@@ -622,16 +622,59 @@ function renderTfTabs() {
 }
 
 function renderBtcAnalysisBody() {
-  // The endpoint gives ONE composite reading (not split per timeframe), so
-  // every tf tab shows the same real values — no fake per-timeframe split.
   const ba = state.btcAnalysis;
-  const rsiCls = ba ? classifyOsc(ba.rsi) : { label: 'loading', color: M_ };
-  const stochCls = ba ? classifyOsc(ba.stoch) : { label: 'loading', color: M_ };
+
+  // Map the UI tf key to the JSON field suffix used by the per-timeframe
+  // fields (rsi15m, macdHist4h, emaPriceDaily, etc.)
+  const TF_SUFFIX = { '15m': '15m', '1h': '1h', '4h': '4h', 'daily': 'Daily' };
+  const suf = TF_SUFFIX[state.tf] || '15m';
+
+  // Per-timeframe real values. Falls back to the old single (15M-only)
+  // fields if the new per-tf fields aren't present yet — e.g. a cached
+  // btc-analysis.json written before this schema update went live.
+  const rsiVal = ba ? (ba[`rsi${suf}`] ?? ba.rsi) : null;
+  const stochVal = ba ? (ba[`stoch${suf}`] ?? ba.stoch) : null;
+  const macdHistVal = ba ? (ba[`macdHist${suf}`] ?? null) : null;
+  const emaPriceVal = ba ? (ba[`emaPrice${suf}`] ?? null) : null;
+
+  const rsiCls = rsiVal != null ? classifyOsc(rsiVal) : { label: 'loading', color: M_ };
+  const stochCls = stochVal != null ? classifyOsc(stochVal) : { label: 'loading', color: M_ };
+
+  // MACD: real histogram value + sign-derived bullish/bearish. Falls
+  // back to the old qualitative text (15M-only) if the numeric
+  // histogram for this timeframe isn't available yet.
+  let macdNum = '—', macdL = 'loading', macdC = M_;
+  if (macdHistVal != null) {
+    macdNum = (macdHistVal >= 0 ? '+' : '') + Number(macdHistVal).toFixed(2);
+    macdL = macdHistVal >= 0 ? 'bullish' : 'bearish';
+    macdC = macdHistVal >= 0 ? G_ : R_;
+  } else if (ba) {
+    macdL = ba.macd; macdC = biasColor(ba.macd);
+  }
+
+  // EMA: real EMA price level for this timeframe. Direction (above/
+  // below) compares it against the live BTC price already fetched from
+  // CoinGecko — a real comparison, not a guess.
+  let emaNum = '—', emaL = 'loading', emaC = M_;
+  const liveBtcRow = state.market.find((m) => m.id === 'bitcoin');
+  const livePrice = liveBtcRow ? liveBtcRow.current_price : null;
+  if (emaPriceVal != null) {
+    emaNum = '$' + Number(emaPriceVal).toLocaleString('en-US', { maximumFractionDigits: 0 });
+    if (livePrice != null) {
+      emaL = livePrice >= emaPriceVal ? 'price above' : 'price below';
+      emaC = livePrice >= emaPriceVal ? G_ : R_;
+    } else {
+      emaL = 'level'; emaC = M_;
+    }
+  } else if (ba) {
+    emaL = ba.ema; emaC = biasColor(ba.ema);
+  }
+
   const d = {
-    rsi: ba ? String(ba.rsi) : '—', rsiL: rsiCls.label, rsiC: rsiCls.color,
-    stoch: ba ? String(ba.stoch) : '—', stochL: stochCls.label, stochC: stochCls.color,
-    macdL: ba ? ba.macd : 'loading', macdC: ba ? biasColor(ba.macd) : M_,
-    emaL: ba ? ba.ema : 'loading', emaC: ba ? biasColor(ba.ema) : M_,
+    rsi: rsiVal != null ? String(rsiVal) : '—', rsiL: rsiCls.label, rsiC: rsiCls.color,
+    stoch: stochVal != null ? String(stochVal) : '—', stochL: stochCls.label, stochC: stochCls.color,
+    macdNum, macdL, macdC,
+    emaNum, emaL, emaC,
     r1: fmtLevel(ba?.r1), r2: fmtLevel(ba?.r2), r3: fmtLevel(ba?.r3),
     s1: fmtLevel(ba?.s1), s2: fmtLevel(ba?.s2), s3: fmtLevel(ba?.s3),
     bias: ba ? ba.bias : 'loading', biasC: ba ? biasColor(ba.bias) : M_,
@@ -642,8 +685,8 @@ function renderBtcAnalysisBody() {
     <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:12px;overflow:hidden">
       <div style="background:var(--card2);padding:16px 18px"><div style="font-family:JetBrains Mono,monospace;font-size:10.5px;letter-spacing:.08em;color:var(--mute)">RSI</div><div style="font-family:JetBrains Mono,monospace;font-size:22px;font-weight:700;margin-top:6px">${d.rsi}</div><div style="font-family:JetBrains Mono,monospace;font-size:12px;margin-top:4px;color:${d.rsiC}">${d.rsiL}</div></div>
       <div style="background:var(--card2);padding:16px 18px"><div style="font-family:JetBrains Mono,monospace;font-size:10.5px;letter-spacing:.08em;color:var(--mute)">STOCHASTIC</div><div style="font-family:JetBrains Mono,monospace;font-size:22px;font-weight:700;margin-top:6px;color:${d.stochC}">${d.stoch}</div><div style="font-family:JetBrains Mono,monospace;font-size:12px;margin-top:4px;color:${d.stochC}">${d.stochL}</div></div>
-      <div style="background:var(--card2);padding:16px 18px"><div style="font-family:JetBrains Mono,monospace;font-size:10.5px;letter-spacing:.08em;color:var(--mute)">MACD</div><div style="font-family:JetBrains Mono,monospace;font-size:22px;font-weight:700;margin-top:6px;color:${d.macdC}">—</div><div style="font-family:JetBrains Mono,monospace;font-size:12px;margin-top:4px;color:${d.macdC}">${d.macdL}</div></div>
-      <div style="background:var(--card2);padding:16px 18px"><div style="font-family:JetBrains Mono,monospace;font-size:10.5px;letter-spacing:.08em;color:var(--mute)">EMA 50/200</div><div style="font-family:JetBrains Mono,monospace;font-size:22px;font-weight:700;margin-top:6px;color:${d.emaC}">—</div><div style="font-family:JetBrains Mono,monospace;font-size:12px;margin-top:4px;color:${d.emaC}">${d.emaL}</div></div>
+      <div style="background:var(--card2);padding:16px 18px"><div style="font-family:JetBrains Mono,monospace;font-size:10.5px;letter-spacing:.08em;color:var(--mute)">MACD</div><div style="font-family:JetBrains Mono,monospace;font-size:22px;font-weight:700;margin-top:6px;color:${d.macdC}">${d.macdNum}</div><div style="font-family:JetBrains Mono,monospace;font-size:12px;margin-top:4px;color:${d.macdC}">${d.macdL}</div></div>
+      <div style="background:var(--card2);padding:16px 18px"><div style="font-family:JetBrains Mono,monospace;font-size:10.5px;letter-spacing:.08em;color:var(--mute)">EMA 50/200</div><div style="font-family:JetBrains Mono,monospace;font-size:22px;font-weight:700;margin-top:6px;color:${d.emaC}">${d.emaNum}</div><div style="font-family:JetBrains Mono,monospace;font-size:12px;margin-top:4px;color:${d.emaC}">${d.emaL}</div></div>
     </div>
 
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px">
