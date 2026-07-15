@@ -5,6 +5,39 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>SignalCore — Crypto Trading Terminal in Telegram</title>
 <meta name="description" content="Live liquidations, squeeze signals, and BTC analysis twice daily — all inside Telegram. SignalCore is a real-time crypto trading terminal.">
+
+<!-- ── Defense-in-depth: discourage the browser from serving a stale
+     cached copy of THIS HTML document. GitHub Pages gives no control
+     over real HTTP Cache-Control headers, so these meta tags are a
+     secondary signal only — the real fix is the daily cache-bust
+     redirect script directly below. ── -->
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+
+<script>
+  // ── Daily cache-bust ──────────────────────────────────────────
+  // GitHub Pages doesn't let us set real Cache-Control headers, so a
+  // browser (or intermediate CDN edge) can keep serving a stale copy
+  // of this exact HTML document for a while after we push an update.
+  // Once per calendar day, redirect to the same page with a fresh
+  // "?_v=YYYY-MM-DD" query string — browsers treat that as a distinct
+  // URL, so it's guaranteed to be fetched fresh from the network
+  // instead of the cache. Runs once on the very first paint, before
+  // any fonts/CSS load, so the redirect is effectively instant.
+  (function () {
+    try {
+      var today = new Date().toISOString().slice(0, 10); // e.g. "2026-07-15"
+      var last = localStorage.getItem('sc_cache_day');
+      var params = new URLSearchParams(location.search);
+      if (last !== today && params.get('_v') !== today) {
+        localStorage.setItem('sc_cache_day', today);
+        params.set('_v', today);
+        location.replace(location.pathname + '?' + params.toString() + location.hash);
+      }
+    } catch (e) { /* localStorage unavailable (e.g. private mode) — skip, non-fatal */ }
+  })();
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700;800&family=Hanken+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
