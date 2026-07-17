@@ -9,30 +9,35 @@
 <!-- ── Defense-in-depth: discourage the browser from serving a stale
      cached copy of THIS HTML document. GitHub Pages gives no control
      over real HTTP Cache-Control headers, so these meta tags are a
-     secondary signal only — the real fix is the daily cache-bust
+     secondary signal only — the real fix is the version-based cache-bust
      redirect script directly below. ── -->
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
 
 <script>
-  // ── Daily cache-bust ──────────────────────────────────────────
+  // ── Version-based cache-bust ─────────────────────────────────
   // GitHub Pages doesn't let us set real Cache-Control headers, so a
-  // browser (or intermediate CDN edge) can keep serving a stale copy
-  // of this exact HTML document for a while after we push an update.
-  // Once per calendar day, redirect to the same page with a fresh
-  // "?_v=YYYY-MM-DD" query string — browsers treat that as a distinct
-  // URL, so it's guaranteed to be fetched fresh from the network
-  // instead of the cache. Runs once on the very first paint, before
-  // any fonts/CSS load, so the redirect is effectively instant.
+  // browser (or intermediate CDN edge) can keep serving a stale copy of
+  // THIS HTML document even after we push an update.
+  //
+  // Bump BUILD_VERSION every time a new build of this file is deployed
+  // (any string that changes works — a timestamp is simplest). On load,
+  // if the visitor's browser last saw a different version, we redirect
+  // to the same page with "?_v=<version>" — browsers treat that as a
+  // distinct URL, guaranteeing a fresh network fetch instead of a cached
+  // one. This fires on every new deploy, not just once per calendar day
+  // (a once-a-day check misses same-day re-deploys, which is exactly
+  // what caused a stale page to be served after we shipped two updates
+  // in one day).
+  var BUILD_VERSION = '2026-07-17-01';
   (function () {
     try {
-      var today = new Date().toISOString().slice(0, 10); // e.g. "2026-07-15"
-      var last = localStorage.getItem('sc_cache_day');
+      var last = localStorage.getItem('sc_build_version');
       var params = new URLSearchParams(location.search);
-      if (last !== today && params.get('_v') !== today) {
-        localStorage.setItem('sc_cache_day', today);
-        params.set('_v', today);
+      if (last !== BUILD_VERSION && params.get('_v') !== BUILD_VERSION) {
+        localStorage.setItem('sc_build_version', BUILD_VERSION);
+        params.set('_v', BUILD_VERSION);
         location.replace(location.pathname + '?' + params.toString() + location.hash);
       }
     } catch (e) { /* localStorage unavailable (e.g. private mode) — skip, non-fatal */ }
