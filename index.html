@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="bg">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -17,20 +17,8 @@
 
 <script>
   // ── Version-based cache-bust ─────────────────────────────────
-  // GitHub Pages doesn't let us set real Cache-Control headers, so a
-  // browser (or intermediate CDN edge) can keep serving a stale copy of
-  // THIS HTML document even after we push an update.
-  //
-  // Bump BUILD_VERSION every time a new build of this file is deployed
-  // (any string that changes works — a timestamp is simplest). On load,
-  // if the visitor's browser last saw a different version, we redirect
-  // to the same page with "?_v=<version>" — browsers treat that as a
-  // distinct URL, guaranteeing a fresh network fetch instead of a cached
-  // one. This fires on every new deploy, not just once per calendar day
-  // (a once-a-day check misses same-day re-deploys, which is exactly
-  // what caused a stale page to be served after we shipped two updates
-  // in one day).
-  var BUILD_VERSION = '2026-07-17-01';
+  // Bump BUILD_VERSION on every deploy.
+  var BUILD_VERSION = '2026-07-18-01';
   (function () {
     try {
       var last = localStorage.getItem('sc_build_version');
@@ -40,7 +28,7 @@
         params.set('_v', BUILD_VERSION);
         location.replace(location.pathname + '?' + params.toString() + location.hash);
       }
-    } catch (e) { /* localStorage unavailable (e.g. private mode) — skip, non-fatal */ }
+    } catch (e) { /* localStorage unavailable — skip, non-fatal */ }
   })();
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -86,7 +74,7 @@
   .scanline-layer{opacity:0;transition:opacity .4s}
   [data-intensity="maximal"] .scanline-layer{opacity:1}
 
-  /* ── Hover utility classes — replace the removed style-hover DC attribute ── */
+  /* ── Hover utility classes ── */
   .hv-a:hover{border-color:var(--border2);color:var(--amber)}
   .hv-b:hover{border-color:var(--border2);color:var(--text)}
   .hv-c:hover{border-color:var(--amber);color:var(--amber)}
@@ -133,15 +121,15 @@
       </div>
     </div>
   </header>
-  <section id="top" style="position:relative;z-index:2;max-width:1200px;margin:0 auto;padding:74px 28px 46px;display:grid;grid-template-columns:1.02fr .98fr;gap:52px;align-items:center">
+  <section id="top" style="position:relative;z-index:2;max-width:1200px;margin:0 auto;padding:74px 28px 46px;display:grid;grid-template-columns:1fr 1.08fr;gap:52px;align-items:start">
     <div>
-      <div id="hero-badge" style="display:inline-flex;align-items:center;gap:9px;padding:7px 13px;border-radius:999px;background:var(--amber-soft);border:1px solid color-mix(in srgb,var(--amber) 32%,transparent);font-family:JetBrains Mono,monospace;font-size:11px;font-weight:700;letter-spacing:.13em;color:var(--amber);white-space:nowrap">
+      <div id="hero-badge" style="display:inline-flex;align-items:center;gap:9px;padding:7px 13px;border-radius:999px;background:var(--amber-soft);border:1px solid color-mix(in srgb,var(--amber) 32%,transparent);font-family:JetBrains Mono,monospace;font-size:11px;font-weight:700;letter-spacing:.13em;color:var(--amber);white-space:nowrap;margin-bottom:22px">
         <span style="width:7px;height:7px;border-radius:50%;background:var(--green);animation:pulse 1.6s ease infinite"></span>
         <span id="hero-badge-text"></span>
       </div>
-      <h1 style="font-family:Sora,sans-serif;font-weight:800;font-size:66px;line-height:1.02;letter-spacing:-.035em;margin:22px 0 0"><span id="hero-h1a"></span> <span style="color:var(--amber)" id="hero-h1b"></span></h1>
-      <p id="hero-desc" style="font-size:17px;line-height:1.62;color:var(--dim);margin:22px 0 0;max-width:480px;white-space:pre-line"></p>
-      <div style="display:flex;gap:13px;margin:30px 0 0;flex-wrap:wrap">
+      <h1 style="font-family:Sora,sans-serif;font-weight:800;font-size:66px;line-height:1.02;letter-spacing:-.035em;margin:0 0 22px"><span id="hero-h1a"></span> <span style="color:var(--amber)" id="hero-h1b"></span></h1>
+      <p id="hero-desc" style="font-size:17px;line-height:1.62;color:var(--dim);margin:0 0 30px;max-width:520px;white-space:pre-line"></p>
+      <div style="display:flex;gap:13px;margin-bottom:44px;flex-wrap:wrap">
         <a href="https://t.me/SignalCore_Free" target="_blank" class="hv-e" style="display:inline-flex;align-items:center;gap:9px;padding:14px 24px;border-radius:11px;font-weight:700;font-size:15.5px;color:var(--amber-ink);background:var(--amber);transition:transform .2s,filter .2s">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M21.9 4.3 2.9 11.6c-1.1.4-1 1 0 1.3l4.9 1.5 1.9 5.9c.2.6.4.9 1 .9.4 0 .6-.2.9-.5l2.5-2.4 4.9 3.6c.9.5 1.5.2 1.7-.8l3.1-14.6c.3-1.3-.5-1.9-1.8-1.7z"></path></svg>
           <span id="hero-btn1-text"></span>
@@ -150,7 +138,7 @@
           <img src="https://api.qrserver.com/v1/create-qr-code/?size=160x160&margin=6&data=https%3A%2F%2Ft.me%2FSignalCore_Free" alt="QR" style="width:100%;height:100%;object-fit:cover;border-radius:4px">
         </a>
       </div>
-      <div style="display:flex;gap:40px;margin:44px 0 0;flex-wrap:wrap">
+      <div style="display:flex;gap:40px;flex-wrap:wrap">
         <div>
           <div style="font-family:Sora,sans-serif;font-weight:800;font-size:34px;line-height:1"><span data-count="53">53</span></div>
           <div id="stat1-label" style="font-family:JetBrains Mono,monospace;font-size:12px;color:var(--mute);margin-top:6px"></div>
@@ -169,54 +157,84 @@
     <div id="hero-card"></div>
   </section>
 
-  <div style="position:relative;z-index:2;border-top:1px solid var(--border);border-bottom:1px solid var(--border);background:var(--card);overflow:hidden;white-space:nowrap">
-    <div style="display: inline-flex; gap: 34px; padding: 11px 0; font-family: JetBrains Mono,monospace; font-size: 13px; font-weight: 500; animation: ticker 40s linear infinite; color: #ECF4F2; position: absolute; top: 0px">
-      <span style="color:var(--dim)">TIA $0.3986 <b style="color:var(--green)">▲ +2.71%</b></span>
-      <span style="color:var(--dim)">SEI $0.0480 <b style="color:var(--green)">▲ +2.41%</b></span>
-      <span style="color:var(--dim)">RUNE $0.3885 <b style="color:var(--green)">▲ +1.86%</b></span>
-      <span style="color:var(--dim)">BTC $62,639 <b style="color:var(--green)">▲ +0.12%</b></span>
-      <span style="color:var(--dim)">ETH $1,750 <b style="color:var(--red)">▼ -0.03%</b></span>
-      <span style="color:var(--dim)">SOL $78.3 <b style="color:var(--green)">▲ +0.01%</b></span>
-      <span style="color:var(--dim)">BNB $573.7 <b style="color:var(--green)">▲ +1.16%</b></span>
-      <span style="color:var(--dim)">XRP $1.1 <b style="color:var(--green)">▲ +0.95%</b></span>
-      <span style="color:var(--dim)">DOGE $0.0728 <b style="color:var(--green)">▲ +0.52%</b></span>
-      <span style="color:var(--dim)">ADA $0.1688 <b style="color:var(--red)">▼ -0.35%</b></span>
-      <span style="color:var(--dim)">AVAX $6.61 <b style="color:var(--green)">▲ +3.28%</b></span>
-      <span style="color:var(--dim)">LINK $7.73 <b style="color:var(--green)">▲ +0.60%</b></span>
-      <span style="color:var(--dim)">DOT $0.8370 <b style="color:var(--green)">▲ +0.40%</b></span>
-      <span style="color:var(--dim)">LTC $44.19 <b style="color:var(--green)">▲ +0.30%</b></span>
-      <span style="color:var(--dim)">TIA $0.3986 <b style="color:var(--green)">▲ +2.71%</b></span>
-      <span style="color:var(--dim)">SEI $0.0480 <b style="color:var(--green)">▲ +2.41%</b></span>
-      <span style="color:var(--dim)">RUNE $0.3885 <b style="color:var(--green)">▲ +1.86%</b></span>
-      <span style="color:var(--dim)">BTC $62,639 <b style="color:var(--green)">▲ +0.12%</b></span>
-      <span style="color:var(--dim)">ETH $1,750 <b style="color:var(--red)">▼ -0.03%</b></span>
-      <span style="color:var(--dim)">SOL $78.3 <b style="color:var(--green)">▲ +0.01%</b></span>
-      <span style="color:var(--dim)">BNB $573.7 <b style="color:var(--green)">▲ +1.16%</b></span>
-      <span style="color:var(--dim)">XRP $1.1 <b style="color:var(--green)">▲ +0.95%</b></span>
-      <span style="color:var(--dim)">DOGE $0.0728 <b style="color:var(--green)">▲ +0.52%</b></span>
-      <span style="color:var(--dim)">ADA $0.1688 <b style="color:var(--red)">▼ -0.35%</b></span>
-      <span style="color:var(--dim)">AVAX $6.61 <b style="color:var(--green)">▲ +3.28%</b></span>
-      <span style="color:var(--dim)">LINK $7.73 <b style="color:var(--green)">▲ +0.60%</b></span>
-      <span style="color:var(--dim)">DOT $0.8370 <b style="color:var(--green)">▲ +0.40%</b></span>
-      <span style="color:var(--dim)">LTC $44.19 <b style="color:var(--green)">▲ +0.30%</b></span>
-    </div>
-  </div>
-  <section id="analysis" style="position:relative;z-index:2;max-width:1200px;margin:0 auto;padding:96px 28px 40px">
-    <div data-reveal="">
-      <div id="an-eyebrow" style="font-family:JetBrains Mono,monospace;font-size:12.5px;letter-spacing:.16em;color:var(--amber);font-weight:700"></div>
-      <h2 id="an-title" style="font-family:Sora,sans-serif;font-weight:800;font-size:46px;letter-spacing:-.03em;margin:14px 0 0;line-height:1.05;max-width:560px"></h2>
-      <p id="an-desc" style="font-size:16px;line-height:1.6;color:var(--dim);margin:16px 0 0;max-width:520px"></p>
+  <!-- (removed: duplicate hardcoded ticker strip — the live ticker at the very top is the only one) -->
+
+  <section id="analysis" style="position:relative;z-index:2;max-width:1200px;margin:0 auto;padding:40px 28px;border-top:none">
+
+    <!-- Heading for LOGGED-OUT visitors (gated grid contains its own heading for logged-in) -->
+    <div id="analysis-heading-loggedout" style="display:none">
+      <div id="an-eyebrow-loggedout" style="font-family:JetBrains Mono,monospace;font-size:12.5px;letter-spacing:.16em;color:var(--amber);font-weight:700"></div>
+      <h2 id="an-title-loggedout" style="font-family:Sora,sans-serif;font-weight:800;font-size:46px;letter-spacing:-.03em;margin:14px 0 0;line-height:1.05;max-width:560px"></h2>
+      <p id="an-desc-loggedout" style="font-size:16px;line-height:1.6;color:var(--dim);margin:16px 0 0;max-width:520px"></p>
     </div>
 
+    <div id="analysis-gated" style="display:none">
+      <!-- Row 1: two-column grid, align-items start -->
+      <div style="display:grid;grid-template-columns:1fr 380px;gap:26px;align-items:start;margin-bottom:40px">
+        <div>
+          <div id="an-eyebrow" style="font-family:JetBrains Mono,monospace;font-size:12.5px;letter-spacing:.16em;color:var(--amber);font-weight:700"></div>
+          <h2 id="an-title" style="font-family:Sora,sans-serif;font-weight:800;font-size:46px;letter-spacing:-.03em;margin:14px 0 0;line-height:1.05;max-width:560px"></h2>
+          <p id="an-desc" style="font-size:16px;line-height:1.6;color:var(--dim);margin:16px 0 0;max-width:520px"></p>
+          <div id="analysis-legend" style="margin-top:24px"></div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:16px">
+          <!-- Trending Sectors -->
+          <div data-reveal="" style="border-radius:18px;background:var(--card);border:1px solid var(--border);overflow:hidden;height:fit-content">
+            <div style="padding:16px 20px;border-bottom:1px solid var(--border)">
+              <b style="font-family:Sora,sans-serif;font-size:16px">Trending Sectors</b>
+            </div>
+            <div id="trending-sectors" style="padding:16px 20px;font-family:JetBrains Mono,monospace;font-size:11px">Loading…</div>
+          </div>
+          <!-- Momentum Leaders -->
+          <div data-reveal="" style="border-radius:18px;background:var(--card);border:1px solid var(--border);overflow:hidden">
+            <div style="padding:16px 20px;border-bottom:1px solid var(--border)">
+              <b style="font-family:Sora,sans-serif;font-size:16px">Momentum Leaders</b>
+            </div>
+            <div style="padding:16px 20px;font-family:JetBrains Mono,monospace;font-size:11px">
+              <div style="margin-bottom:12px">
+                <div style="color:var(--green);font-weight:700;font-size:12px;margin-bottom:6px">Gainers</div>
+                <div id="momentum-gainers" style="display:flex;flex-direction:column;gap:4px;color:var(--dim);font-size:10px">Loading…</div>
+              </div>
+              <div style="border-top:1px solid var(--border);padding-top:12px">
+                <div style="color:var(--red);font-weight:700;font-size:12px;margin-bottom:6px">Losers</div>
+                <div id="momentum-losers" style="display:flex;flex-direction:column;gap:4px;color:var(--dim);font-size:10px">Loading…</div>
+              </div>
+              <div style="font-size:9px;color:var(--mute);margin-top:10px;border-top:1px solid var(--border);padding-top:8px">24h · Bybit live</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Row 2: BTC Long/Short Ratio - FULL WIDTH -->
+      <div data-reveal="" style="margin-bottom:40px;border-radius:18px;background:var(--card);border:1px solid var(--border);overflow:hidden">
+        <div style="padding:16px 20px;border-bottom:1px solid var(--border)">
+          <b style="font-family:Sora,sans-serif;font-size:16px">BTC Long/Short Ratio</b>
+          <span style="font-family:JetBrains Mono,monospace;font-size:11px;color:var(--amber);margin-left:8px">1h</span>
+        </div>
+        <div id="btc-ls-ratio" style="padding:16px 20px">
+          <div style="height:28px;background:var(--border);border-radius:6px;margin-bottom:6px"></div>
+          <div style="text-align:center;color:var(--mute);font-family:JetBrains Mono,monospace;font-size:10px">Loading…</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TEASER ROW: Shown when logged out -->
+    <div id="analysis-teaser" style="display:none;margin-top:24px;padding:16px 20px;border-radius:14px;background:var(--surface);border:1px solid var(--border);align-items:center;justify-content:space-between">
+      <div style="display:flex;align-items:center;gap:12px;color:var(--dim);font-size:14px">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"></rect><path d="M7 11V7a3 3 0 0 1 6 0v4M13 11V7a3 3 0 0 1 6 0v4"></path></svg>
+        <span id="teaser-text"></span>
+      </div>
+      <button id="teaser-signup" style="padding:8px 16px;border-radius:8px;background:var(--amber);color:var(--amber-ink);border:none;font-family:Sora,sans-serif;font-weight:700;font-size:13px;cursor:pointer;transition:filter .2s" onclick="signIn()">Sign Up</button>
+    </div>
+
+    <!-- BTC / USDT Analysis Card - ALWAYS VISIBLE, FULL WIDTH -->
     <div data-reveal="" style="margin-top:40px;border-radius:18px;background:var(--card);border:1px solid var(--border);overflow:hidden">
       <div style="display:flex;align-items:center;justify-content:space-between;padding:20px 24px;border-bottom:1px solid var(--border)">
         <b style="font-family:Sora,sans-serif;font-size:20px">BTC / USDT</b>
-        <span style="font-family:JetBrains Mono,monospace;font-size:12px;color:var(--amber);display:flex;align-items:center;gap:6px"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path></svg>Daily 09:00 & 15:00 EET</span>
+        <span style="font-family:JetBrains Mono,monospace;font-size:12px;color:var(--amber);display:flex;align-items:center;gap:6px"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path></svg>Daily 09:00 &amp; 15:00 EET</span>
       </div>
-
       <div id="tf-tabs" style="display:flex;gap:6px;padding:14px 24px 0"></div>
       <div style="height:1px;background:var(--border);margin-top:-1px"></div>
-
       <div id="btc-analysis-body" style="padding:22px 24px"></div>
     </div>
   </section>
@@ -242,23 +260,35 @@
     <div id="tabs-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:44px"></div>
   </section>
 
+
+  <section id="tab-detail" style="display:none;position:relative;z-index:2;max-width:1200px;margin:0 auto;padding:40px 28px 80px">
+    <button onclick="closeTabPage()" id="tab-back-btn" class="hv-b" style="display:inline-flex;align-items:center;gap:8px;padding:10px 18px;border-radius:10px;background:var(--surface);border:1px solid var(--border);color:var(--dim);font-family:Hanken Grotesk,sans-serif;font-weight:600;font-size:14px;cursor:pointer;margin-bottom:30px;transition:.2s"></button>
+    <div id="tab-detail-body"></div>
+  </section>
+
+
+  <section id="info-page" style="display:none;position:relative;z-index:2;max-width:1200px;margin:0 auto;padding:40px 28px 80px">
+    <button onclick="closeInfoPage()" id="info-back-btn" class="hv-b" style="display:inline-flex;align-items:center;gap:8px;padding:10px 18px;border-radius:10px;background:var(--surface);border:1px solid var(--border);color:var(--dim);font-family:Hanken Grotesk,sans-serif;font-weight:600;font-size:14px;cursor:pointer;margin-bottom:30px;transition:.2s"></button>
+    <div id="info-page-body"></div>
+  </section>
+
   <section id="data" style="position:relative;z-index:2;max-width:1200px;margin:0 auto;padding:96px 28px 20px;text-align:center">
     <div data-reveal="" id="data-eyebrow" style="font-family:JetBrains Mono,monospace;font-size:12.5px;letter-spacing:.18em;color:var(--mute);font-weight:700"></div>
     <div data-reveal="" style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:34px">
       <div style="text-align:left;padding:18px 22px;border-radius:14px;background:var(--card);border:1px solid var(--border);min-width:180px"><b style="font-family:Sora,sans-serif;font-size:17px">Bybit</b><div style="font-family:JetBrains Mono,monospace;font-size:11.5px;color:var(--mute);margin-top:5px">prices · funding · liquidations</div></div>
       <div style="text-align:left;padding:18px 22px;border-radius:14px;background:var(--card);border:1px solid var(--border);min-width:180px"><b style="font-family:Sora,sans-serif;font-size:17px">TradingView</b><div style="font-family:JetBrains Mono,monospace;font-size:11.5px;color:var(--mute);margin-top:5px">charts · screenshots</div></div>
       <div style="text-align:left;padding:18px 22px;border-radius:14px;background:var(--card);border:1px solid var(--border);min-width:180px"><b style="font-family:Sora,sans-serif;font-size:17px">FRED</b><div style="font-family:JetBrains Mono,monospace;font-size:11.5px;color:var(--mute);margin-top:5px">macro · CPI · NFP · rates</div></div>
-      <div style="text-align:left;padding:18px 22px;border-radius:14px;background:var(--card);border:1px solid var(--border);min-width:180px"><b style="font-family:Sora,sans-serif;font-size:17px">Alternative.me</b><div style="font-family:JetBrains Mono,monospace;font-size:11.5px;color:var(--mute);margin-top:5px">Fear & Greed index</div></div>
+      <div style="text-align:left;padding:18px 22px;border-radius:14px;background:var(--card);border:1px solid var(--border);min-width:180px"><b style="font-family:Sora,sans-serif;font-size:17px">Alternative.me</b><div style="font-family:JetBrains Mono,monospace;font-size:11.5px;color:var(--mute);margin-top:5px">Fear &amp; Greed index</div></div>
       <div style="text-align:left;padding:18px 22px;border-radius:14px;background:var(--card);border:1px solid var(--border);min-width:180px"><b style="font-family:Sora,sans-serif;font-size:17px">CoinMarketCal</b><div style="font-family:JetBrains Mono,monospace;font-size:11.5px;color:var(--mute);margin-top:5px">crypto events · news</div></div>
     </div>
   </section>
 
-  <section style="position:relative;z-index:2;max-width:900px;margin:60px auto 0;padding:0 28px 90px">
+  <section id="cta-sec" style="position:relative;z-index:2;max-width:900px;margin:60px auto 0;padding:0 28px 90px">
     <div data-reveal="" style="position:relative;overflow:hidden;padding:64px 40px;border-radius:22px;text-align:center;background:var(--card);border:1px solid var(--border)">
       <div style="position:absolute;top:-140px;left:50%;transform:translateX(-50%);width:420px;height:300px;background:radial-gradient(circle,var(--amber-soft),transparent 70%);pointer-events:none"></div>
       <h2 id="cta-title" style="position:relative;font-family:Sora,sans-serif;font-weight:800;font-size:44px;letter-spacing:-.03em;margin:0;line-height:1.05"></h2>
       <p id="cta-desc" style="position:relative;font-size:16.5px;color:var(--dim);margin:16px auto 0;max-width:420px;line-height:1.55"></p>
-      <a href="https://t.me/SignalCore_Free?startapp=signalcore" target="_blank" class="hv-e" style="position:relative;display:inline-flex;align-items:center;gap:10px;margin-top:28px;padding:16px 30px;border-radius:12px;font-weight:700;font-size:16px;color:var(--amber-ink);background:var(--amber);transition:transform .2s,filter .2s">
+      <a href="https://t.me/SignalCore_Free" target="_blank" class="hv-e" style="position:relative;display:inline-flex;align-items:center;gap:10px;margin-top:28px;padding:16px 30px;border-radius:12px;font-weight:700;font-size:16px;color:var(--amber-ink);background:var(--amber);transition:transform .2s,filter .2s">
         <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M21.9 4.3 2.9 11.6c-1.1.4-1 1 0 1.3l4.9 1.5 1.9 5.9c.2.6.4.9 1 .9.4 0 .6-.2.9-.5l2.5-2.4 4.9 3.6c.9.5 1.5.2 1.7-.8l3.1-14.6c.3-1.3-.5-1.9-1.8-1.7z"></path></svg>
         <span id="cta-btn-text"></span>
       </a>
@@ -291,7 +321,7 @@
         </div>
         <div>
           <div id="foot-contact-label" style="font-family:JetBrains Mono,monospace;font-size:11px;letter-spacing:.1em;color:var(--mute)"></div>
-          <div style="display:flex;flex-direction:column;gap:10px;margin-top:14px;font-size:14px;font-weight:500"><a href="https://t.me/SignalCore_Free" target="_blank" style="color:var(--dim)">Telegram</a><a href="/cdn-cgi/l/email-protection#abc3c2ebd8c2ccc5cac7c8c4d9ce85dfd9cacfc2c5cc" style="color:var(--dim)"><span class="__cf_email__" data-cfemail="fd9594bd8e949a939c919e928f98d3898f9c9994939a">[email&#160;protected]</span></a></div>
+          <div style="display:flex;flex-direction:column;gap:10px;margin-top:14px;font-size:14px;font-weight:500"><a href="https://t.me/SignalCore_Free" target="_blank" style="color:var(--dim)">Telegram</a><a href="mailto:hi@signalcore.trading" style="color:var(--dim)">hi@signalcore.trading</a></div>
         </div>
       </div>
 
@@ -303,52 +333,25 @@
   </footer>
 
 </div>
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script>
 // ══════════════════════════════════════════════
 //  SIGNALCORE — standalone vanilla JS (no framework)
 // ══════════════════════════════════════════════
 
 const TG_URL = 'https://t.me/SignalCore_Free';
-const MINI_APP_URL = 'https://t.me/SignalCore_Free?startapp=signalcore';
-const BYBIT_TICKERS_URL = 'https://api.bybit.com/v5/market/tickers?category=spot';
-const COINGECKO_URL = 'https://api.coingecko.com/api/v3/global';
 const QR_URL = 'https://api.qrserver.com/v1/create-qr-code/?size=160x160&margin=6&data=' + encodeURIComponent(TG_URL);
-const ACCENT_THEME = 'amber';   // was an editor-configurable DC prop; baked in as its default for the standalone build
+const ACCENT_THEME = 'amber';
 const INTENSITY    = 'standard';
 const TONE         = 'calm';
 
-const FALLBACK_MARKET = [
-  { id: 'bitcoin', symbol: 'btc', image: 'https://coin-images.coingecko.com/coins/images/1/large/bitcoin.png', current_price: 62639, market_cap: 1240000000000, total_volume: 28000000000, price_change_percentage_1h_in_currency: -0.09, price_change_percentage_24h_in_currency: -1.54 },
-  { id: 'ethereum', symbol: 'eth', image: 'https://coin-images.coingecko.com/coins/images/279/large/ethereum.png', current_price: 1777, market_cap: 214000000000, total_volume: 24320000000, price_change_percentage_1h_in_currency: -0.42, price_change_percentage_24h_in_currency: -0.89 },
-  { id: 'binancecoin', symbol: 'bnb', image: 'https://coin-images.coingecko.com/coins/images/825/large/bnb-icon2_2x.png', current_price: 567.49, market_cap: 82000000000, total_volume: 1400000000, price_change_percentage_1h_in_currency: -0.22, price_change_percentage_24h_in_currency: -0.58 },
-  { id: 'ripple', symbol: 'xrp', image: 'https://coin-images.coingecko.com/coins/images/44/large/xrp-symbol-white-128.png', current_price: 1.08, market_cap: 61000000000, total_volume: 2100000000, price_change_percentage_1h_in_currency: -0.12, price_change_percentage_24h_in_currency: -1.27 },
-  { id: 'solana', symbol: 'sol', image: 'https://coin-images.coingecko.com/coins/images/4128/large/solana.png', current_price: 76.33, market_cap: 39000000000, total_volume: 5000000000, price_change_percentage_1h_in_currency: 0.04, price_change_percentage_24h_in_currency: 0.41 },
-  { id: 'hyperliquid', symbol: 'hype', image: 'https://coin-images.coingecko.com/coins/images/50882/large/hyperliquid.jpg', current_price: 65.51, market_cap: 21000000000, total_volume: 900000000, price_change_percentage_1h_in_currency: 0.08, price_change_percentage_24h_in_currency: -1.97 },
-  { id: 'dogecoin', symbol: 'doge', image: 'https://coin-images.coingecko.com/coins/images/5/large/dogecoin.png', current_price: 0.0721, market_cap: 10600000000, total_volume: 700000000, price_change_percentage_1h_in_currency: -0.22, price_change_percentage_24h_in_currency: -0.88 },
-  { id: 'zcash', symbol: 'zec', image: 'https://coin-images.coingecko.com/coins/images/486/large/circle-zcash-color.png', current_price: 516.6, market_cap: 8100000000, total_volume: 2050000000, price_change_percentage_1h_in_currency: 0.01, price_change_percentage_24h_in_currency: 1.08 }
-];
-
-const TICKER_COINS = [
-  { id: 'celestia', symbol: 'TIA', price: '$0.3986', change: '+2.71%', up: true },
-  { id: 'sei-network', symbol: 'SEI', price: '$0.0480', change: '+2.41%', up: true },
-  { id: 'thorchain', symbol: 'RUNE', price: '$0.3885', change: '+1.86%', up: true },
-  { id: 'bitcoin', symbol: 'BTC', price: '$62,639', change: '+0.12%', up: true },
-  { id: 'ethereum', symbol: 'ETH', price: '$1,750', change: '-0.03%', up: false },
-  { id: 'solana', symbol: 'SOL', price: '$78.3', change: '+0.01%', up: true },
-  { id: 'binancecoin', symbol: 'BNB', price: '$573.7', change: '+1.16%', up: true },
-  { id: 'ripple', symbol: 'XRP', price: '$1.1', change: '+0.95%', up: true },
-  { id: 'dogecoin', symbol: 'DOGE', price: '$0.0728', change: '+0.52%', up: true },
-  { id: 'cardano', symbol: 'ADA', price: '$0.1688', change: '-0.35%', up: false },
-  { id: 'avalanche-2', symbol: 'AVAX', price: '$6.61', change: '+3.28%', up: true },
-  { id: 'chainlink', symbol: 'LINK', price: '$7.73', change: '+0.60%', up: true },
-  { id: 'polkadot', symbol: 'DOT', price: '$0.8370', change: '+0.40%', up: true },
-  { id: 'litecoin', symbol: 'LTC', price: '$44.19', change: '+0.30%', up: true }
-];
+/* Ticker: CoinGecko ids only — prices/changes come from the live API, never hardcoded */
+const TICKER_IDS = ['bitcoin','ethereum','solana','ripple','binancecoin','dogecoin','cardano','avalanche-2','chainlink','polkadot','litecoin','celestia','sei-network','hyperliquid'];
 
 const en = {
   navFeatures: 'Features', navAlerts: 'Alerts', navAnalysis: 'Analysis', navData: 'Data', launch: 'Launch on Telegram',
   openApp: 'Open Mini App', signIn: 'Sign In', signUp: 'Sign Up', signOut: 'Sign Out', qrHint: 'Scan to join on Telegram',
-  glTitle: 'Gainers & Losers', glSource: 'source: coingecko.com',
+  glTitle: 'Gainers & Losers', glSource: 'source: coingecko.com', glLoading: 'Loading market data…',
+  tickerConnecting: '· connecting to market data ·',
   heroBadge: 'LIVE · REFRESHED EVERY 2 MINUTES',
   h1a: "You don't follow the market.", h1b: 'You predict it.',
   heroDesc: 'While others guess — you already know.\nLive liquidations. Squeeze signals. BTC analysis twice daily.\nOnly data. Only facts. No noise.',
@@ -368,10 +371,87 @@ const en = {
   a1t: 'Liquidations', a1d: 'An instant signal on large liquidations — see where the market is flushing positions in real time.',
   a2t: 'Funding Rate', a2d: 'An alert on extreme funding levels — an early sign of crowded long or short positioning.',
   a3t: 'Long/Short Ratio', a3d: 'Tracks the balance of buyers vs sellers and warns you on a sharp imbalance.',
-  a4t: 'Fear & Greed', a4d: 'A notification when market sentiment shifts — from extreme fear to extreme greed.',
+  a4t: 'Divergence Scanner', a4d: 'Detects tensions in the data across all 53 coins — price moving against open interest, funding fighting the trend, crowded sides ripe for a squeeze.',
   a5t: 'BTC Snapshots', a5d: 'Periodic BTC snapshots with real TradingView screenshot charts, straight into the chat.',
   anEyebrow: 'AUTOMATED AI ANALYSIS · 09:00 & 15:00', anTitle: 'BTC analysis across 4 timeframes, twice a day',
-  anDesc: 'AI reads the live TradingView charts and returns a structured technical breakdown — indicators, key levels and a ready trade setup.',
+  anDesc: 'Twice a day, at 09:00 and 15:00, AI opens the live TradingView charts and reads them like a trader would — RSI, Stochastic, MACD and EMA-200 across 15M, 1H, 4H and Daily. It maps the exact support and resistance zones, weighs the timeframes against each other, and delivers a single verdict: the current bias and the levels that matter right now.',
+  howToReadLabel: 'HOW TO READ IT',
+  rsiLabel: 'RSI', rsiDesc: 'Momentum 0-100. Above 70 overbought, below 30 oversold.',
+  stochLabel: 'STOCH', stochDesc: 'Where price sits in its recent range. Extremes signal reversals.',
+  macdLabel: 'MACD', macdDesc: 'Trend strength. Positive histogram = bulls in control.',
+  emaLabel: 'EMA 200', emaDesc: 'The long-term line. Price above it = uptrend territory.',
+  nextAnalysisLabel: 'Next analysis:', todayWord: 'today', tomorrowWord: 'tomorrow',
+  gatedTeaser: 'Live sectors, momentum & positioning — for members',
+  navInfo: 'Info', infoEyebrow: 'INFO \u00b7 THE FULL GUIDE', infoTitle: 'Everything about SignalCore \u2014 A to Z',
+  infoSub: 'The ecosystem has three parts working together: the Telegram group (the alerts), the Mini App (the terminal) and this website (the live analytics). Here is what each one does and how to get started.',
+  stepsLabel: 'HOW TO GET STARTED',
+  step1t: 'Join the Telegram group', step1d: 'Tap the button or scan the QR code \u2014 the group is the entry point to everything.',
+  step2t: 'Open the Mini App', step2d: 'Inside the group tap \u201cOpen Mini App\u201d \u2014 the 7-tab terminal opens right inside Telegram.',
+  step3t: 'Register on the website', step3d: 'With email and password. Registration unlocks access to the SignalCore Pro button in the Telegram group.',
+  wTgTitle: 'The Telegram group', wTgText: 'This is where the marketMonitor bot delivers: Liquidations, Funding Rate, Long/Short Ratio, Fear & Greed and BTC Snapshots with real TradingView charts \u2014 plus the full AI analysis of BTC every day at 09:00 and 15:00.',
+  wAppTitle: 'The Mini App \u2014 7 tabs', wAppText: 'The full trading terminal inside Telegram. Click a tab to open its full page with a real screen and an explanation of how to read it.',
+  wSiteTitle: 'The website', wSiteText: 'The live widgets (Fear & Greed, Market Cap, price distribution), the analysis section with sectors, momentum and the BTC/USDT levels, and the Divergence Scanner \u2014 unique to the site. Full access is for registered members.',
+  proTitle: 'SignalCore Pro', proText: 'Pro is the paid tier with full functionality. Right now it is activated with a free registration on the website (email + password) \u2014 after registering you get access to the Pro button in the Telegram group.',
+  shareLabel: 'SHARE SIGNALCORE', shareSite: 'the website \u00b7 signalcore.trading', shareGroup: 'the group \u00b7 t.me/SignalCore_Free',
+  anatLabel: 'ANATOMY OF AN ALERT POST',
+  anatIntro: 'Every post in the group follows the same format — learn it once and you read any alert in seconds:',
+  anat1: 'The chart — a real TradingView screen (1H) of the coin at the moment of the signal: green zones are supports, red are resistances, the lines are moving averages (EMA). You see the context, not just a number.',
+  anat2: 'The headline — ⚠️ + the event type + the coin (e.g. EXTREME LONGS — XRP). This is why the bot posted: a threshold was crossed.',
+  anat3: 'The numbers — the exact values behind the signal (e.g. Longs 79.7% / Shorts 20.3%). No “roughly” — the data comes straight from the exchange.',
+  anat4: 'The interpretation — 💡 what the state means (Market is overly bullish) and ⚡ what the risk is (Potential long squeeze / dump). The conclusion is served, you don’t compute it.',
+  anat5: 'The hashtags — #LongShort #XRP. Tap a hashtag in Telegram to see every past alert of the same type or for the same coin.',
+  anat6: 'The buttons — every post carries one-tap shortcuts to verify the data (see below).',
+  btnLabel: 'WHERE THE BUTTONS UNDER EVERY POST LEAD',
+  btn1: 'L/S Ratio — opens the live Long/Short ratios on Coinglass: check whether the imbalance from the alert still holds.',
+  btn2: '{COIN} Coinglass — the coin’s full Coinglass page: Open Interest, funding and liquidations in one place.',
+  btn3: 'Liquidation Heatmap — the liquidation heatmap: where traders’ stops are stacked, i.e. where price “gravitates”.',
+  btn4: 'Liquidation Levels — the exact price levels with the largest accumulated liquidations for that coin.',
+  btn5: 'SignalCore Pro — the Pro panel with the full functionality. Activated after registering on the website (email + password).',
+  typesLabel: 'THE FIVE ALERT TYPES — WHEN THEY FIRE AND WHY THEY MATTER',
+  tge1: 'Liquidations — fires on a large cascade of force-closed positions. Why it matters: a sharp flush often marks a local bottom/top, because the weak hands are already out.',
+  tge2: 'Funding Rate — fires on extreme funding. Why it matters: one side is paying dearly to hold — crowding the market loves to punish.',
+  tge3: 'Long/Short Ratio — fires on a sharp imbalance (like the example: 79.7% long). Why it matters: fuel for a squeeze — the same logic as the site’s Divergence Scanner.',
+  tge4: 'Fear & Greed — fires when the sentiment regime shifts. Why it matters: extreme fear is historically an accumulation zone, extreme greed — a distribution zone.',
+  tge5: 'BTC Snapshots — periodic BTC chart snapshots with levels. Why it matters: market context without opening TradingView.',
+  tgAnalysisT: 'THE AI ANALYSIS AT 09:00 & 15:00',
+  tgAnalysisD: 'Twice a day the full BTC technical breakdown arrives: RSI, Stochastic, MACD and EMA-200 across 4 timeframes, the exact support/resistance zones and an overall bias. These are the same levels you see on the site in the BTC/USDT card — the two always match, because they come from the same analysis.',
+  tgWatchT: 'WHAT TO ACTUALLY WATCH',
+  tgWatchD: 'You don’t need to react to every alert. The workflow that works: the alert puts you on watch → open the buttons under the post to verify the data → wait for confirmation from price itself (a level from the analysis, a breakout) → only then think about an entry. An alert without confirmation = observation, not a trade.',
+  m1: 'Dashboard: at the top is the live Fear & Greed index (alternative.me). Below it — the Market Sentiment Score 0-100: an average of four components (Funding, L/S Ratio, OI Change, F&G), each normalized 0-100; below 50 = bearish tilt, and the Dump Bias label lights up on a dangerous L/S imbalance. The Squeeze Meter shows whether there is an active squeeze risk right now. Market Overview lists all 53 coins: price, 24h %, FR (funding), L/S and OI — the colored strip on the left is the direction of the day.',
+  m2: 'Squeeze: the heart of the app. The Top 3 cards are the highest-risk coins right now — for each you see Long Squeeze (Dump Risk) and Short Squeeze (Pump Risk) in percent, plus a plain-language line (“81% of traders are LONG. A sharp DROP is likely.”). Below — every coin with bars. Refreshes every 30 seconds.',
+  m3: 'Charts: pick a coin from the buttons at the top and you get a full TradingView chart (candles, volume, zoom). Under it — a Long/Short grid of the major coins: the number is the ratio (2.41 = 2.41 longs per 1 short), the bar is the visual balance.',
+  m4: 'Signals: this is where the strategy’s concrete trades will arrive — Entry, Take Profit, Stop Loss, direction and status. Launches together with the public release of the strategy (hence SOON).',
+  m5: 'History: the full archive of signals with outcomes — WINS, LOSSES and WINRATE at the top. Nothing gets deleted: both wins and losses stay visible. Launches together with Signals.',
+  m6: 'Calendar: every macro event is a card: a colored dot for importance (red = High Impact), name, date and time in UTC, a FRED API badge (data from the Fed’s official source), ACTUAL vs PREVIOUS value, a TREND row with the direction of recent prints and a countdown in days/hours/minutes.',
+  m7: 'News: crypto events from CoinMarketCal — upgrades, listings, token unlocks, ordered by date. Sources are community-verified. (The section is temporarily being fixed — hence SOON.)',
+  sSite1: 'The live widgets on top: the Fear & Greed gauge, total Market Cap (CoinGecko) and the Price Trend Distribution — how many Bybit coins are up/down today.',
+  sSite2: 'The analysis section: Trending Sectors (which sector leads the rotation), Momentum Leaders (top 5 gainers/losers of the 53), the BTC Long/Short band and the BTC/USDT card with the levels from the AI analysis.',
+  sSite3: 'The Divergence Scanner — site-only: it detects contradictions in the data (price vs OI, funding vs trend, crowded sides) across all 53 coins and ranks them by severity.',
+  sSite4: 'The alerts panel: the live tables behind every alert type — top 10 OI changes, funding for every coin, L/S for every coin. Full access after signing in.',
+  viewTabBtn: 'See the full page with the real screen →',
+  backLabel: '\u2190 Back to overview', tabWhatLabel: 'WHAT IT SHOWS', tabHowLabel: 'HOW TO READ IT', tabSrcLabel: 'DATA SOURCE', tabOpenCta: 'Open it in Telegram',
+  d1w: 'The pulse of the entire market on one screen: the live Fear & Greed index, our Market Sentiment Score (0-100, combining Funding, L/S Ratio, OI Change and F&G), the Squeeze Meter with current risks, and a Market Overview of all 53 coins \u2014 price, 24h change, funding, Long/Short and Open Interest for each.',
+  d1h: 'Sentiment Score below 40 = fear dominates, above 60 = greed. A red strip on a coin card = negative day, green = positive. The Dump Bias label warns when the L/S ratio is dangerously one-sided.',
+  d1s: 'Bybit API (prices, funding, L/S, OI) \u00b7 Alternative.me (F&G) \u00b7 refreshed every 2 minutes.',
+  d2w: 'SignalCore\u2019s proprietary Squeeze Score: two scales per coin \u2014 Long Squeeze (Dump Risk) and Short Squeeze (Pump Risk), plus the Top 3 highest-risk coins right now with the percentage of traders positioned long.',
+  d2h: 'High Dump Risk = crowded longs, a sharp drop is likely on a break down. High Pump Risk = the opposite. The Top 3 cards are the coins that deserve your attention right now.',
+  d2s: 'Computed live from Bybit positioning data \u00b7 refreshed every 30 seconds.',
+  d3w: 'Full TradingView charts for every monitored coin, right inside Telegram \u2014 candles, volume, timeframes. Below: the Long/Short Ratio of the major coins with visual bars.',
+  d3h: 'Switch coins with one tap at the top. The L/S bars below show where the crowd is \u2014 above ~70% on one side calls for extra caution.',
+  d3s: 'TradingView embed \u00b7 Bybit L/S data.',
+  d4w: 'Concrete trading signals with exact levels: Entry, Take Profit and Stop Loss \u2014 generated by the SignalCore strategy.',
+  d4h: 'Every signal also arrives as a Telegram alert. This section launches together with the public release of the strategy.',
+  d4s: 'TradingView integration \u00b7 coming soon.',
+  d5w: 'A full archive of every past signal with its outcome \u2014 win or loss, nothing deleted, nothing polished.',
+  d5h: 'Transparency is part of the product: WINS / LOSSES / WINRATE statistics above the list.',
+  d5s: 'Launches together with Signals.',
+  d6w: 'The economic calendar that moves crypto: CPI, NFP, GDP and Fed rate decisions \u2014 with real values (Actual vs Previous), trend and a countdown to every event.',
+  d6h: 'A red dot = High Impact \u2014 the market almost always reacts. The Trend row shows the direction of the data across recent prints.',
+  d6s: 'FRED API (the Fed\u2019s official data) \u00b7 live.',
+  d7w: 'Crypto events from CoinMarketCal: upgrades, listings, token unlocks \u2014 the things that move individual coins.',
+  d7h: 'Events are ordered by date; sources are verified by the CoinMarketCal community.',
+  d7s: 'CoinMarketCal API.',
+  soonBadge: 'SOON', tabsHint: 'real screens from the Mini App \u00b7 tap a tab',
   dataEyebrow: 'POWERED EXCLUSIVELY BY REAL API SOURCES',
   ctaTitle: 'Ready to trade with an edge?', ctaDesc: 'Join SignalCore straight inside Telegram. No installs, no complex setup.', ctaBtn: 'Launch SignalCore Bot',
   riskTitle: 'RISK WARNING', riskBody: 'Crypto trading carries a high level of risk and may result in the loss of your entire invested capital. SignalCore provides informational tools and analysis — this is NOT financial advice, an investment recommendation or a guarantee of results. Every trading decision is entirely your own responsibility.',
@@ -381,7 +461,8 @@ const en = {
 const bg = {
   navFeatures: 'Функции', navAlerts: 'Известия', navAnalysis: 'Анализ', navData: 'Данни', launch: 'Стартирай в Telegram',
   openApp: 'Отвори Мини Приложението', signIn: 'Вход', signUp: 'Регистрация', signOut: 'Изход', qrHint: 'Сканирай, за да се присъединиш в Telegram',
-  glTitle: 'Печеливши и губещи', glSource: 'източник: coingecko.com',
+  glTitle: 'Печеливши и губещи', glSource: 'източник: coingecko.com', glLoading: 'Зареждане на пазарните данни…',
+  tickerConnecting: '· свързване с пазарните данни ·',
   heroBadge: 'НА ЖИВО · ОБНОВЯВА СЕ НА ВСЕКИ 2 МИНУТИ',
   h1a: 'Не следваш пазара.', h1b: 'Предвиждаш го.',
   heroDesc: 'Докато другите гадаят — ти вече знаеш.\nЖиви ликвидации. Squeeze сигнали. BTC анализ два пъти дневно.\nСамо данни. Само факти. Без шум.',
@@ -401,10 +482,98 @@ const bg = {
   a1t: 'Ликвидации', a1d: 'Мигновен сигнал при големи ликвидации — виж къде пазарът изчиства позиции в реално време.',
   a2t: 'Funding Rate', a2d: 'Известие при екстремни funding нива — ранен знак за струпани long или short позиции.',
   a3t: 'Long/Short Ratio', a3d: 'Следи баланса между купувачи и продавачи и те предупреждава при рязък дисбаланс.',
-  a4t: 'Fear & Greed', a4d: 'Известие при смяна на пазарното настроение — от екстремен страх до екстремна алчност.',
+  a4t: 'Скенер за дивергенции', a4d: 'Засича напрежения в данните на всичките 53 монети — цена срещу Open Interest, funding срещу тренда, претъпкани страни, узрели за squeeze.',
   a5t: 'BTC Снимки', a5d: 'Периодични BTC снимки с реални TradingView графики, директно в чата.',
   anEyebrow: 'АВТОМАТИЧЕН AI АНАЛИЗ · 09:00 & 15:00', anTitle: 'BTC анализ на 4 таймфрейма, два пъти дневно',
-  anDesc: 'AI чете живите TradingView графики и връща структуриран технически анализ — индикатори, ключови нива и готова търговска настройка.',
+  anDesc: 'Два пъти дневно, в 09:00 и 15:00, AI отваря живите TradingView графики и ги чете като трейдър — RSI, Stochastic, MACD и EMA-200 на 15M, 1H, 4H и Daily. Очертава точните зони на подкрепа и съпротива, претегля таймфреймите един срещу друг и дава една ясна присъда: текущият bias и нивата, които имат значение точно сега.',
+  howToReadLabel: 'КАК ДА ГО ЧЕТЕТЕ',
+  rsiLabel: 'RSI', rsiDesc: 'Моментум 0-100. Над 70 — свръхкупено, под 30 — свръхпродадено.',
+  stochLabel: 'STOCH', stochDesc: 'Къде е цената спрямо скорошния диапазон. Крайностите подсказват обрат.',
+  macdLabel: 'MACD', macdDesc: 'Сила на тренда. Положителна хистограма = бичи контрол.',
+  emaLabel: 'EMA 200', emaDesc: 'Дългосрочната линия. Цена над нея = територия на възходящ тренд.',
+  nextAnalysisLabel: 'Следващ анализ:', todayWord: 'днес', tomorrowWord: 'утре',
+  gatedTeaser: 'Живи сектори, моментум и позициониране — за членове',
+  navInfo: 'Инфо',
+  infoEyebrow: 'ИНФО · ПЪЛНОТО РЪКОВОДСТВО',
+  infoTitle: 'Всичко за SignalCore — от А до Я',
+  infoSub: 'Екосистемата има три части, които работят заедно: Telegram групата (известията), Mini App-ът (терминалът) и този сайт (анализите на живо). Ето какво прави всяка и как да започнеш.',
+  stepsLabel: 'КАК ДА ЗАПОЧНЕШ',
+  step1t: 'Влез в Telegram групата',
+  step1d: 'Натисни бутона или сканирай QR кода — групата е входната точка към всичко.',
+  step2t: 'Отвори Mini App-а',
+  step2d: 'От групата натисни „Отвори Мини Приложението" — терминалът със 7-те таба се отваря директно в Telegram.',
+  step3t: 'Регистрирай се на сайта',
+  step3d: 'С имейл и парола. Регистрацията отключва достъпа до SignalCore Pro бутона в Telegram групата.',
+  wTgTitle: 'Telegram групата',
+  wTgText: 'Тук пристигат сигналите на marketMonitor бота: Ликвидации, Funding Rate, Long/Short Ratio, Fear & Greed и BTC Snapshots с реални TradingView графики — плюс пълният AI анализ на BTC всеки ден в 09:00 и 15:00.',
+  wAppTitle: 'Mini App — 7 таба',
+  wAppText: 'Пълноценният търговски терминал в Telegram. Кликни на таб, за да отвориш пълната му страница с реален екран и обяснение как се чете.',
+  wSiteTitle: 'Сайтът',
+  wSiteText: 'Живите widget-и (Fear & Greed, Market Cap, дистрибуция на цените), анализ секцията със сектори, моментум и BTC/USDT нивата, и Скенерът за дивергенции — уникален за сайта. Пълният достъп е за регистрирани членове.',
+  proTitle: 'SignalCore Pro',
+  proText: 'Pro е платеният достъп до пълната функционалност. В момента се активира с безплатна регистрация на сайта (имейл + парола) — след нея получаваш достъп до Pro бутона в Telegram групата.',
+  shareLabel: 'СПОДЕЛИ SIGNALCORE',
+  shareSite: 'сайтът · signalcore.trading',
+  shareGroup: 'групата · t.me/SignalCore_Free',
+  anatLabel: 'АНАТОМИЯ НА ЕДНО ИЗВЕСТИЕ',
+  anatIntro: 'Всеки пост в групата следва един и същ формат — научиш ли го веднъж, четеш всяко известие за секунди:',
+  anat1: 'Графиката — реален TradingView екран (1H) на монетата в момента на сигнала: зелените зони са подкрепи, червените — съпротиви, линиите са плъзгащи средни (EMA). Виждаш контекста, не само число.',
+  anat2: 'Заглавният ред — ⚠️ + типът на събитието + монетата (напр. EXTREME LONGS — XRP). Това е причината ботът да пише: прагът е прекрачен.',
+  anat3: 'Числата — точните стойности зад сигнала (напр. Longs 79.7% / Shorts 20.3%). Никакво „приблизително" — данните идват директно от борсата.',
+  anat4: 'Тълкуването — 💡 какво означава състоянието (Market is overly bullish) и ⚡ какъв е рискът (Potential long squeeze / dump). Изводът е сервиран, не го смяташ ти.',
+  anat5: 'Хаштаговете — #LongShort #XRP. Кликни хаштаг в Telegram и виждаш всички минали известия от същия тип или за същата монета.',
+  anat6: 'Бутоните — под всеки пост има преки пътища за проверка на данните с един клик (виж по-долу).',
+  btnLabel: 'КЪДЕ ВОДЯТ БУТОНИТЕ ПОД ВСЕКИ ПОСТ',
+  btn1: 'L/S Ratio — отваря Long/Short съотношенията на живо в Coinglass: проверяваш дали дисбалансът от сигнала още стои.',
+  btn2: '{COIN} Coinglass — пълната страница на монетата в Coinglass: Open Interest, funding и ликвидации на едно място.',
+  btn3: 'Liquidation Heatmap — топлинната карта на ликвидациите: къде са струпани стоповете на трейдърите, т.е. накъде „гравитира" цената.',
+  btn4: 'Liquidation Levels — конкретните ценови нива с най-много натрупани ликвидации за тази монета.',
+  btn5: 'SignalCore Pro — Pro панелът с пълната функционалност. Активира се след регистрация на сайта (имейл + парола).',
+  typesLabel: 'ПЕТТЕ ТИПА ИЗВЕСТИЯ — КОГА ИДВАТ И ЗАЩО ИМАТ ЗНАЧЕНИЕ',
+  tge1: 'Ликвидации — идва при голяма каскада от принудително затворени позиции. Защо има значение: рязкото изчистване често бележи локално дъно/връх, защото „слабите ръце" вече са вън.',
+  tge2: 'Funding Rate — идва при екстремен funding. Защо има значение: едната страна плаща скъпо, за да държи позиции — претъпкване, което пазарът обича да наказва.',
+  tge3: 'Long/Short Ratio — идва при рязък дисбаланс (както в примера: 79.7% long). Защо има значение: гориво за squeeze — същата логика като Скенера за дивергенции на сайта.',
+  tge4: 'Fear & Greed — идва при смяна на режима на настроението. Защо има значение: екстремният страх исторически е зона на натрупване, екстремната алчност — на раздаване.',
+  tge5: 'BTC Snapshots — периодични снимки на BTC графиката с нива. Защо има значение: контекстът на пазара, без да отваряш TradingView.',
+  tgAnalysisT: 'AI АНАЛИЗЪТ В 09:00 И 15:00',
+  tgAnalysisD: 'Два пъти дневно пристига пълният технически разбор на BTC: RSI, Stochastic, MACD и EMA-200 на 4 таймфрейма, точните зони на подкрепа/съпротива и общ bias. Това са същите нива, които виждаш на сайта в BTC/USDT картата — двете винаги съвпадат, защото идват от един и същ анализ.',
+  tgWatchT: 'КАКВО ДА СЛЕДИШ НА ПРАКТИКА',
+  tgWatchD: 'Не е нужно да реагираш на всяко известие. Работещият подход: известието те поставя в готовност → отваряш бутоните под поста и проверяваш данните → чакаш потвърждение от самата цена (ниво от анализа, пробив) → чак тогава мислиш за вход. Известие без потвърждение = наблюдение, не сделка.',
+  m1: 'Табло: най-горе е живият Fear & Greed индекс (alternative.me). Под него — Market Sentiment Score 0-100: средна от четири компонента (Funding, L/S Ratio, OI Change, F&G), всеки нормиран 0-100; под 50 = мечи уклон, а етикетът Dump Bias светва при опасен L/S дисбаланс. Squeeze Meter показва има ли активен squeeze риск в момента. Market Overview изрежда всичките 53 монети: цена, 24h %, FR (funding), L/S и OI — цветната лента вляво е посоката на деня.',
+  m2: 'Squeeze: сърцето на приложението. Топ 3 картите са най-рисковите монети в момента — за всяка виждаш Long Squeeze (Dump Risk) и Short Squeeze (Pump Risk) в проценти, плюс изречение на прост език („81% of traders are LONG. A sharp DROP is likely."). Отдолу — всички монети с лентички. Обновява се на всеки 30 секунди.',
+  m3: 'Графики: избираш монета от бутоните горе и получаваш пълна TradingView графика (свещи, обем, зуум). Под нея — Long/Short решетка на основните монети: числото е съотношението (2.41 = 2.41 long-а на 1 short), лентата — визуалният баланс.',
+  m4: 'Сигнали: тук ще пристигат конкретните сделки на стратегията — Вход, Take Profit, Stop Loss, посока и статус. Стартира заедно с публичното пускане на стратегията (затова е СКОРО).',
+  m5: 'История: пълният архив на сигналите с резултат — WINS, LOSSES и WINRATE най-отгоре. Нищо не се трие: и печалбите, и загубите остават видими. Стартира заедно със Сигнали.',
+  m6: 'Календар: всяко макро събитие е карта: цветна точка за важност (червено = High Impact), име, дата и час в UTC, бадж FRED API (данните са от официалния източник на Fed), ACTUAL срещу PREVIOUS стойност, ред TREND с посоката от последните изчитания и обратно броене в дни/часове/минути.',
+  m7: 'Новини: крипто събития от CoinMarketCal — ъпгрейди, листвания, отключвания на токени, подредени по дата. Източниците се верифицират от общността. (Секцията временно се дооправя — затова носи СКОРО.)',
+  sSite1: 'Живите widget-и горе: Fear & Greed стрелката, общият Market Cap (CoinGecko) и Price Trend Distribution — колко от монетите на Bybit са нагоре/надолу днес.',
+  sSite2: 'Анализ секцията: Trending Sectors (кой сектор води ротацията), Momentum Leaders (топ 5 печеливши/губещи от 53-те), BTC Long/Short лентата и BTC/USDT картата с нивата от AI анализа.',
+  sSite3: 'Скенерът за дивергенции — само на сайта: засича противоречия в данните (цена срещу OI, funding срещу тренда, претъпкани страни) на всичките 53 монети и ги подрежда по острота.',
+  sSite4: 'Панелът с известията: живите таблици зад всеки тип сигнал — топ 10 OI промени, funding на всички монети, L/S на всички монети. Пълният достъп е след вход.',
+  viewTabBtn: 'Виж пълната страница с реалния екран →',
+  backLabel: '\u2190 \u041d\u0430\u0437\u0430\u0434 \u043a\u044a\u043c \u043f\u0440\u0435\u0433\u043b\u0435\u0434\u0430', tabWhatLabel: '\u041a\u0410\u041a\u0412\u041e \u041f\u041e\u041a\u0410\u0417\u0412\u0410', tabHowLabel: '\u041a\u0410\u041a \u0421\u0415 \u0427\u0415\u0422\u0415', tabSrcLabel: '\u0418\u0417\u0422\u041e\u0427\u041d\u0418\u041a \u041d\u0410 \u0414\u0410\u041d\u041d\u0418\u0422\u0415', tabOpenCta: '\u041e\u0442\u0432\u043e\u0440\u0438 \u0433\u043e \u0432 Telegram',
+  d1w: 'Пулсът на целия пазар на един екран: Fear & Greed индексът на живо, нашият Market Sentiment Score (0-100, комбиниращ Funding, L/S Ratio, OI Change и F&G), Squeeze Meter с текущите рискове и Market Overview на всичките 53 монети — цена, 24h промяна, funding, Long/Short и Open Interest за всяка.',
+  d1h: 'Sentiment Score под 40 = страхът доминира, над 60 = алчността. Червена лента върху карта на монета = отрицателен ден, зелена = положителен. Етикетът Dump Bias предупреждава, когато L/S съотношението е опасно натежало в една посока.',
+  d1s: 'Bybit API (цени, funding, L/S, OI) · Alternative.me (F&G) · обновяване на всеки 2 минути.',
+  d2w: 'Собственият Squeeze Score на SignalCore: две скали за всяка монета — Long Squeeze (Dump Risk) и Short Squeeze (Pump Risk), плюс Топ 3 на най-рисковите монети в момента с процента на long трейдърите.',
+  d2h: 'Висок Dump Risk = претъпкани long позиции — рязък спад е вероятен при пробив надолу. Висок Pump Risk = обратното. Топ 3 картите са монетите, които заслужават внимание точно сега.',
+  d2s: 'Изчислява се на живо от позиционните данни на Bybit · обновяване на всеки 30 секунди.',
+  d3w: 'Пълноценни TradingView графики за всяка следена монета, директно в Telegram — свещи, обем, таймфреймове. Отдолу: Long/Short Ratio на основните монети с визуални ленти.',
+  d3h: 'Сменяш монетата с един клик отгоре. L/S лентите показват къде е тълпата — над ~70% в една посока изисква повишено внимание.',
+  d3s: 'TradingView embed · Bybit L/S данни.',
+  d4w: 'Конкретни търговски сигнали с точни нива: Вход, Take Profit и Stop Loss — генерирани от стратегията на SignalCore.',
+  d4h: 'Всеки сигнал пристига и като Telegram известие. Секцията стартира заедно с публичното пускане на стратегията.',
+  d4s: 'TradingView интеграция · очаквайте скоро.',
+  d5w: 'Пълен архив на всички минали сигнали с резултата им — печалба или загуба, без изтриване и без разкрасяване.',
+  d5h: 'Прозрачността е част от продукта: статистика WINS / LOSSES / WINRATE над списъка.',
+  d5s: 'Стартира заедно със Signals.',
+  d6w: 'Икономическият календар, който движи крипто: CPI, NFP, GDP и решенията на Fed — с реални стойности (Actual vs Previous), тренд и обратно броене до всяко събитие.',
+  d6h: 'Червена точка = High Impact — пазарът почти винаги реагира. Редът Trend показва посоката на данните от последните изчитания.',
+  d6s: 'FRED API (официалните данни на Fed) · на живо.',
+  d7w: 'Крипто събития от CoinMarketCal: ъпгрейди, листвания, отключвания на токени — нещата, които движат отделните монети.',
+  d7h: 'Събитията са подредени по дата; източниците се верифицират от общността на CoinMarketCal.',
+  d7s: 'CoinMarketCal API.',
+  soonBadge: 'СКОРО', tabsHint: 'реални екрани от Mini App · кликни на таб',
   dataEyebrow: 'ЗАДВИЖВАНО ИЗЦЯЛО ОТ РЕАЛНИ API ИЗТОЧНИЦИ',
   ctaTitle: 'Готов ли си да търгуваш с предимство?', ctaDesc: 'Присъедини се към SignalCore директно в Telegram. Без инсталации, без сложна настройка.', ctaBtn: 'Стартирай SignalCore Бот',
   riskTitle: 'ПРЕДУПРЕЖДЕНИЕ ЗА РИСК', riskBody: 'Крипто търговията носи високо ниво на риск и може да доведе до загуба на целия ти инвестиран капитал. SignalCore предоставя информационни инструменти и анализ — това НЕ е финансов съвет, инвестиционна препоръка или гаранция за резултати. Всяко търговско решение е изцяло твоя отговорност.',
@@ -421,16 +590,20 @@ function getT() {
 }
 
 // ══════════════════════════════════════════════
-//  STATE
+//  STATE — no mock defaults: null/[] until real data arrives
 // ══════════════════════════════════════════════
 const state = {
-  theme: 'dark', lang: 'en', tf: '15m', alert: 0,
-  logos: {}, loggedIn: false, market: FALLBACK_MARKET, btcAnalysis: null, bybitStats: null
+  theme: 'dark', lang: 'bg', tf: '15m', alert: 0, tabShot: 0, page: 'home', from: 'home',
+  logos: {}, loggedIn: false,
+  market: [],            // gainers & losers (CoinGecko live)
+  tickerData: [],        // top ticker strip (CoinGecko live)
+  btcAnalysis: null,     // btc-analysis.json (Claude Code pipeline)
+  fgScore: null, fgLabel: null,
+  marketCapUsd: null, marketCapChange: null,
+  priceDistribution: null, priceDown: null, priceUp: null,
+  dataJson: null, dataJsonTs: 0
 };
 
-// ══════════════════════════════════════════════
-//  FORMAT HELPERS
-// ══════════════════════════════════════════════
 function fmtPrice(p) { return p >= 1000 ? '$' + p.toLocaleString('en-US', { maximumFractionDigits: 0 }) : '$' + p.toLocaleString('en-US', { maximumFractionDigits: p >= 1 ? 2 : 4 }); }
 function fmtPct(p) { return (p == null ? '—' : (p >= 0 ? '+' : '') + p.toFixed(2) + '%'); }
 const G_ = 'var(--green)', R_ = 'var(--red)', M_ = 'var(--mute)', A_ = 'var(--amber)';
@@ -448,31 +621,6 @@ function biasColor(str) {
   return M_;
 }
 function fmtLevel(v) { return (v || v === 0) ? Number(v).toLocaleString('en-US') : '—'; }
-function fmtUsdShort(n) { if (n >= 1e9) return '$' + (n / 1e9).toFixed(2) + 'B'; if (n >= 1e6) return '$' + (n / 1e6).toFixed(1) + 'M'; return '$' + Math.round(n).toLocaleString('en-US'); }
-
-// Semicircle gauge (0-100) rendered as inline SVG: red→amber→green arc + needle.
-// Score is a real advance/decline ratio computed from live Bybit spot tickers
-// (see fetchBybitStats) — not a fabricated Fear & Greed value.
-function renderSentimentGaugeSvg(score) {
-  const angleDeg = 180 - (score / 100) * 180;
-  const rad = angleDeg * Math.PI / 180;
-  const nx = (100 + 68 * Math.cos(rad)).toFixed(1);
-  const ny = (100 - 68 * Math.sin(rad)).toFixed(1);
-  const label = score < 25 ? 'Extreme Fear' : score < 45 ? 'Fear' : score < 55 ? 'Neutral' : score < 75 ? 'Greed' : 'Extreme Greed';
-  const color = score < 45 ? R_ : score < 55 ? A_ : G_;
-  return `
-    <svg viewBox="0 0 200 108" style="width:100%;max-width:200px;display:block;margin:0 auto">
-      <path d="M20,100 A80,80 0 0 1 60,30.7" stroke="${R_}" stroke-width="14" fill="none" stroke-linecap="round"></path>
-      <path d="M60,30.7 A80,80 0 0 1 140,30.7" stroke="${A_}" stroke-width="14" fill="none" stroke-linecap="round"></path>
-      <path d="M140,30.7 A80,80 0 0 1 180,100" stroke="${G_}" stroke-width="14" fill="none" stroke-linecap="round"></path>
-      <line x1="100" y1="100" x2="${nx}" y2="${ny}" stroke="var(--text)" stroke-width="3" stroke-linecap="round"></line>
-      <circle cx="100" cy="100" r="6" fill="var(--text)"></circle>
-    </svg>
-    <div style="text-align:center;margin-top:-4px">
-      <div style="font-family:Sora,sans-serif;font-weight:800;font-size:26px;color:${color}">${score}</div>
-      <div style="font-family:JetBrains Mono,monospace;font-size:11px;color:${color};text-transform:uppercase;letter-spacing:.05em">${label}</div>
-    </div>`;
-}
 
 function animateCount(el) {
   const target = parseFloat(el.dataset.count), dur = 1100, t0 = performance.now();
@@ -484,16 +632,14 @@ function animateCount(el) {
   requestAnimationFrame(step);
 }
 
-// ══════════════════════════════════════════════
-//  RENDER — header, nav, lang, theme icon, auth
-// ══════════════════════════════════════════════
 function renderNav() {
   const t = getT();
   document.getElementById('nav-links').innerHTML = `
-    <a href="#tabs" style="color:var(--dim)">${t.navFeatures}</a>
-    <a href="#alerts" style="color:var(--dim)">${t.navAlerts}</a>
-    <a href="#analysis" style="color:var(--dim)">${t.navAnalysis}</a>
-    <a href="#data" style="color:var(--dim)">${t.navData}</a>`;
+    <a href="#tabs" onclick="goHomeThen()" style="color:var(--dim)">${t.navFeatures}</a>
+    <a href="#alerts" onclick="goHomeThen()" style="color:var(--dim)">${t.navAlerts}</a>
+    <a href="#analysis" onclick="goHomeThen()" style="color:var(--dim)">${t.navAnalysis}</a>
+    <a href="#data" onclick="goHomeThen()" style="color:var(--dim)">${t.navData}</a>
+    <a href="javascript:void(0)" onclick="openInfoPage()" style="color:var(--amber)">${t.navInfo}</a>`;
 }
 
 function renderLangButtons() {
@@ -519,7 +665,7 @@ function renderAuthActions() {
   const el = document.getElementById('auth-actions');
   if (state.loggedIn) {
     el.innerHTML = `
-      <a href="${MINI_APP_URL}" target="_blank" class="hv-d" style="display:inline-flex;align-items:center;gap:8px;padding:10px 17px;border-radius:9px;font-weight:700;font-size:14px;white-space:nowrap;color:var(--amber-ink);background:var(--amber);transition:transform .2s,filter .2s">
+      <a href="${TG_URL}" target="_blank" class="hv-d" style="display:inline-flex;align-items:center;gap:8px;padding:10px 17px;border-radius:9px;font-weight:700;font-size:14px;white-space:nowrap;color:var(--amber-ink);background:var(--amber);transition:transform .2s,filter .2s">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M21.9 4.3 2.9 11.6c-1.1.4-1 1 0 1.3l4.9 1.5 1.9 5.9c.2.6.4.9 1 .9.4 0 .6-.2.9-.5l2.5-2.4 4.9 3.6c.9.5 1.5.2 1.7-.8l3.1-14.6c.3-1.3-.5-1.9-1.8-1.7z"></path></svg>
         ${t.openApp}
       </a>
@@ -534,17 +680,30 @@ function renderAuthActions() {
   }
 }
 
-// ══════════════════════════════════════════════
-//  RENDER — ticker, hero text, hero card (terminal / gainers-losers)
-// ══════════════════════════════════════════════
+// Ticker: rendered ONLY from live CoinGecko data. No data → honest "connecting" state.
 function renderTicker() {
-  const tickerRow = TICKER_COINS.map((c) => ({
-    symbol: c.symbol, price: c.price, change: c.change,
-    arrow: c.up ? '▲' : '▼', color: c.up ? 'var(--green)' : 'var(--red)',
-    logo: state.logos[c.id] || ''
-  }));
-  const tickerList = tickerRow.concat(tickerRow);
-  document.getElementById('ticker-track').innerHTML = tickerList.map((c) => `
+  const t = getT();
+  const track = document.getElementById('ticker-track');
+  if (!state.tickerData.length) {
+    track.style.animation = 'none';
+    track.innerHTML = `<span style="color:var(--mute);padding-left:16px">${t.tickerConnecting}</span>`;
+    return;
+  }
+  const row = state.tickerData.map((c) => {
+    const pct = c.price_change_percentage_24h;
+    const up = (pct ?? 0) >= 0;
+    return {
+      symbol: (c.symbol || '').toUpperCase(),
+      price: fmtPrice(c.current_price || 0),
+      change: fmtPct(pct),
+      arrow: up ? '▲' : '▼',
+      color: up ? 'var(--green)' : 'var(--red)',
+      logo: c.image || ''
+    };
+  });
+  const list = row.concat(row); /* duplicate for seamless loop */
+  track.style.animation = 'ticker 40s linear infinite';
+  track.innerHTML = list.map((c) => `
     <span style="color:#FFFFFF;display:inline-flex;align-items:center;gap:7px">
       <span style="width:20px;height:20px;border-radius:50%;background-color:var(--surface);background-image:url(${c.logo});background-size:cover;background-position:center;display:inline-block;vertical-align:middle;flex-shrink:0"></span>
       ${c.symbol} ${c.price} <b style="color:${c.color}">${c.arrow} ${c.change}</b>
@@ -564,77 +723,128 @@ function renderHeroText() {
   document.getElementById('stat3-label').textContent = t.stat3;
 }
 
+// ══════════════════════════════════════════════
+//  LOCKED SECTION #1 — market widgets (gauge / market cap / distribution)
+//  Rendering identical when data is present; when data is missing the
+//  widgets show "—" — never a fabricated number.
+// ══════════════════════════════════════════════
 function renderHeroCard() {
   const t = getT();
   const el = document.getElementById('hero-card');
 
   if (state.loggedIn) {
-    const bs = state.bybitStats;
-    const loading = !bs;
-    const sentiment = loading ? 50 : bs.sentiment;
-    const marketCapStr = loading ? '—' : fmtUsdShort(bs.marketCap);
-    const capChange = loading ? 0 : bs.marketCapChange;
-    const capChangeStr = loading ? '—' : (capChange >= 0 ? '+' : '') + capChange.toFixed(2) + '%';
-    const capChangeColor = loading ? M_ : (capChange >= 0 ? G_ : R_);
-    const netColor = loading ? M_ : (bs.up >= bs.down ? G_ : R_);
-    const breakdown = loading ? 'loading…' : `${bs.up} up · ${bs.down} down · ${bs.flat} flat pairs`;
+    const fgScore = state.fgScore;                     // null until live data arrives
+    const fgLabel = state.fgLabel;
+    const marketCap = state.marketCapUsd;              // null until live data arrives
+    const marketCapChange = state.marketCapChange;
 
-    const bkt = loading ? { bigDown: 0, down: 0, flat: 0, up: 0, bigUp: 0 } : bs.buckets;
-    const bars = [
-      ['<-15%', bkt.bigDown], ['-15%~0%', bkt.down], ['0%', bkt.flat], ['0%~15%', bkt.up], ['>15%', bkt.bigUp]
+    const pd = state.priceDistribution;                // null until live data arrives
+    const priceDown = state.priceDown;
+    const priceUp = state.priceUp;
+
+    const getSentimentColor = (score) => {
+      if (score == null) return 'var(--mute)';
+      if (score <= 25) return 'var(--red)';
+      if (score <= 45) return '#FF8080';
+      if (score <= 55) return 'var(--amber)';
+      if (score <= 75) return '#90EE90';
+      return 'var(--green)';
+    };
+    const sentimentColor = getSentimentColor(fgScore);
+
+    const needle = fgScore == null ? '' : `
+              <g transform="translate(60, 60) rotate(${-90 + (fgScore / 100) * 180})">
+                <line x1="0" y1="0" x2="0" y2="-45" stroke="${sentimentColor}" stroke-width="2.5" stroke-linecap="round"></line>
+                <circle cx="0" cy="0" r="3" fill="${sentimentColor}"></circle>
+              </g>`;
+
+    const bucketOrder = ['down15', 'down6to15', 'neutral', 'up6to15', 'up15'];
+    const bucketLabels = ['&lt;-15%', '-15%-0%', '0%', '0%-15%', '&gt;15%'];
+    const bucketGrads = [
+      'linear-gradient(180deg,var(--red) 0%,#8B3A3A 100%)',
+      'linear-gradient(180deg,#FF6B6B 0%,#CC4444 100%)',
+      'linear-gradient(180deg,var(--border2) 0%,rgba(255,255,255,.05) 100%)',
+      'linear-gradient(180deg,#90EE90 0%,#4CAF50 100%)',
+      'linear-gradient(180deg,var(--green) 0%,#1B7A52 100%)'
     ];
-    const maxBar = Math.max(1, ...bars.map(([, v]) => v));
+    const bucketShadows = [
+      '0 12px 24px rgba(240,85,107,.3)', '0 12px 24px rgba(255,107,107,.25)', '0 12px 24px rgba(0,0,0,.4)',
+      '0 12px 24px rgba(76,175,80,.25)', '0 12px 24px rgba(52,200,138,.3)'
+    ];
+    const maxBucket = pd ? Math.max(pd.down15, pd.down6to15, pd.neutral, pd.up6to15, pd.up15, 1) : 1;
+    const bucketsHtml = bucketOrder.map((key, i) => {
+      const val = pd ? pd[key] : null;
+      const shown = val == null ? '—' : val;
+      const h = val == null ? 16 : Math.max((val / maxBucket) * 100, 16);
+      return `
+            <div style="display:flex;flex-direction:column;align-items:center;gap:12px;height:100%">
+              <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:8px;width:100%">
+                <div style="font-family:JetBrains Mono,monospace;font-size:13px;font-weight:800;color:var(--text)">${shown}</div>
+                <div style="font-family:JetBrains Mono,monospace;font-size:10px;color:var(--mute);letter-spacing:.05em">${bucketLabels[i]}</div>
+              </div>
+              <div class="bar-anim" style="--h:${h}px;animation-delay:${i * 0.1}s;width:100%;background:${bucketGrads[i]};border-radius:8px;box-shadow:${bucketShadows[i]};flex-shrink:0"></div>
+            </div>`;
+    }).join('');
 
-    const total = loading ? 1 : Math.max(1, bs.total);
-    const downPct = loading ? 33 : (bs.down / total) * 100;
-    const flatPct = loading ? 34 : (bs.flat / total) * 100;
-    const upPct = loading ? 33 : (bs.up / total) * 100;
+    const stackDown = priceDown == null ? 1 : priceDown;
+    const stackFlat = pd == null ? 1 : pd.neutral;
+    const stackUp = priceUp == null ? 1 : priceUp;
 
     el.innerHTML = `
-      <div style="display:flex;flex-direction:column;gap:12px">
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
-          <div style="border-radius:16px;background:var(--card);border:1px solid var(--border);padding:16px;box-shadow:0 30px 70px -30px rgba(0,0,0,.6)">
-            <div style="font-family:Sora,sans-serif;font-weight:700;font-size:14px;color:var(--dim)">Market Sentiment</div>
-            ${renderSentimentGaugeSvg(sentiment)}
+      <div style="border-radius:14px;background:var(--card);border:1px solid var(--border);overflow:hidden">
+        <!-- TOP: Sentiment + Market Cap (side-by-side) -->
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);overflow:hidden">
+          <!-- LEFT: Market Sentiment -->
+          <div style="background:var(--card);padding:20px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center">
+            <div style="font-family:Sora,sans-serif;font-weight:700;font-size:15px;margin-bottom:14px">Market Sentiment</div>
+            <svg width="120" height="70" viewBox="0 0 120 70" style="margin-bottom:10px">
+              <defs><linearGradient id="gaugeGrad" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" style="stop-color:var(--red);stop-opacity:1"></stop><stop offset="25%" style="stop-color:#FF8080;stop-opacity:1"></stop><stop offset="50%" style="stop-color:var(--amber);stop-opacity:1"></stop><stop offset="75%" style="stop-color:#90EE90;stop-opacity:1"></stop><stop offset="100%" style="stop-color:var(--green);stop-opacity:1"></stop></linearGradient></defs>
+              <path d="M 10 60 A 50 50 0 0 1 110 60" stroke="url(#gaugeGrad)" stroke-width="8" fill="none" stroke-linecap="round"></path>${needle}
+            </svg>
+            <div style="font-family:Sora,sans-serif;font-weight:800;font-size:22px;color:${sentimentColor};line-height:1">${fgScore == null ? '—' : fgScore}</div>
+            <div style="font-family:JetBrains Mono,monospace;font-size:11px;color:${sentimentColor};font-weight:700;margin-top:4px">${fgLabel == null ? '—' : fgLabel}</div>
           </div>
-          <div style="border-radius:16px;background:var(--card);border:1px solid var(--border);padding:16px;box-shadow:0 30px 70px -30px rgba(0,0,0,.6);display:flex;flex-direction:column;justify-content:center">
-            <div style="font-family:Sora,sans-serif;font-weight:700;font-size:14px;color:var(--dim)">Market Cap</div>
-            <div style="font-family:JetBrains Mono,monospace;font-weight:800;font-size:28px;color:var(--text);margin-top:10px">${marketCapStr}</div>
-            <div style="font-family:JetBrains Mono,monospace;font-size:11.5px;color:${capChangeColor};margin-top:8px">${capChangeStr}</div>
-            <div style="font-family:JetBrains Mono,monospace;font-size:10.5px;color:var(--mute);margin-top:10px">24h change · CoinGecko</div>
+          <!-- RIGHT: Market Cap -->
+          <div style="background:var(--card);padding:20px;display:flex;flex-direction:column;justify-content:center;border-left:1px solid var(--border)">
+            <div style="font-family:Sora,sans-serif;font-weight:700;font-size:14px;margin-bottom:12px">Market Cap</div>
+            <div style="font-family:Sora,sans-serif;font-weight:800;font-size:26px;color:var(--text);line-height:1">${marketCap != null && marketCap > 0 ? '$' + marketCap.toFixed(2) + 'B' : '—'}</div>
+            <div style="font-family:JetBrains Mono,monospace;font-size:11px;color:${(marketCapChange ?? 0) >= 0 ? 'var(--green)' : 'var(--red)'};margin-top:6px">${marketCapChange == null ? '—' : (marketCapChange >= 0 ? '+' : '') + marketCapChange.toFixed(2) + '%'}</div>
+            <div style="font-family:JetBrains Mono,monospace;font-size:10px;color:var(--mute);margin-top:2px">24h change · CoinGecko</div>
           </div>
         </div>
-
-        <div style="border-radius:16px;background:var(--card);border:1px solid var(--border);padding:18px;box-shadow:0 30px 70px -30px rgba(0,0,0,.6)">
-          <div style="font-family:Sora,sans-serif;font-weight:700;font-size:15px;margin-bottom:14px">Price Trend Distribution</div>
-          <div style="display:flex;align-items:flex-end;gap:10px;height:90px">
-            ${[
-              { val: bkt.bigDown, color: 'var(--red)', label: '<-15%' },
-              { val: bkt.down, color: 'var(--red)', label: '-15%~0%' },
-              { val: bkt.flat, color: 'var(--mute)', label: '0%' },
-              { val: bkt.up, color: 'var(--green)', label: '0%~15%' },
-              { val: bkt.bigUp, color: 'var(--green)', label: '>15%' }
-            ].map(({ val, color }) => `<div style="flex:1;height:${Math.max(3, (val / maxBar) * 90)}px;background:${color};border-radius:4px 4px 0 0"></div>`).join('')}
+        <!-- BOTTOM: Price Trend Distribution -->
+        <div style="border-top:1px solid var(--border);padding:18px">
+          <div style="font-family:Sora,sans-serif;font-weight:700;font-size:14px;margin-bottom:14px">Price Trend Distribution</div>
+          <style>
+            @keyframes slideUp { from { height: 0; opacity: 0; } to { height: var(--h); opacity: 1; } }
+            .bar-anim { animation: slideUp 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
+          </style>
+          <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin-bottom:18px;align-items:flex-end;height:160px">${bucketsHtml}
           </div>
-          <div style="display:flex;gap:10px;margin-top:6px">
-            ${[
-              '<-15%', '-15%~0%', '0%', '0%~15%', '>15%'
-            ].map((label) => `<div style="flex:1;text-align:center;font-family:JetBrains Mono,monospace;font-size:10px;color:var(--mute)">${label}</div>`).join('')}
+          <!-- Stacked bar -->
+          <div style="display:flex;gap:0;height:10px;border-radius:4px;overflow:hidden;background:var(--border);margin-bottom:12px">
+            <div style="flex:${stackDown};background:linear-gradient(90deg,var(--red),#FF6B6B)"></div>
+            <div style="flex:${stackFlat};background:var(--border2)"></div>
+            <div style="flex:${stackUp};background:linear-gradient(90deg,#90EE90,var(--green))"></div>
           </div>
-          <div style="display:flex;height:8px;border-radius:4px;overflow:hidden;margin-top:16px">
-            <div style="width:${downPct}%;background:${R_}"></div>
-            <div style="width:${flatPct}%;background:var(--mute)"></div>
-            <div style="width:${upPct}%;background:${G_}"></div>
+          <!-- Summary -->
+          <div style="display:flex;justify-content:space-between;font-family:JetBrains Mono,monospace;font-size:11px">
+            <div><b style="color:var(--red)">${priceDown == null ? '—' : priceDown}</b><div style="color:var(--mute);margin-top:2px">Down</div></div>
+            <div style="text-align:center"><b style="color:var(--mute)">${pd == null ? '—' : pd.neutral}</b><div style="color:var(--mute);margin-top:2px">No Change</div></div>
+            <div style="text-align:right"><b style="color:var(--green)">${priceUp == null ? '—' : priceUp}</b><div style="color:var(--mute);margin-top:2px">Up</div></div>
           </div>
-          <div style="display:flex;justify-content:space-between;margin-top:10px;font-family:JetBrains Mono,monospace;font-size:12px">
-            <span style="color:${R_}">${loading ? '—' : bs.down}<div style="color:var(--mute);font-size:10px;margin-top:2px">Down</div></span>
-            <span style="color:var(--mute);text-align:center">${loading ? '—' : bs.flat}<div style="color:var(--mute);font-size:10px;margin-top:2px">No Change</div></span>
-            <span style="color:${G_};text-align:right">${loading ? '—' : bs.up}<div style="color:var(--mute);font-size:10px;margin-top:2px">Up</div></span>
-          </div>
-          <div style="font-family:JetBrains Mono,monospace;font-size:10.5px;color:var(--mute);margin-top:14px">source: Bybit spot tickers · live</div>
+          <div style="font-family:JetBrains Mono,monospace;font-size:10px;color:var(--mute);margin-top:8px">source: Bybit spot tickers · live</div>
         </div>
       </div>`;
   } else {
+    if (!state.market.length) {
+      el.innerHTML = `
+        <div style="border-radius:16px;background:var(--card);border:1px solid var(--border);box-shadow:0 30px 70px -30px rgba(0,0,0,.6);padding:18px">
+          <div style="font-family:Sora,sans-serif;font-weight:700;font-size:15px;margin-bottom:12px">${t.glTitle}</div>
+          <div style="font-family:JetBrains Mono,monospace;font-size:12px;color:var(--mute);padding:24px 0;text-align:center">${t.glLoading}</div>
+        </div>`;
+      return;
+    }
     const glList = state.market.map((m) => ({
       symbol: (m.symbol || '').toUpperCase(),
       logo: m.image || '',
@@ -670,15 +880,205 @@ function renderHeroCard() {
 }
 
 // ══════════════════════════════════════════════
-//  RENDER — BTC Analysis card (real data from btc-analysis.json)
+//  ANALYSIS SECTION — legend, next-analysis, gating
 // ══════════════════════════════════════════════
-function renderAnalysisHeader() {
+function computeNextAnalysisTime() {
   const t = getT();
-  document.getElementById('an-eyebrow').textContent = t.anEyebrow;
-  document.getElementById('an-title').textContent = t.anTitle;
-  document.getElementById('an-desc').textContent = t.anDesc;
+  let h;
+  try {
+    h = parseInt(new Intl.DateTimeFormat('en-GB', { timeZone: 'Europe/Sofia', hour: '2-digit', hour12: false }).format(new Date()), 10);
+  } catch (e) {
+    h = new Date().getHours(); /* fallback: локално време (аудиторията е в България) */
+  }
+  if (h < 9) return t.todayWord + ' 09:00 EET';
+  if (h < 15) return t.todayWord + ' 15:00 EET';
+  return t.tomorrowWord + ' 09:00 EET';
 }
 
+function renderAnalysisLegend() {
+  const t = getT();
+  const el = document.getElementById('analysis-legend');
+  if (!el) return;
+  const nextTime = computeNextAnalysisTime();
+  const legendItems = [
+    { label: t.rsiLabel, desc: t.rsiDesc },
+    { label: t.stochLabel, desc: t.stochDesc },
+    { label: t.macdLabel, desc: t.macdDesc },
+    { label: t.emaLabel, desc: t.emaDesc }
+  ];
+
+  el.innerHTML = `
+    <div style="border-radius:14px;background:var(--surface);border:1px solid var(--border);padding:16px;overflow:hidden">
+      <div style="font-family:JetBrains Mono,monospace;font-size:11px;letter-spacing:.1em;color:var(--amber);font-weight:700;margin-bottom:12px">${t.howToReadLabel}</div>
+      ${legendItems.map((item) => `
+        <div style="display:flex;gap:10px;margin-bottom:10px;font-size:13px;line-height:1.5">
+          <span style="font-family:JetBrains Mono,monospace;font-weight:700;color:var(--amber);white-space:nowrap;min-width:60px">${item.label}</span>
+          <span style="color:var(--dim)">${item.desc}</span>
+        </div>`).join('')}
+    </div>
+    <div style="margin-top:12px;padding:12px;border-radius:10px;background:var(--surface);border:1px solid var(--border);font-size:12px;color:var(--mute);font-family:JetBrains Mono,monospace;display:flex;align-items:center;gap:8px">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path></svg>
+      ${t.nextAnalysisLabel} <span style="color:var(--amber);font-weight:700">${nextTime}</span>
+    </div>`;
+}
+
+function renderAnalysisGating() {
+  const t = getT();
+  const gatedSection = document.getElementById('analysis-gated');
+  const teaserSection = document.getElementById('analysis-teaser');
+  const headingLoggedout = document.getElementById('analysis-heading-loggedout');
+
+  if (state.loggedIn) {
+    if (gatedSection) gatedSection.style.display = 'block';
+    if (teaserSection) teaserSection.style.display = 'none';
+    if (headingLoggedout) headingLoggedout.style.display = 'none';
+    startGatedWidgetFetches();
+  } else {
+    if (gatedSection) gatedSection.style.display = 'none';
+    if (teaserSection) teaserSection.style.display = 'flex';
+    if (headingLoggedout) headingLoggedout.style.display = 'block';
+    stopGatedWidgetFetches();
+    const teaserText = document.getElementById('teaser-text');
+    if (teaserText) teaserText.textContent = t.gatedTeaser;
+    const teaserBtn = document.getElementById('teaser-signup');
+    if (teaserBtn) teaserBtn.textContent = t.signUp;
+  }
+}
+
+let gatedFetchIntervals = [];
+function startGatedWidgetFetches() {
+  if (gatedFetchIntervals.length > 0) return;
+  gatedFetchIntervals.push(
+    setInterval(() => fetchTrendingSectors(), 60000),
+    setInterval(() => fetchBtcLongShortRatio(), 60000)
+  );
+  fetchTrendingSectors();
+  fetchBtcLongShortRatio();
+}
+
+function stopGatedWidgetFetches() {
+  gatedFetchIntervals.forEach(id => clearInterval(id));
+  gatedFetchIntervals = [];
+}
+
+function fetchTrendingSectors() {
+  console.log('[Sectors] fetch start');
+  const sectors = {
+    AI: ['TAO', 'RENDER', 'FET', 'WLD'],
+    DeFi: ['UNI', 'AAVE', 'CAKE', 'JUP', 'ONDO', 'ENA'],
+    Layer1: ['SOL', 'AVAX', 'NEAR', 'SUI', 'APT', 'SEI', 'TIA', 'ATOM', 'ICP'],
+    Meme: ['DOGE', 'SHIB', 'PEPE', 'BONK', 'PUMP'],
+    Layer2: ['ARB', 'MNT', 'POL'],
+    Payments: ['XRP', 'XLM', 'LTC', 'BCH']
+  };
+  const monitored = new Set(['BTC', 'ETH', 'SOL', 'XRP', 'BNB', 'DOGE', 'ADA', 'AVAX', 'LINK', 'DOT', 'MATIC', 'NEAR', 'SUI', 'LTC', 'ATOM', 'UNI', 'AAVE', 'TRX', 'HYPE', 'ZEC', 'XLM', 'XMR', 'BCH', 'HBAR', 'SHIB', 'CRO', 'TAO', 'ONDO', 'WLD', 'MNT', 'ICP', 'ETC', 'PEPE', 'KAS', 'RENDER', 'QNT', 'ALGO', 'JUP', 'ENA', 'PUMP', 'FIL', 'ARB', 'APT', 'INJ', 'CAKE', 'DASH', 'VET', 'BONK', 'JTO', 'SEI', 'TIA', 'PYTH', 'FET', 'POL']);
+
+  fetch('https://api.bybit.com/v5/market/tickers?category=linear&limit=500')
+    .then((r) => r.json())
+    .then((data) => {
+      console.log('[Sectors] response', data.retCode);
+      if (!data.result || !data.result.list) throw new Error('No data');
+
+      const tickers = {};
+      data.result.list.forEach((t) => {
+        const symbol = (t.symbol || '').replace('USDT', '').toUpperCase();
+        const pct = parseFloat(t.price24hPcnt) * 100;
+        if (!isNaN(pct)) tickers[symbol] = pct;
+      });
+
+      const sectorPerfs = [];
+      for (const [sectorName, coins] of Object.entries(sectors)) {
+        const validCoins = coins.filter((c) => c in tickers);
+        if (!validCoins.length) continue;
+        const avgPct = validCoins.reduce((sum, c) => sum + tickers[c], 0) / validCoins.length;
+        const topCoin = validCoins.reduce((best, c) => tickers[c] > tickers[best] ? c : best);
+        sectorPerfs.push({ name: sectorName, pct: avgPct, topCoin: topCoin, topPct: tickers[topCoin] });
+      }
+
+      sectorPerfs.sort((a, b) => b.pct - a.pct);
+      const top4 = sectorPerfs.slice(0, 4);
+
+      const html = top4.map((s) => {
+        const pctColor = s.pct >= 0 ? 'var(--green)' : 'var(--red)';
+        const topPctColor = s.topPct >= 0 ? 'var(--green)' : 'var(--red)';
+        return `<div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--border)"><div style="flex:1">${s.name}</div><div style="color:${pctColor};font-weight:700;width:50px;text-align:right">${(s.pct >= 0 ? '+' : '') + s.pct.toFixed(1)}%</div><div style="color:var(--mute);width:40px;text-align:right">${s.topCoin}</div><div style="color:${topPctColor};font-weight:700;width:45px;text-align:right">${(s.topPct >= 0 ? '+' : '') + s.topPct.toFixed(1)}%</div></div>`;
+      }).join('');
+
+      document.getElementById('trending-sectors').innerHTML = html || '<div style="text-align:center;color:var(--mute);padding:12px">—</div>';
+
+      const allCoins = Object.entries(tickers).filter(([symbol]) => monitored.has(symbol)).map(([symbol, pct]) => ({ symbol, pct }));
+      allCoins.sort((a, b) => b.pct - a.pct);
+      const top3 = allCoins.slice(0, 5);
+      const bottom3 = allCoins.slice(-5).reverse();
+
+      const gainersHtml = top3.map((c) => `<div style="display:flex;justify-content:space-between"><span>${c.symbol}</span><span style="color:var(--green);font-weight:700">${(c.pct >= 0 ? '+' : '') + c.pct.toFixed(2)}%</span></div>`).join('');
+      const losersHtml = bottom3.map((c) => `<div style="display:flex;justify-content:space-between"><span>${c.symbol}</span><span style="color:var(--red);font-weight:700">${c.pct.toFixed(2)}%</span></div>`).join('');
+
+      document.getElementById('momentum-gainers').innerHTML = gainersHtml || '<div style="color:var(--mute)">—</div>';
+      document.getElementById('momentum-losers').innerHTML = losersHtml || '<div style="color:var(--mute)">—</div>';
+    })
+    .catch((err) => {
+      console.error('[Sectors] FAILED', err);
+      document.getElementById('trending-sectors').innerHTML = '<div style="text-align:center;color:var(--mute);padding:12px">—</div>';
+      document.getElementById('momentum-gainers').innerHTML = '<div style="color:var(--mute)">—</div>';
+      document.getElementById('momentum-losers').innerHTML = '<div style="color:var(--mute)">—</div>';
+    });
+}
+
+function fetchBtcLongShortRatio() {
+  console.log('[LS] fetch start');
+  fetch('https://api.bybit.com/v5/market/account-ratio?category=linear&symbol=BTCUSDT&period=1h&limit=1')
+    .then((r) => r.json())
+    .then((data) => {
+      console.log('[LS] response', data.retCode);
+      if (!data.result || !data.result.list || !data.result.list.length) throw new Error('No data');
+
+      const item = data.result.list[0];
+      const buyRatio = Math.round(parseFloat(item.buyRatio) * 100);
+      const sellRatio = Math.round(parseFloat(item.sellRatio) * 100);
+
+      const html = `
+        <div style="display:flex;gap:8px;align-items:center;height:32px">
+          <div style="flex:${buyRatio};background:linear-gradient(90deg,var(--green),#90EE90);border-radius:6px 0 0 6px;display:grid;place-items:center">
+            <span style="font-family:JetBrains Mono,monospace;font-size:11px;color:var(--bg);font-weight:700">${buyRatio}</span>
+          </div>
+          <div style="flex:${sellRatio};background:linear-gradient(90deg,#FF6B6B,var(--red));border-radius:0 6px 6px 0;display:grid;place-items:center">
+            <span style="font-family:JetBrains Mono,monospace;font-size:11px;color:var(--bg);font-weight:700">${sellRatio}</span>
+          </div>
+        </div>
+        <div style="display:flex;justify-content:space-between;font-family:JetBrains Mono,monospace;font-size:10px;color:var(--mute);margin-top:6px">
+          <span style="color:var(--green)">${buyRatio}% Long</span>
+          <span style="color:var(--red)">${sellRatio}% Short</span>
+        </div>`;
+
+      document.getElementById('btc-ls-ratio').innerHTML = html;
+    })
+    .catch((err) => {
+      console.error('[LS] FAILED', err);
+      document.getElementById('btc-ls-ratio').innerHTML = '<div style="height:32px;background:var(--border);border-radius:6px;margin-bottom:6px"></div><div style="text-align:center;color:var(--mute);font-family:JetBrains Mono,monospace;font-size:11px">—</div>';
+    });
+}
+
+function renderAnalysisHeader() {
+  const t = getT();
+  // Both heading blocks exist in the DOM; fill both so a login toggle never leaves one empty.
+  const ids = [
+    ['an-eyebrow', 'an-title', 'an-desc'],
+    ['an-eyebrow-loggedout', 'an-title-loggedout', 'an-desc-loggedout']
+  ];
+  ids.forEach(([e, ti, de]) => {
+    const eyebrow = document.getElementById(e);
+    const title = document.getElementById(ti);
+    const desc = document.getElementById(de);
+    if (eyebrow) eyebrow.textContent = t.anEyebrow;
+    if (title) title.textContent = t.anTitle;
+    if (desc) desc.textContent = t.anDesc;
+  });
+}
+
+// ══════════════════════════════════════════════
+//  LOCKED SECTION #2 — BTC/USDT analysis card (Claude Code pipeline)
+// ══════════════════════════════════════════════
 function renderTfTabs() {
   const tabs = [['15m', '15M'], ['1h', '1H'], ['4h', '4H'], ['daily', 'Daily']];
   document.getElementById('tf-tabs').innerHTML = tabs.map(([key, label]) => {
@@ -691,15 +1091,9 @@ function renderTfTabs() {
 
 function renderBtcAnalysisBody() {
   const ba = state.btcAnalysis;
-
-  // Map the UI tf key to the JSON field suffix used by the per-timeframe
-  // fields (rsi15m, macdHist4h, emaPriceDaily, etc.)
   const TF_SUFFIX = { '15m': '15m', '1h': '1h', '4h': '4h', 'daily': 'Daily' };
   const suf = TF_SUFFIX[state.tf] || '15m';
 
-  // Per-timeframe real values. Falls back to the old single (15M-only)
-  // fields if the new per-tf fields aren't present yet — e.g. a cached
-  // btc-analysis.json written before this schema update went live.
   const rsiVal = ba ? (ba[`rsi${suf}`] ?? ba.rsi) : null;
   const stochVal = ba ? (ba[`stoch${suf}`] ?? ba.stoch) : null;
   const macdHistVal = ba ? (ba[`macdHist${suf}`] ?? null) : null;
@@ -708,9 +1102,6 @@ function renderBtcAnalysisBody() {
   const rsiCls = rsiVal != null ? classifyOsc(rsiVal) : { label: 'loading', color: M_ };
   const stochCls = stochVal != null ? classifyOsc(stochVal) : { label: 'loading', color: M_ };
 
-  // MACD: real histogram value + sign-derived bullish/bearish. Falls
-  // back to the old qualitative text (15M-only) if the numeric
-  // histogram for this timeframe isn't available yet.
   let macdNum = '—', macdL = 'loading', macdC = M_;
   if (macdHistVal != null) {
     macdNum = (macdHistVal >= 0 ? '+' : '') + Number(macdHistVal).toFixed(2);
@@ -720,9 +1111,6 @@ function renderBtcAnalysisBody() {
     macdL = ba.macd; macdC = biasColor(ba.macd);
   }
 
-  // EMA: real EMA price level for this timeframe. Direction (above/
-  // below) compares it against the live BTC price already fetched from
-  // CoinGecko — a real comparison, not a guess.
   let emaNum = '—', emaL = 'loading', emaC = M_;
   const liveBtcRow = state.market.find((m) => m.id === 'bitcoin');
   const livePrice = liveBtcRow ? liveBtcRow.current_price : null;
@@ -783,9 +1171,6 @@ function renderBtcAnalysisBody() {
     <div style="font-family:JetBrains Mono,monospace;font-size:12px;color:var(--mute);margin-top:10px">AI breakdown over live TradingView data · last updated ${d.updated} · this is not financial advice</div>`;
 }
 
-// ══════════════════════════════════════════════
-//  RENDER — Alerts section
-// ══════════════════════════════════════════════
 function renderAlertsHeader() {
   const t = getT();
   document.getElementById('al-eyebrow').textContent = t.alertsEyebrow;
@@ -803,7 +1188,7 @@ function renderAlertsButtons() {
     const active = state.alert === i;
     const bg = active ? 'color-mix(in srgb,var(--amber) 7%,transparent)' : 'transparent';
     const border = active ? A_ : 'transparent';
-    return `<button onclick="setAlert(${i})" style="text-align:left;cursor:pointer;padding:18px 20px;border-radius:14px;background:${bg};border:1px solid var(--border);border-left:3px solid ${border};transition:.2s">
+    return `<button onclick="setAlert(${i})" style="display:block;text-align:left;cursor:pointer;padding:18px 20px;border-radius:14px;background:${bg};border:1px solid var(--border);border-left:3px solid ${border};transition:.2s;width:100%;font-family:Hanken Grotesk,sans-serif;color:inherit" onmouseover="this.style.borderColor='var(--border2)'" onmouseout="this.style.borderColor='var(--border)'">
       <div style="display:flex;align-items:center;gap:12px"><span style="font-family:JetBrains Mono,monospace;font-size:13px;font-weight:700;color:var(--amber)">0${i + 1}</span><b style="font-family:Sora,sans-serif;font-size:17px;color:var(--text)">${it.t}</b></div>
       <p style="font-size:14px;line-height:1.5;color:var(--dim);margin:8px 0 0 26px">${it.d}</p>
     </button>`;
@@ -811,29 +1196,264 @@ function renderAlertsButtons() {
 }
 
 function renderAlertsPanel() {
+  const t = getT();
+  const panelId = 'alerts-panel-inner';
+  let panelEl = document.getElementById(panelId);
+  if (!panelEl) {
+    panelEl = document.createElement('div');
+    panelEl.id = panelId;
+    document.getElementById('alerts-panel').innerHTML = '';
+    document.getElementById('alerts-panel').appendChild(panelEl);
+  }
+
+  /* Нелогнат: без живи данни, без заявки — само teaser */
+  if (!state.loggedIn) {
+    panelEl.innerHTML = `
+      <div style="display:flex;align-items:center;gap:11px;margin-bottom:18px">
+        <span style="width:38px;height:38px;border-radius:50%;background:var(--amber);display:grid;place-items:center;color:var(--amber-ink)"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M21.9 4.3 2.9 11.6c-1.1.4-1 1 0 1.3l4.9 1.5 1.9 5.9c.2.6.4.9 1 .9.4 0 .6-.2.9-.5l2.5-2.4 4.9 3.6c.9.5 1.5.2 1.7-.8l3.1-14.6c.3-1.3-.5-1.9-1.8-1.7z"></path></svg></span>
+        <div><b style="font-family:Sora,sans-serif;font-size:15px">SignalCore Bot</b><div style="font-family:JetBrains Mono,monospace;font-size:11px;color:var(--green)">· online</div></div>
+      </div>
+      <div style="padding:34px 20px;border-radius:12px;background:var(--surface);border:1px solid var(--border);text-align:center">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="var(--amber)" stroke-width="2" style="margin:0 auto 12px;display:block"><rect x="3" y="11" width="18" height="11" rx="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+        <div style="font-size:14px;color:var(--dim);margin-bottom:16px">${t.gatedTeaser}</div>
+        <button onclick="signIn()" style="padding:10px 20px;border-radius:9px;background:var(--amber);color:var(--amber-ink);border:none;font-family:Sora,sans-serif;font-weight:700;font-size:13.5px;cursor:pointer">${t.signUp}</button>
+      </div>`;
+    return;
+  }
+
   const alerts = [
-    { dot: R_, tag: 'LIQUIDATION', key: 'coin: BTCUSDT type: long · high volume', val: '', effect: 'downside pressure' },
-    { dot: A_, tag: 'FUNDING', key: 'coin: BTCUSDT rate: +0.09% · elevated', val: '', effect: 'crowded longs' },
-    { dot: A_, tag: 'L/S RATIO', key: 'coin: ETHUSDT ratio: 2.4 · longs heavy', val: '', effect: 'squeeze risk' },
-    { dot: G_, tag: 'SENTIMENT', key: 'index: 22 → 41 · shift up', val: '', effect: 'fear easing' },
-    { dot: A_, tag: 'BTC SNAPSHOT', key: 'tf: 4H · TradingView chart', val: '', effect: 'chart attached' }
+    { id: 'liquidations', title: 'Liquidations', subtitle: 'OI Change %' },
+    { id: 'funding', title: 'Funding Rate', subtitle: 'Funding Rate' },
+    { id: 'ls-ratio', title: 'Long/Short Ratio', subtitle: 'Long/Short Ratio' },
+    { id: 'divergence', title: 'Divergence Scanner', subtitle: 'Data Tensions' },
+    { id: 'btc-snapshots', title: 'BTC Snapshots', subtitle: 'BTC Analysis' }
   ];
-  const m = alerts[state.alert];
-  document.getElementById('alerts-panel').innerHTML = `
-    <div style="display:flex;align-items:center;gap:11px">
+  const alert = alerts[state.alert];
+  const nowStr = new Date().toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
+
+  panelEl.innerHTML = `
+    <div style="display:flex;align-items:center;gap:11px;margin-bottom:18px">
       <span style="width:38px;height:38px;border-radius:50%;background:var(--amber);display:grid;place-items:center;color:var(--amber-ink)"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M21.9 4.3 2.9 11.6c-1.1.4-1 1 0 1.3l4.9 1.5 1.9 5.9c.2.6.4.9 1 .9.4 0 .6-.2.9-.5l2.5-2.4 4.9 3.6c.9.5 1.5.2 1.7-.8l3.1-14.6c.3-1.3-.5-1.9-1.8-1.7z"></path></svg></span>
       <div><b style="font-family:Sora,sans-serif;font-size:15px">SignalCore Bot</b><div style="font-family:JetBrains Mono,monospace;font-size:11px;color:var(--green)">· online</div></div>
     </div>
-    <div style="margin-top:18px;padding:16px 17px;border-radius:12px 12px 12px 4px;background:var(--surface);border:1px solid var(--border);font-family:JetBrains Mono,monospace;font-size:13px;line-height:1.7">
-      <div><span style="display:inline-block;width:9px;height:9px;border-radius:50%;background:${m.dot};vertical-align:0;margin-right:7px"></span><b style="color:var(--amber)">${m.tag}</b> <span style="color:var(--mute)">${m.key}</span> <span style="color:var(--text)">${m.val}</span></div>
-      <div style="margin-top:4px;color:var(--mute)">effect: <span style="color:var(--text)">${m.effect}</span></div>
-    </div>
-    <div style="text-align:right;font-family:JetBrains Mono,monospace;font-size:11px;color:var(--mute);margin-top:8px">02:08</div>`;
+    <div id="alert-content-${state.alert}" style="min-height:180px"></div>
+    <div style="text-align:right;font-family:JetBrains Mono,monospace;font-size:11px;color:var(--mute);margin-top:8px">${nowStr}</div>`;
+
+  const contentEl = document.getElementById(`alert-content-${state.alert}`);
+  contentEl.innerHTML = `<div style="padding:16px 17px;border-radius:12px;background:var(--surface);border:1px solid var(--border);font-family:JetBrains Mono,monospace;font-size:13px;text-align:center;color:var(--dim)">Loading ${alert.title.toLowerCase()}…</div>`;
+
+  loadAlertData(alert.id, contentEl);
 }
 
-// ══════════════════════════════════════════════
-//  RENDER — Tabs (7 feature cards), Data, CTA, Footer
-// ══════════════════════════════════════════════
+function loadAlertData(alertId, container) {
+  if (alertId === 'btc-snapshots') { loadBtcSnapshotsPanel(container); return; }
+
+  getDataJson()
+    .then((data) => {
+      let html = '';
+      const coins = coinsToArray(data);
+      if (!coins.length) throw new Error('no coins');
+      if (alertId === 'divergence') html = renderDivergencePanel(coins);
+      else if (alertId === 'liquidations') html = renderLiquidationsPanel(coins);
+      else if (alertId === 'funding') html = renderFundingPanel(coins);
+      else html = renderLsRatioPanel(coins);
+      container.innerHTML = html;
+    })
+    .catch((e) => {
+      console.error('[data.json] FAILED', e);
+      container.innerHTML = `<div style="padding:16px;border-radius:12px;background:var(--surface);border:1px solid var(--border);color:var(--red)">Failed to load alert data</div>`;
+    });
+}
+
+/* data.json: coins е ОБЕКТ по символ; подредба от coinOrder; кеш 60s */
+async function getDataJson() {
+  const now = Date.now();
+  if (state.dataJson && now - state.dataJsonTs < 60000) return state.dataJson;
+  const resp = await fetch(`https://howhaber.github.io/signalcore/data.json?t=${now}`, { cache: 'no-store' });
+  const data = await resp.json();
+  state.dataJson = data;
+  state.dataJsonTs = now;
+  return data;
+}
+function coinsToArray(data) {
+  const order = (data.coinOrder && data.coinOrder.length) ? data.coinOrder : Object.keys(data.coins || {});
+  return order
+    .map((s) => Object.assign({ symbol: s }, (data.coins || {})[s] || {}))
+    .filter((c) => (c.price || 0) > 0); /* мъртви/липсващи двойки (price 0) не се показват */
+}
+function fmtOi(oiM) {
+  if (oiM == null) return '—';
+  return oiM >= 1000 ? '$' + (oiM / 1000).toFixed(2) + 'B' : '$' + oiM.toFixed(1) + 'M';
+}
+
+function renderLiquidationsPanel(coins) {
+  /* Liquidation pressure proxy: най-резките OI промени от 53-те следени */
+  const top = coins.slice().sort((a, b) => Math.abs(b.oiChg || 0) - Math.abs(a.oiChg || 0)).slice(0, 10);
+  const rows = top.map((c) => {
+    const oiChg = c.oiChg || 0;
+    const chColor = oiChg >= 0 ? 'var(--green)' : 'var(--red)';
+    const pxColor = (c.change || 0) >= 0 ? 'var(--green)' : 'var(--red)';
+    return `
+      <div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border);font-family:JetBrains Mono,monospace;font-size:12px">
+        <b style="width:58px">${c.symbol}</b>
+        <span style="color:var(--mute);width:70px">${fmtOi(c.oi)}</span>
+        <span style="color:${chColor};font-weight:700;flex:1;text-align:right">${(oiChg >= 0 ? '+' : '') + oiChg.toFixed(2)}% OI</span>
+        <span style="color:${pxColor};width:64px;text-align:right">${(c.change >= 0 ? '+' : '') + (c.change || 0).toFixed(2)}%</span>
+      </div>`;
+  }).join('');
+  return `
+    <div style="padding:14px 16px;border-radius:12px;background:var(--surface);border:1px solid var(--border)">
+      <div style="font-family:JetBrains Mono,monospace;font-size:10px;letter-spacing:.08em;color:var(--mute);margin-bottom:8px;display:flex;justify-content:space-between"><span>TOP 10 · OI CHANGE 24H</span><span>OPEN INTEREST · Δ OI · PRICE</span></div>
+      ${rows}
+      <div style="font-family:JetBrains Mono,monospace;font-size:10px;color:var(--mute);margin-top:8px">рязък спад на OI + спад на цена = ликвидирани long позиции · Bybit</div>
+    </div>`;
+}
+
+function renderFundingPanel(coins) {
+  /* Всички следени монети, най-екстремният funding отгоре */
+  const sorted = coins.slice().sort((a, b) => Math.abs(b.fr || 0) - Math.abs(a.fr || 0));
+  const rows = sorted.map((c) => {
+    const fr = c.fr || 0;
+    const extreme = fr >= 0.01 ? 'longs' : fr <= -0.01 ? 'shorts' : null;
+    const color = extreme === 'longs' ? 'var(--red)' : extreme === 'shorts' ? 'var(--green)' : 'var(--mute)';
+    const bias = extreme === 'longs' ? 'longs crowded' : extreme === 'shorts' ? 'shorts crowded' : 'neutral';
+    return `
+      <div style="display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid var(--border);font-family:JetBrains Mono,monospace;font-size:12px">
+        <b style="width:58px">${c.symbol}</b>
+        <span style="color:var(--mute);flex:1">${bias}</span>
+        <span style="color:${color};font-weight:700">${(fr >= 0 ? '+' : '') + fr.toFixed(4)}%</span>
+      </div>`;
+  }).join('');
+  return `
+    <div style="padding:14px 16px;border-radius:12px;background:var(--surface);border:1px solid var(--border)">
+      <div style="font-family:JetBrains Mono,monospace;font-size:10px;letter-spacing:.08em;color:var(--mute);margin-bottom:8px;display:flex;justify-content:space-between"><span>ALL ${sorted.length} COINS · MOST EXTREME FIRST</span><span>FUNDING RATE</span></div>
+      <div style="max-height:380px;overflow-y:auto;padding-right:6px">${rows}</div>
+      <div style="font-family:JetBrains Mono,monospace;font-size:10px;color:var(--mute);margin-top:8px">положителен funding = long плащат на short · Bybit</div>
+    </div>`;
+}
+
+function renderLsRatioPanel(coins) {
+  /* Всички следени монети, най-натежалите long отгоре */
+  const sorted = coins.slice().sort((a, b) => (b.longs || 0) - (a.longs || 0));
+  const rows = sorted.map((c) => {
+    const longPct = c.longs ?? 50;
+    const shortPct = c.shorts ?? (100 - longPct);
+    return `
+      <div style="display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid var(--border);font-family:JetBrains Mono,monospace;font-size:12px">
+        <b style="width:58px">${c.symbol}</b>
+        <span style="color:var(--green);width:44px;text-align:right">${longPct.toFixed(1)}%</span>
+        <div style="height:5px;flex:1;background:var(--border);border-radius:3px;overflow:hidden">
+          <div style="height:100%;width:100%;background:linear-gradient(90deg,var(--green) ${longPct}%,var(--red) ${longPct}%)"></div>
+        </div>
+        <span style="color:var(--red);width:44px">${shortPct.toFixed(1)}%</span>
+      </div>`;
+  }).join('');
+  return `
+    <div style="padding:14px 16px;border-radius:12px;background:var(--surface);border:1px solid var(--border)">
+      <div style="font-family:JetBrains Mono,monospace;font-size:10px;letter-spacing:.08em;color:var(--mute);margin-bottom:8px;display:flex;justify-content:space-between"><span>ALL ${sorted.length} COINS · MOST LONG-HEAVY FIRST</span><span>LONG · SHORT</span></div>
+      <div style="max-height:380px;overflow-y:auto;padding-right:6px">${rows}</div>
+      <div style="font-family:JetBrains Mono,monospace;font-size:10px;color:var(--mute);margin-top:8px">над ~70% long = претъпкана страна, риск от squeeze · Bybit</div>
+    </div>`;
+}
+
+function renderDivergencePanel(coins) {
+  /* Три типа напрежения в данните; severity за сортиране по острота */
+  const found = [];
+  coins.forEach((c) => {
+    const ch = c.change || 0, oiChg = c.oiChg || 0, fr = c.fr || 0, longs = c.longs ?? 50;
+
+    /* 1) Цена срещу Open Interest: движение без гориво */
+    if (Math.abs(ch) > 1.5 && Math.abs(oiChg) > 0.3 && Math.sign(ch) !== Math.sign(oiChg)) {
+      found.push({
+        sym: c.symbol, sev: Math.abs(ch) + Math.abs(oiChg) * 2,
+        type: ch > 0 ? 'PRICE \u2191 / OI \u2193' : 'PRICE \u2193 / OI \u2191',
+        note: ch > 0 ? 'rally without fuel' : 'shorts pressing into the drop',
+        detail: `${(ch >= 0 ? '+' : '') + ch.toFixed(2)}% px \u00b7 ${(oiChg >= 0 ? '+' : '') + oiChg.toFixed(2)}% OI`,
+        color: 'var(--amber)'
+      });
+    }
+    /* 2) Funding срещу посоката на цената */
+    if (Math.abs(fr) >= 0.01 && Math.abs(ch) > 1 && Math.sign(fr) !== Math.sign(ch)) {
+      found.push({
+        sym: c.symbol, sev: Math.abs(fr) * 200 + Math.abs(ch),
+        type: 'FUNDING vs TREND',
+        note: fr > 0 ? 'longs paying while price falls' : 'shorts paying while price climbs',
+        detail: `${(fr >= 0 ? '+' : '') + fr.toFixed(4)}% fr \u00b7 ${(ch >= 0 ? '+' : '') + ch.toFixed(2)}% px`,
+        color: 'var(--red)'
+      });
+    }
+    /* 3) Претъпкана страна */
+    if (longs >= 72 && ch < -1) {
+      found.push({
+        sym: c.symbol, sev: longs - 72 + Math.abs(ch),
+        type: 'CROWDED LONGS', note: 'long squeeze candidate',
+        detail: `${longs.toFixed(1)}% long \u00b7 ${ch.toFixed(2)}% px`,
+        color: 'var(--red)'
+      });
+    } else if (longs <= 40 && ch > 1) {
+      found.push({
+        sym: c.symbol, sev: 40 - longs + ch,
+        type: 'CROWDED SHORTS', note: 'short squeeze fuel',
+        detail: `${(100 - longs).toFixed(1)}% short \u00b7 +${ch.toFixed(2)}% px`,
+        color: 'var(--green)'
+      });
+    }
+  });
+
+  found.sort((a, b) => b.sev - a.sev);
+  const top = found.slice(0, 8);
+
+  if (!top.length) {
+    return `
+      <div style="padding:20px 16px;border-radius:12px;background:var(--surface);border:1px solid var(--border);text-align:center">
+        <div style="font-family:JetBrains Mono,monospace;font-size:13px;color:var(--green)">no significant divergences right now</div>
+        <div style="font-family:JetBrains Mono,monospace;font-size:10px;color:var(--mute);margin-top:6px">data is in agreement across all ${coins.length} coins</div>
+      </div>`;
+  }
+
+  const rows = top.map((f) => `
+    <div style="padding:9px 0;border-bottom:1px solid var(--border);font-family:JetBrains Mono,monospace;font-size:12px">
+      <div style="display:flex;align-items:center;gap:8px">
+        <b style="width:58px">${f.sym}</b>
+        <span style="color:${f.color};font-weight:700;font-size:10.5px;letter-spacing:.04em">${f.type}</span>
+        <span style="margin-left:auto;color:var(--mute);font-size:11px">${f.detail}</span>
+      </div>
+      <div style="padding-left:66px;color:var(--mute);font-size:10.5px;margin-top:2px">${f.note}</div>
+    </div>`).join('');
+
+  return `
+    <div style="padding:14px 16px;border-radius:12px;background:var(--surface);border:1px solid var(--border)">
+      <div style="font-family:JetBrains Mono,monospace;font-size:10px;letter-spacing:.08em;color:var(--mute);margin-bottom:6px;display:flex;justify-content:space-between"><span>${found.length} TENSIONS FOUND \u00b7 TOP ${top.length}</span><span>SCANNED: ${coins.length} COINS</span></div>
+      <div style="max-height:380px;overflow-y:auto;padding-right:6px">${rows}</div>
+      <div style="font-family:JetBrains Mono,monospace;font-size:10px;color:var(--mute);margin-top:8px">\u0434\u0438\u0432\u0435\u0440\u0433\u0435\u043d\u0446\u0438\u044f = \u0434\u0430\u043d\u043d\u0438\u0442\u0435 \u0441\u0438 \u043f\u0440\u043e\u0442\u0438\u0432\u043e\u0440\u0435\u0447\u0430\u0442 \u00b7 \u043d\u0435 \u0435 \u0441\u0438\u0433\u043d\u0430\u043b \u0441\u0430\u043c \u043f\u043e \u0441\u0435\u0431\u0435 \u0441\u0438 \u00b7 Bybit</div>
+    </div>`;
+}
+function loadBtcSnapshotsPanel(container) {
+  fetch(`https://howhaber.github.io/signalcore/btc-analysis.json?t=${Date.now()}`)
+    .then((r) => r.json())
+    .then((ba) => {
+      const tfs = ['15m', '1h', '4h', 'daily'];
+      container.innerHTML = `
+        <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:10px">
+          ${tfs.map((tf) => {
+            const suf = tf === 'daily' ? 'Daily' : tf;
+            const rsi = ba[`rsi${suf}`] ?? ba.rsi ?? '—';
+            const bias = (ba.bias || '').toLowerCase();
+            const biasColor = bias.includes('bull') || bias.includes('above') ? 'var(--green)' : bias.includes('bear') || bias.includes('below') ? 'var(--red)' : 'var(--mute)';
+            return `
+              <div style="border-radius:10px;background:var(--card2);border:1px solid var(--border);padding:12px">
+                <div style="font-family:JetBrains Mono,monospace;font-size:11px;color:var(--amber);font-weight:700;margin-bottom:8px">${tf.toUpperCase()}</div>
+                <div style="font-family:JetBrains Mono,monospace;font-size:13px;font-weight:700">${rsi}</div>
+                <div style="font-family:JetBrains Mono,monospace;font-size:10px;color:${biasColor};margin-top:4px">${ba.bias || 'loading'}</div>
+              </div>`;
+          }).join('')}
+        </div>`;
+    })
+    .catch(() => {
+      container.innerHTML = `<div style="padding:16px;border-radius:12px;background:var(--surface);border:1px solid var(--border);color:var(--red)">Failed to load BTC data</div>`;
+    });
+}
+
 const TAB_ICONS = [
   '<svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"></rect><rect x="14" y="3" width="7" height="7" rx="1.5"></rect><rect x="3" y="14" width="7" height="7" rx="1.5"></rect><rect x="14" y="14" width="7" height="7" rx="1.5"></rect></svg>',
   '<svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h4l2 6 4-14 2 8h6"></path></svg>',
@@ -856,15 +1476,211 @@ function renderTabsSection() {
     [t.c5t, t.c5d], [t.c6t, t.c6d], [t.c7t, t.c7d]
   ];
   document.getElementById('tabs-grid').innerHTML = cards.map(([title, desc], i) => `
-    <div data-reveal="" class="hv-f" style="position:relative;padding:26px;border-radius:16px;background:var(--card);border:1px solid var(--border);transition:transform .25s,border-color .25s">
+    <button onclick="openTabPage(${i})" data-reveal="" class="hv-f" style="text-align:left;cursor:pointer;position:relative;padding:26px;border-radius:16px;background:var(--card);border:1px solid var(--border);transition:transform .25s,border-color .25s;font-family:Hanken Grotesk,sans-serif;color:inherit;width:100%">
       <span style="position:absolute;top:22px;right:22px;font-family:JetBrains Mono,monospace;font-size:12px;color:var(--mute)">0${i + 1}</span>
       <div style="width:44px;height:44px;border-radius:11px;display:grid;place-items:center;color:var(--amber);background:var(--amber-soft);border:1px solid color-mix(in srgb,var(--amber) 26%,transparent)">${TAB_ICONS[i]}</div>
-      <h3 style="font-family:Sora,sans-serif;font-weight:700;font-size:20px;margin:18px 0 0">${title}</h3>
+      <h3 style="font-family:Sora,sans-serif;font-weight:700;font-size:20px;margin:18px 0 0;display:flex;align-items:center;gap:9px;color:var(--text)">${title}${TAB_SOON.indexOf(i) !== -1 ? `<span style="font-family:JetBrains Mono,monospace;font-size:9.5px;letter-spacing:.08em;padding:2px 8px;border-radius:5px;color:var(--amber);background:var(--amber-soft);border:1px solid color-mix(in srgb,var(--amber) 30%,transparent)">${t.soonBadge}</span>` : ''}</h3>
       <p style="font-size:14.5px;line-height:1.55;color:var(--dim);margin:9px 0 0">${desc}</p>
-      <div style="display:inline-block;margin-top:16px;padding:4px 10px;border-radius:6px;font-family:JetBrains Mono,monospace;font-size:11px;color:var(--amber);background:var(--amber-soft)">${TAB_TAGS[i]}</div>
-    </div>`).join('');
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-top:16px">
+        <span style="display:inline-block;padding:4px 10px;border-radius:6px;font-family:JetBrains Mono,monospace;font-size:11px;color:var(--amber);background:var(--amber-soft)">${TAB_TAGS[i]}</span>
+        <span style="font-family:JetBrains Mono,monospace;font-size:13px;color:var(--amber)">\u2192</span>
+      </div>
+    </button>`).join('');
 }
 
+const TAB_SHOTS = ['dashboard', 'squeeze', 'charts', 'signals', 'history', 'calendar', 'news'];
+const TAB_SOON = [3, 4, 6]; /* Signals, History, News */
+
+function renderTabDetail() {
+  const t = getT();
+  const i = state.tabShot;
+  const titles = [t.c1t, t.c2t, t.c3t, t.c4t, t.c5t, t.c6t, t.c7t];
+  const what = [t.d1w, t.d2w, t.d3w, t.d4w, t.d5w, t.d6w, t.d7w][i];
+  const how = [t.d1h, t.d2h, t.d3h, t.d4h, t.d5h, t.d6h, t.d7h][i];
+  const src = [t.d1s, t.d2s, t.d3s, t.d4s, t.d5s, t.d6s, t.d7s][i];
+
+  document.getElementById('tab-back-btn').textContent = t.backLabel;
+  document.getElementById('tab-detail-body').innerHTML = `
+    <div style="display:grid;grid-template-columns:500px 1fr;gap:48px;align-items:start">
+      <div>
+        <img src="https://howhaber.github.io/signalcore/tabs/${TAB_SHOTS[i]}.jpg" alt="SignalCore \u2014 ${titles[i]}"
+             style="width:100%;height:auto;display:block;border-radius:18px;border:1px solid var(--border2);box-shadow:0 40px 90px -40px rgba(0,0,0,.7)">
+        <div style="text-align:center;font-family:JetBrains Mono,monospace;font-size:11px;color:var(--mute);margin-top:12px">${t.tabsHint}</div>
+      </div>
+      <div style="position:sticky;top:90px">
+        <div style="font-family:JetBrains Mono,monospace;font-size:12.5px;letter-spacing:.16em;color:var(--amber);font-weight:700">TAB 0${i + 1} \u00b7 ${TAB_TAGS[i].toUpperCase()}</div>
+        <h2 style="font-family:Sora,sans-serif;font-weight:800;font-size:44px;letter-spacing:-.03em;margin:12px 0 0;line-height:1.05;display:flex;align-items:center;gap:14px">${titles[i]}${TAB_SOON.indexOf(i) !== -1 ? `<span style="font-family:JetBrains Mono,monospace;font-size:12px;letter-spacing:.08em;padding:4px 12px;border-radius:7px;color:var(--amber);background:var(--amber-soft);border:1px solid color-mix(in srgb,var(--amber) 30%,transparent)">${t.soonBadge}</span>` : ''}</h2>
+
+        <div style="margin-top:32px;padding:20px 22px;border-radius:14px;background:var(--surface);border:1px solid var(--border)">
+          <div style="font-family:JetBrains Mono,monospace;font-size:11px;letter-spacing:.1em;color:var(--amber);font-weight:700;margin-bottom:10px">${t.tabWhatLabel}</div>
+          <p style="font-size:15.5px;line-height:1.65;color:var(--text);margin:0">${what}</p>
+        </div>
+        <div style="margin-top:14px;padding:20px 22px;border-radius:14px;background:var(--surface);border:1px solid var(--border)">
+          <div style="font-family:JetBrains Mono,monospace;font-size:11px;letter-spacing:.1em;color:var(--amber);font-weight:700;margin-bottom:10px">${t.tabHowLabel}</div>
+          <p style="font-size:15.5px;line-height:1.65;color:var(--dim);margin:0">${how}</p>
+        </div>
+        <div style="margin-top:14px;padding:16px 22px;border-radius:14px;background:var(--surface);border:1px solid var(--border);display:flex;align-items:center;gap:12px">
+          <div style="font-family:JetBrains Mono,monospace;font-size:11px;letter-spacing:.1em;color:var(--mute);font-weight:700;flex-shrink:0">${t.tabSrcLabel}</div>
+          <div style="font-family:JetBrains Mono,monospace;font-size:12.5px;color:var(--dim)">${src}</div>
+        </div>
+
+        <a href="${TG_URL}" target="_blank" class="hv-e" style="display:inline-flex;align-items:center;gap:9px;margin-top:28px;padding:14px 24px;border-radius:11px;font-weight:700;font-size:15.5px;color:var(--amber-ink);background:var(--amber);transition:transform .2s,filter .2s">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M21.9 4.3 2.9 11.6c-1.1.4-1 1 0 1.3l4.9 1.5 1.9 5.9c.2.6.4.9 1 .9.4 0 .6-.2.9-.5l2.5-2.4 4.9 3.6c.9.5 1.5.2 1.7-.8l3.1-14.6c.3-1.3-.5-1.9-1.8-1.7z"></path></svg>
+          ${t.tabOpenCta}
+        </a>
+      </div>
+    </div>`;
+}
+
+function renderPageVisibility() {
+  const mainSections = ['top', 'analysis', 'alerts', 'tabs', 'data', 'cta-sec'];
+  const onHome = state.page === 'home';
+  mainSections.forEach((id) => {
+    const el = document.getElementById(id);
+    if (el) el.style.display = onHome ? (id === 'top' ? 'grid' : '') : 'none';  /* #top е grid — не block! */
+  });
+  const detail = document.getElementById('tab-detail');
+  if (detail) detail.style.display = state.page === 'tab' ? 'block' : 'none';
+  const info = document.getElementById('info-page');
+  if (info) info.style.display = state.page === 'info' ? 'block' : 'none';
+}
+
+function openTabPage(i) {
+  state.tabShot = i;
+  state.from = state.page === 'info' ? 'info' : 'home';
+  state.page = 'tab';
+  renderTabDetail();
+  renderPageVisibility();
+  window.scrollTo({ top: 0, behavior: 'instant' in window ? 'instant' : 'auto' });
+}
+function closeTabPage() {
+  if (state.from === 'info') {
+    state.page = 'info';
+    renderInfoPage();
+    renderPageVisibility();
+    window.scrollTo({ top: 0 });
+    return;
+  }
+  state.page = 'home';
+  renderPageVisibility();
+  const tabs = document.getElementById('tabs');
+  if (tabs) tabs.scrollIntoView({ block: 'start' });
+}
+
+function openInfoPage() {
+  state.page = 'info';
+  renderInfoPage();
+  renderPageVisibility();
+  window.scrollTo({ top: 0 });
+}
+function closeInfoPage() {
+  state.page = 'home';
+  renderPageVisibility();
+  window.scrollTo({ top: 0 });
+}
+function goHomeThen() {
+  if (state.page !== 'home') { state.page = 'home'; renderPageVisibility(); }
+}
+
+function renderInfoPage() {
+  const t = getT();
+  const SITE_QR = 'https://api.qrserver.com/v1/create-qr-code/?size=200x200&margin=8&data=' + encodeURIComponent('https://signalcore.trading');
+  const titles = [t.c1t, t.c2t, t.c3t, t.c4t, t.c5t, t.c6t, t.c7t];
+  const mTexts = [t.m1, t.m2, t.m3, t.m4, t.m5, t.m6, t.m7];
+  const numList = (items) => items.map((x, i) => `
+    <div style="display:flex;gap:12px;padding:10px 0;border-bottom:1px solid var(--border);font-size:14.5px;line-height:1.6;color:var(--dim)">
+      <span style="font-family:JetBrains Mono,monospace;font-size:12px;font-weight:700;color:var(--amber);flex-shrink:0;padding-top:2px">0${i + 1}</span><span>${x}</span>
+    </div>`).join('');
+  const subCard = (label, inner) => `
+    <div style="margin-top:16px;padding:22px 24px;border-radius:14px;background:var(--surface);border:1px solid var(--border)">
+      <div style="font-family:JetBrains Mono,monospace;font-size:11px;letter-spacing:.12em;color:var(--amber);font-weight:700;margin-bottom:8px">${label}</div>
+      ${inner}
+    </div>`;
+
+  document.getElementById('info-back-btn').textContent = t.backLabel;
+  document.getElementById('info-page-body').innerHTML = `
+    <div style="font-family:JetBrains Mono,monospace;font-size:12.5px;letter-spacing:.16em;color:var(--amber);font-weight:700">${t.infoEyebrow}</div>
+    <h2 style="font-family:Sora,sans-serif;font-weight:800;font-size:46px;letter-spacing:-.03em;margin:14px 0 0;line-height:1.05;max-width:640px">${t.infoTitle}</h2>
+    <p style="font-size:16.5px;line-height:1.62;color:var(--dim);margin:16px 0 0;max-width:640px">${t.infoSub}</p>
+
+    <div style="font-family:JetBrains Mono,monospace;font-size:11.5px;letter-spacing:.14em;color:var(--amber);font-weight:700;margin:48px 0 16px">${t.stepsLabel}</div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px">
+      ${[[t.step1t, t.step1d], [t.step2t, t.step2d], [t.step3t, t.step3d]].map(([st, sd], i) => `
+        <div style="padding:24px;border-radius:16px;background:var(--card);border:1px solid var(--border)">
+          <div style="font-family:JetBrains Mono,monospace;font-size:13px;font-weight:700;color:var(--amber)">0${i + 1}</div>
+          <h3 style="font-family:Sora,sans-serif;font-weight:700;font-size:18px;margin:12px 0 0">${st}</h3>
+          <p style="font-size:14px;line-height:1.55;color:var(--dim);margin:8px 0 0">${sd}</p>
+        </div>`).join('')}
+    </div>
+
+    <!-- ═══ TELEGRAM ГРУПАТА — в дълбочина ═══ -->
+    <div style="margin-top:40px;padding:28px;border-radius:18px;background:var(--card);border:1px solid var(--border)">
+      <div style="display:grid;grid-template-columns:1fr 220px;gap:26px;align-items:center">
+        <div>
+          <h3 style="font-family:Sora,sans-serif;font-weight:800;font-size:26px;margin:0">${t.wTgTitle}</h3>
+          <p style="font-size:15.5px;line-height:1.65;color:var(--dim);margin:12px 0 0">${t.wTgText}</p>
+          <a href="${TG_URL}" target="_blank" class="hv-e" style="display:inline-flex;align-items:center;gap:9px;margin-top:18px;padding:12px 20px;border-radius:10px;font-weight:700;font-size:14.5px;color:var(--amber-ink);background:var(--amber);transition:transform .2s,filter .2s">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M21.9 4.3 2.9 11.6c-1.1.4-1 1 0 1.3l4.9 1.5 1.9 5.9c.2.6.4.9 1 .9.4 0 .6-.2.9-.5l2.5-2.4 4.9 3.6c.9.5 1.5.2 1.7-.8l3.1-14.6c.3-1.3-.5-1.9-1.8-1.7z"></path></svg>
+            t.me/SignalCore_Free
+          </a>
+        </div>
+        <div style="text-align:center">
+          <div style="display:inline-block;background:#fff;border-radius:14px;padding:10px;border:1px solid var(--border2)"><img src="${QR_URL}" alt="QR Telegram" style="width:170px;height:170px;display:block"></div>
+          <div style="font-family:JetBrains Mono,monospace;font-size:11px;color:var(--mute);margin-top:10px">${t.shareGroup}</div>
+        </div>
+      </div>
+
+      ${subCard(t.anatLabel, `<p style="font-size:14.5px;line-height:1.6;color:var(--dim);margin:0 0 6px">${t.anatIntro}</p>` + numList([t.anat1, t.anat2, t.anat3, t.anat4, t.anat5, t.anat6]))}
+      ${subCard(t.btnLabel, numList([t.btn1, t.btn2, t.btn3, t.btn4, t.btn5]))}
+      ${subCard(t.typesLabel, numList([t.tge1, t.tge2, t.tge3, t.tge4, t.tge5]))}
+      ${subCard(t.tgAnalysisT, `<p style="font-size:14.5px;line-height:1.65;color:var(--dim);margin:0">${t.tgAnalysisD}</p>`)}
+      ${subCard(t.tgWatchT, `<p style="font-size:14.5px;line-height:1.65;color:var(--text);margin:0">${t.tgWatchD}</p>`)}
+    </div>
+
+    <!-- ═══ MINI APP — 7 таба, подробно ═══ -->
+    <div style="margin-top:16px;padding:28px;border-radius:18px;background:var(--card);border:1px solid var(--border)">
+      <h3 style="font-family:Sora,sans-serif;font-weight:800;font-size:26px;margin:0">${t.wAppTitle}</h3>
+      <p style="font-size:15.5px;line-height:1.65;color:var(--dim);margin:12px 0 4px">${t.wAppText}</p>
+      ${titles.map((title, i) => `
+        <div style="margin-top:16px;padding:22px 24px;border-radius:14px;background:var(--surface);border:1px solid var(--border)">
+          <div style="display:flex;align-items:center;gap:10px">
+            <span style="font-family:JetBrains Mono,monospace;font-size:12px;font-weight:700;color:var(--amber)">0${i + 1}</span>
+            <b style="font-family:Sora,sans-serif;font-size:18px">${title}</b>
+            ${TAB_SOON.indexOf(i) !== -1 ? `<span style="font-family:JetBrains Mono,monospace;font-size:9.5px;letter-spacing:.08em;padding:2px 8px;border-radius:5px;color:var(--amber);background:var(--amber-soft);border:1px solid color-mix(in srgb,var(--amber) 30%,transparent)">${t.soonBadge}</span>` : ''}
+          </div>
+          <p style="font-size:14.5px;line-height:1.65;color:var(--dim);margin:10px 0 0">${mTexts[i]}</p>
+          <button onclick="openTabPage(${i})" class="hv-c" style="cursor:pointer;margin-top:14px;padding:9px 16px;border-radius:9px;background:none;border:1px solid var(--border2);color:var(--amber);font-family:Hanken Grotesk,sans-serif;font-weight:600;font-size:13.5px;transition:.2s">${t.viewTabBtn}</button>
+        </div>`).join('')}
+    </div>
+
+    <!-- ═══ САЙТЪТ — подробно ═══ -->
+    <div style="margin-top:16px;padding:28px;border-radius:18px;background:var(--card);border:1px solid var(--border)">
+      <h3 style="font-family:Sora,sans-serif;font-weight:800;font-size:26px;margin:0">${t.wSiteTitle}</h3>
+      ${numList([t.sSite1, t.sSite2, t.sSite3, t.sSite4])}
+    </div>
+
+    <!-- ═══ PRO ═══ -->
+    <div style="margin-top:16px;padding:28px;border-radius:18px;background:color-mix(in srgb,var(--amber) 6%,var(--card));border:1px solid color-mix(in srgb,var(--amber) 40%,transparent)">
+      <h3 style="font-family:Sora,sans-serif;font-weight:800;font-size:26px;margin:0;color:var(--amber)">${t.proTitle}</h3>
+      <p style="font-size:15.5px;line-height:1.65;color:var(--text);margin:12px 0 18px">${t.proText}</p>
+      <button onclick="signIn()" class="hv-d" style="padding:12px 22px;border-radius:10px;background:var(--amber);color:var(--amber-ink);border:none;font-family:Sora,sans-serif;font-weight:700;font-size:14.5px;cursor:pointer;transition:transform .2s,filter .2s">${t.signUp}</button>
+    </div>
+
+    <!-- ═══ СПОДЕЛИ ═══ -->
+    <div style="margin-top:40px">
+      <div style="font-family:JetBrains Mono,monospace;font-size:11.5px;letter-spacing:.14em;color:var(--amber);font-weight:700;margin-bottom:16px">${t.shareLabel}</div>
+      <div style="display:flex;gap:16px;flex-wrap:wrap">
+        <div style="text-align:center;padding:22px;border-radius:16px;background:var(--card);border:1px solid var(--border)">
+          <div style="display:inline-block;background:#fff;border-radius:12px;padding:9px"><img src="${SITE_QR}" alt="QR site" style="width:150px;height:150px;display:block"></div>
+          <div style="font-family:JetBrains Mono,monospace;font-size:11px;color:var(--mute);margin-top:10px">${t.shareSite}</div>
+        </div>
+        <div style="text-align:center;padding:22px;border-radius:16px;background:var(--card);border:1px solid var(--border)">
+          <div style="display:inline-block;background:#fff;border-radius:12px;padding:9px"><img src="${QR_URL}" alt="QR group" style="width:150px;height:150px;display:block"></div>
+          <div style="font-family:JetBrains Mono,monospace;font-size:11px;color:var(--mute);margin-top:10px">${t.shareGroup}</div>
+        </div>
+      </div>
+    </div>`;
+}
 function renderDataSection() {
   document.getElementById('data-eyebrow').textContent = getT().dataEyebrow;
 }
@@ -890,9 +1706,6 @@ function renderFooter() {
   document.getElementById('foot-rights').textContent = t.footRights;
 }
 
-// ══════════════════════════════════════════════
-//  MASTER RENDER — full rebuild (init + language change)
-// ══════════════════════════════════════════════
 function renderAll() {
   document.getElementById('app').setAttribute('data-theme', state.theme);
   document.getElementById('app').setAttribute('data-accent', ACCENT_THEME);
@@ -907,6 +1720,8 @@ function renderAll() {
   renderHeroText();
   renderHeroCard();
   renderAnalysisHeader();
+  renderAnalysisLegend();
+  renderAnalysisGating();
   renderTfTabs();
   renderBtcAnalysisBody();
   renderAlertsHeader();
@@ -917,15 +1732,14 @@ function renderAll() {
   renderCta();
   renderFooter();
 
+  if (state.page === 'tab') renderTabDetail();
+  if (state.page === 'info') renderInfoPage();
+  renderPageVisibility();
+
   setupRevealObservers();
   setupCountObservers();
 }
 
-// ══════════════════════════════════════════════
-//  ACTIONS — replace the removed DC setState() bindings.
-//  Each mutates state then re-renders only the affected region(s),
-//  except setLang which touches nearly every string on the page.
-// ══════════════════════════════════════════════
 function setLang(l) { state.lang = l; renderAll(); }
 
 function toggleTheme() {
@@ -934,14 +1748,14 @@ function toggleTheme() {
   renderThemeIcon();
 }
 
-function signIn() { state.loggedIn = true; renderAuthActions(); renderHeroCard(); }
-function signOut() { state.loggedIn = false; renderAuthActions(); renderHeroCard(); }
+function signIn() { state.loggedIn = true; renderAuthActions(); renderHeroCard(); renderAnalysisGating(); renderAlertsPanel(); }
+function signOut() { state.loggedIn = false; renderAuthActions(); renderHeroCard(); renderAnalysisGating(); renderAlertsPanel(); }
 
 function setTf(tf) { state.tf = tf; renderTfTabs(); renderBtcAnalysisBody(); }
-function setAlert(i) { state.alert = i; renderAlertsButtons(); renderAlertsPanel(); }
+function setAlert(i) { state.alert = i; renderAlertsButtons(); renderAlertsPanel(); document.getElementById('alerts-panel').scrollIntoView({ behavior: 'smooth', block: 'center' }); }
 
 // ══════════════════════════════════════════════
-//  DATA FETCHING — real APIs only, no mock/fake values
+//  DATA FETCHING — one fetcher per data source, real APIs only
 // ══════════════════════════════════════════════
 function fetchBtcAnalysis() {
   fetch(`https://howhaber.github.io/signalcore/btc-analysis.json?t=${Date.now()}`, { cache: 'no-store' })
@@ -950,53 +1764,94 @@ function fetchBtcAnalysis() {
     .catch(() => {});
 }
 
-// Real Bybit spot-market data: advance/decline sentiment, price trend distribution
-// Uses Bybit for advance/decline counts, CoinGecko for global market cap.
-function fetchBybitStats(retriesLeft) {
-  if (retriesLeft === undefined) retriesLeft = 2;
-  Promise.all([
-    fetch(BYBIT_TICKERS_URL).then(r => r.json()),
-    fetch(COINGECKO_URL).then(r => r.json())
-  ])
-    .then(([bybitData, geckoData]) => {
-      const list = bybitData && bybitData.result && bybitData.result.list;
-      if (!Array.isArray(list) || !list.length) { if (retriesLeft > 0) setTimeout(() => fetchBybitStats(retriesLeft - 1), 2000); return; }
-      
-      let up = 0, down = 0, flat = 0;
-      const buckets = { bigDown: 0, down: 0, flat: 0, up: 0, bigUp: 0 };
-      
-      list.forEach((t) => {
-        const pct = parseFloat(t.price24hPcnt) * 100;
-        if (!isFinite(pct)) return;
-        
-        if (pct > 0.01) up++; else if (pct < -0.01) down++; else flat++;
-        if (pct <= -15) buckets.bigDown++;
-        else if (pct < 0) buckets.down++;
-        else if (pct === 0) buckets.flat++;
-        else if (pct < 15) buckets.up++;
-        else buckets.bigUp++;
-      });
-      
-      const total = up + down + flat;
-      const sentiment = total ? Math.round((up / total) * 100) : 50;
-      const marketCap = geckoData?.data?.total_market_cap?.usd || 0;
-      const marketCapChange = geckoData?.data?.market_cap_change_percentage_24h_usd || 0;
-      
-      state.bybitStats = { sentiment, up, down, flat, total, buckets, marketCap, marketCapChange };
-      if (state.loggedIn) renderHeroCard();
+// Fear & Greed + Market Cap + Bybit price distribution (locked section #1 data)
+function fetchMarketSentiment() {
+  fetch('https://api.alternative.me/fng/?limit=1')
+    .then((r) => r.json())
+    .then((data) => {
+      if (data.data && data.data[0]) {
+        state.fgScore = parseInt(data.data[0].value);
+        state.fgLabel = data.data[0].value_classification;
+        if (state.loggedIn) renderHeroCard();
+      }
     })
-    .catch(() => { if (retriesLeft > 0) setTimeout(() => fetchBybitStats(retriesLeft - 1), 2000); });
+    .catch(() => {});
+
+  fetch('https://api.coingecko.com/api/v3/global')
+    .then((r) => {
+      if (!r.ok) throw new Error(`HTTP ${r.status}`);
+      return r.json();
+    })
+    .then((data) => {
+      if (data.data && data.data.total_market_cap && data.data.total_market_cap.usd) {
+        state.marketCapUsd = data.data.total_market_cap.usd / 1e9;
+        state.marketCapChange = data.data.market_cap_change_percentage_24h_usd ?? null;
+        console.log('[CoinGecko] ✓ Market Cap: $' + state.marketCapUsd.toFixed(2) + 'B');
+        if (state.loggedIn) renderHeroCard();
+      }
+    })
+    .catch((err) => {
+      // No fallback values — honest "—" state (CoinGecko is CORS/429-blocked in some sandboxes)
+      console.log('[CoinGecko] unavailable (' + err.message + ') — showing neutral state');
+      state.marketCapUsd = null;
+      state.marketCapChange = null;
+      if (state.loggedIn) renderHeroCard();
+    });
+
+  fetch('https://api.bybit.com/v5/market/tickers?category=spot&limit=1000')
+    .then((r) => r.json())
+    .then((data) => {
+      if (data.result && data.result.list) {
+        const list = data.result.list;
+        let down15 = 0, down6to15 = 0, neutral = 0, up6to15 = 0, up15 = 0;
+        let downTotal = 0, upTotal = 0, validCount = 0;
+        const samples = [];
+
+        list.forEach((ticker) => {
+          if (!ticker.symbol || !ticker.symbol.endsWith('USDT')) return;
+          const pctRaw = ticker.price24hPcnt;
+          if (pctRaw === undefined || pctRaw === null || pctRaw === '') return;
+          const pct = parseFloat(pctRaw) * 100;
+          if (isNaN(pct)) return;
+
+          validCount++;
+          if (samples.length < 3) samples.push({ symbol: ticker.symbol, pct: pct.toFixed(2) });
+
+          if (pct < -15) { down15++; downTotal++; }
+          else if (pct < 0) { down6to15++; downTotal++; }
+          else if (pct === 0) neutral++;
+          else if (pct <= 15) { up6to15++; upTotal++; }
+          else { up15++; upTotal++; }
+        });
+
+        const noChangeRatio = validCount > 0 ? neutral / validCount : 0;
+        if (noChangeRatio > 0.2) {
+          console.error('[Bybit] price24hPcnt parsing broken — No Change is ' + (noChangeRatio * 100).toFixed(1) + '% of total');
+          state.priceDistribution = null;
+          state.priceDown = null;
+          state.priceUp = null;
+        } else {
+          console.log('[Bybit] ✓ Processed ' + validCount + ' USDT tickers. Samples:', samples);
+          state.priceDistribution = { down15, down6to15, neutral, up6to15, up15 };
+          state.priceDown = downTotal;
+          state.priceUp = upTotal;
+        }
+        if (state.loggedIn) renderHeroCard();
+      }
+    })
+    .catch(() => {});
 }
 
+// Ticker strip + Gainers & Losers (CoinGecko live)
 function fetchLogosAndMarket() {
-  const ids = TICKER_COINS.map((c) => c.id).join(',');
-  fetch(`https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=${ids}`)
+  const tickerUrl = `https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=${TICKER_IDS.join(',')}&price_change_percentage=24h`;
+  fetch(tickerUrl)
     .then((r) => r.json())
     .then((rows) => {
-      const logos = {};
-      rows.forEach((r) => { logos[r.id] = r.image; });
-      state.logos = logos;
-      renderTicker();
+      if (Array.isArray(rows) && rows.length) {
+        state.tickerData = rows;
+        renderTicker();
+      }
     })
     .catch(() => {});
 
@@ -1014,9 +1869,6 @@ function fetchLogosAndMarket() {
   loadMarket(2);
 }
 
-// ══════════════════════════════════════════════
-//  SCROLL-REVEAL + COUNT-UP — pure vanilla, unchanged from original
-// ══════════════════════════════════════════════
 function setupRevealObservers() {
   const rObs = new IntersectionObserver((es) => {
     es.forEach((e) => { if (e.isIntersecting) { e.target.style.opacity = '1'; e.target.style.transform = 'none'; rObs.unobserve(e.target); } });
@@ -1041,16 +1893,15 @@ function setupCountObservers() {
   });
 }
 
-// ══════════════════════════════════════════════
-//  INIT
-// ══════════════════════════════════════════════
 document.addEventListener('DOMContentLoaded', () => {
   renderAll();
   fetchBtcAnalysis();
   setInterval(fetchBtcAnalysis, 30000);
+  fetchMarketSentiment();
+  setInterval(fetchMarketSentiment, 30000);
   fetchLogosAndMarket();
-  fetchBybitStats();
-  setInterval(fetchBybitStats, 60000);
+  setInterval(fetchLogosAndMarket, 120000);
+  setInterval(renderAnalysisLegend, 60000); /* обновява „Следващ анализ" при преминаване на 09:00/15:00 */
 });
 </script>
 </body>
