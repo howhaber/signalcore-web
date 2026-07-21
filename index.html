@@ -18,7 +18,7 @@
 <script>
   // ── Version-based cache-bust ─────────────────────────────────
   // Bump BUILD_VERSION on every deploy.
-  var BUILD_VERSION = '2026-07-18-01';
+  var BUILD_VERSION = '2026-07-22-01';
   (function () {
     try {
       var last = localStorage.getItem('sc_build_version');
@@ -382,15 +382,60 @@ const en = {
   emaLabel: 'EMA 200', emaDesc: 'The long-term line. Price above it = uptrend territory.',
   nextAnalysisLabel: 'Next analysis:', todayWord: 'today', tomorrowWord: 'tomorrow',
   gatedTeaser: 'Live sectors, momentum & positioning — for members',
-  navInfo: 'Info', infoEyebrow: 'INFO \u00b7 THE FULL GUIDE', infoTitle: 'Everything about SignalCore \u2014 A to Z',
+  navHome: 'Home', navInfo: 'Info', infoEyebrow: 'INFO \u00b7 THE FULL GUIDE', infoTitle: 'Everything about SignalCore',
   infoSub: 'The ecosystem has three parts working together: the Telegram group (the alerts), the Mini App (the terminal) and this website (the live analytics). Here is what each one does and how to get started.',
+  whyLabel: 'WHY SIGNALCORE',
+  whyIntro: 'Trading drowns in scattered data. Price is on Bybit, liquidations and Open Interest live in Coinglass, charts in TradingView, macro events in an economic calendar, sentiment in a separate index. By the time you open and process it all, the move has already happened. SignalCore pulls these sources into one place, interprets them for you, and tells you not just "what happened" but "what it means and why it matters right now".',
+  why1: 'One place instead of ten tabs — Bybit, Coinglass, TradingView, FRED and Alternative.me, gathered and synced into one feed.',
+  why2: 'Interpreted signal, not a raw number — every alert ships with meaning (what the state implies) and risk (what may follow), not just a figure.',
+  why3: 'Real data, zero fiction — everything is pulled live from official APIs; when data is missing it shows "—", never a made-up value.',
+  why4: 'Proactive, not reactive — the bot pings you when a threshold is crossed, instead of you staring at charts all day waiting for something to happen.',
   stepsLabel: 'HOW TO GET STARTED',
   step1t: 'Join the Telegram group', step1d: 'Tap the button or scan the QR code \u2014 the group is the entry point to everything.',
-  step2t: 'Open the Mini App', step2d: 'Inside the group tap \u201cOpen Mini App\u201d \u2014 the 7-tab terminal opens right inside Telegram.',
-  step3t: 'Register on the website', step3d: 'With email and password. Registration unlocks access to the SignalCore Pro button in the Telegram group.',
+  step2t: 'Register on the site', step2d: 'With email and password. Registration unlocks access to the SignalCore Pro button in the Telegram group.',
+  step3t: 'Open the Mini App', step3d: 'From the group tap \u201cOpen the Mini App\u201d \u2014 the terminal with 7 tabs opens directly in Telegram.',
+  whoLabel: 'WHO IT IS FOR',
+  whoIntro: 'The same data feed works differently for different traders. Here is what each one gets from SignalCore:',
+  who1t: 'Beginner',
+  who1d: 'Learn to read the market without drowning in jargon. Every alert comes with what it means and why it matters, and the Info section and glossary translate the terms. You watch how price reacts to real signals — practice without risk.',
+  who1tag: 'understand the market',
+  who2t: 'Active trader',
+  who2d: 'Save hours of staring at charts. The bot pings you only when a threshold is crossed — extreme funding, an L/S imbalance, a liquidation cascade — and the buttons under each post take you to Coinglass for confirmation in seconds. You react to the move instead of chasing it.',
+  who2tag: 'save time',
+  who3t: 'Scalper / pro',
+  who3d: 'Get the data raw and exact: live Squeeze Score, a divergence scanner across all 53 coins, BTC levels from the AI analysis twice a day, a macro calendar with countdowns. Zero rounding, zero delay — the precise numbers you act on.',
+  who3tag: 'precise data, fast',
   wTgTitle: 'The Telegram group', wTgText: 'This is where the marketMonitor bot delivers: Liquidations, Funding Rate, Long/Short Ratio, Fear & Greed and BTC Snapshots with real TradingView charts \u2014 plus the full AI analysis of BTC every day at 09:00 and 15:00.',
+  flowLabel: 'THE TRADER WORKFLOW',
+  flowIntro: 'The three parts are not separate products — they are one working day. Here is how they connect from morning to entry:',
+  flow1t: 'Morning — context',
+  flow1d: 'At 09:00 the BTC AI analysis lands: bias, levels, the state of 4 timeframes. You open the site for 30 seconds — Trending Sectors and Momentum Leaders tell you where the rotation is today. You know the direction before the market sets the pace.',
+  flow2t: 'During the day — readiness',
+  flow2d: 'The bot alerts work for you. You do not stare at charts — you wait for a ping. When it comes (funding, L/S, liquidation), the title and numbers tell you how sharp it is and whether it deserves attention right now.',
+  flow3t: 'Verify — confirmation',
+  flow3d: 'An alert caught your interest? The buttons under the post take you to Coinglass in seconds, and the site divergence Scanner shows whether the other data points the same way. One match is not a trade — three are a signal.',
+  flow4t: 'Entry — only on confirmation',
+  flow4d: 'You wait for price itself to confirm: a break of a level from the analysis, a reaction at support/resistance. Only then — entry, with a clear stop. Everything before this was preparation; here you take risk deliberately, not impulsively.',
   wAppTitle: 'The Mini App \u2014 7 tabs', wAppText: 'The full trading terminal inside Telegram. Click a tab to open its full page with a real screen and an explanation of how to read it.',
   wSiteTitle: 'The website', wSiteText: 'The live widgets (Fear & Greed, Market Cap, price distribution), the analysis section with sectors, momentum and the BTC/USDT levels, and the Divergence Scanner \u2014 unique to the site. Full access is for registered members.',
+  glossLabel: 'GLOSSARY',
+  glossIntro: 'The terms you will meet in the alerts and tabs — in plain language, once and for all:',
+  gl1t: 'Funding Rate',
+  gl1d: 'A small fee longs and shorts pay each other every few hours. Positive funding = longs pay (crowded long positions); negative = shorts pay. Extreme values reveal which side is overstretched.',
+  gl2t: 'Open Interest (OI)',
+  gl2d: 'The total number of open positions in the market. Rising OI + rising price = fresh capital entering; falling OI = positions closing (often on liquidations). Shows whether a move has fuel.',
+  gl3t: 'Long / Short Ratio (L/S)',
+  gl3d: 'The ratio between traders long and short. 70% long means the crowd is mostly long — fuel for a drop if price turns down and flushes them (a squeeze).',
+  gl4t: 'Squeeze',
+  gl4d: 'A chain reaction where closing positions accelerate the move against the crowd. A long squeeze = crowded longs flushed down; a short squeeze = crowded shorts flushed up.',
+  gl5t: 'Liquidation',
+  gl5d: 'A forced close of a position by the exchange when the loss eats the margin. A cascade = many positions dropping at once, sharply accelerating price.',
+  gl6t: 'EMA',
+  gl6d: 'A moving average weighted toward recent prices. EMA-200 is a long-term reference — price above it = broadly bullish context, below = bearish. The lines on the alert charts are EMAs.',
+  gl7t: 'RSI',
+  gl7d: 'A 0-100 momentum indicator. Above 70 = overbought (a pullback is possible), below 30 = oversold (a bounce is possible). Not a standalone signal — context.',
+  gl8t: 'Bias',
+  gl8d: 'The overall market lean per the analysis — bullish (up), bearish (down) or neutral. Sets the direction you hunt trades in that day.',
   proTitle: 'SignalCore Pro', proText: 'Pro is the paid tier with full functionality. Right now it is activated with a free registration on the website (email + password) \u2014 after registering you get access to the Pro button in the Telegram group.',
   shareLabel: 'SHARE SIGNALCORE', shareSite: 'the website \u00b7 signalcore.trading', shareGroup: 'the group \u00b7 t.me/SignalCore_Free',
   anatLabel: 'ANATOMY OF AN ALERT POST',
@@ -401,6 +446,8 @@ const en = {
   anat4: 'The interpretation — 💡 what the state means (Market is overly bullish) and ⚡ what the risk is (Potential long squeeze / dump). The conclusion is served, you don’t compute it.',
   anat5: 'The hashtags — #LongShort #XRP. Tap a hashtag in Telegram to see every past alert of the same type or for the same coin.',
   anat6: 'The buttons — every post carries one-tap shortcuts to verify the data (see below).',
+  anatUseLabel: 'HOW TO USE IT IN PRACTICE',
+  anatUseBody: 'You do not read the alert top to bottom like news — you scan it in 3 seconds: the title line tells you the TYPE (what happened), the numbers tell you HOW sharp it is (79.7% matters more than 62%), the chart tells you WHERE price sits relative to the levels. If all three line up with something you are already watching, you open the buttons to verify. If not — you just note it and move on. An alert is an invitation to look, not an order to act.',
   btnLabel: 'WHERE THE BUTTONS UNDER EVERY POST LEAD',
   btn1: 'L/S Ratio — opens the live Long/Short ratios on Coinglass: check whether the imbalance from the alert still holds.',
   btn2: '{COIN} Coinglass — the coin’s full Coinglass page: Open Interest, funding and liquidations in one place.',
@@ -408,11 +455,11 @@ const en = {
   btn4: 'Liquidation Levels — the exact price levels with the largest accumulated liquidations for that coin.',
   btn5: 'SignalCore Pro — the Pro panel with the full functionality. Activated after registering on the website (email + password).',
   typesLabel: 'THE FIVE ALERT TYPES — WHEN THEY FIRE AND WHY THEY MATTER',
-  tge1: 'Liquidations — fires on a large cascade of force-closed positions. Why it matters: a sharp flush often marks a local bottom/top, because the weak hands are already out.',
-  tge2: 'Funding Rate — fires on extreme funding. Why it matters: one side is paying dearly to hold — crowding the market loves to punish.',
-  tge3: 'Long/Short Ratio — fires on a sharp imbalance (like the example: 79.7% long). Why it matters: fuel for a squeeze — the same logic as the site’s Divergence Scanner.',
-  tge4: 'Fear & Greed — fires when the sentiment regime shifts. Why it matters: extreme fear is historically an accumulation zone, extreme greed — a distribution zone.',
-  tge5: 'BTC Snapshots — periodic BTC chart snapshots with levels. Why it matters: market context without opening TradingView.',
+  tge1: 'Liquidations — fires on a large cascade of force-closed positions. Why it matters: a sharp flush often marks a local bottom/top, because the weak hands are already out. → How to react: do not chase the cascade itself; wait for price to stop making new extremes and confirm on the Heatmap that stops are already cleared.',
+  tge2: 'Funding Rate — fires on extreme funding. Why it matters: one side is paying dearly to hold — crowding the market loves to punish. → How to react: treat it as a warning that one side is overstretched, not a direct entry — combine it with L/S and the price level before considering a counter-position.',
+  tge3: 'Long/Short Ratio — fires on a sharp imbalance (like the example: 79.7% long). Why it matters: fuel for a squeeze — the same logic as the site’s Divergence Scanner. → How to react: check whether the imbalance lines up with the price level (crowd long near resistance = more dangerous) and whether the site Scanner flags it independently.',
+  tge4: 'Fear & Greed — fires when the sentiment regime shifts. Why it matters: extreme fear is historically an accumulation zone, extreme greed — a distribution zone. → How to react: this is a slow, background signal, not a second-by-second trigger — use it to tilt your bias (are you hunting more longs or shorts this week), not for a specific entry.',
+  tge5: 'BTC Snapshots — periodic BTC chart snapshots with levels. Why it matters: market context without opening TradingView. → How to react: use them for a quick read before an altcoin trade — BTC dictates direction; if BTC sits on a key level, wait for its reaction before entering elsewhere.',
   tgAnalysisT: 'THE AI ANALYSIS AT 09:00 & 15:00',
   tgAnalysisD: 'Twice a day the full BTC technical breakdown arrives: RSI, Stochastic, MACD and EMA-200 across 4 timeframes, the exact support/resistance zones and an overall bias. These are the same levels you see on the site in the BTC/USDT card — the two always match, because they come from the same analysis.',
   tgWatchT: 'WHAT TO ACTUALLY WATCH',
@@ -430,24 +477,40 @@ const en = {
   sSite4: 'The alerts panel: the live tables behind every alert type — top 10 OI changes, funding for every coin, L/S for every coin. Full access after signing in.',
   viewTabBtn: 'See the full page with the real screen →',
   backLabel: '\u2190 Back to overview', tabWhatLabel: 'WHAT IT SHOWS', tabHowLabel: 'HOW TO READ IT', tabSrcLabel: 'DATA SOURCE', tabOpenCta: 'Open it in Telegram',
+  tabWhoLabel: 'WHO IT HELPS',
+  tabUseLabel: 'HOW TO USE IT',
+  d1who: 'Beginner: a single card that tells you "what mood the market is in today" without opening anything else. Active trader: a fast morning screen — Sentiment Score + Dump Bias in 10 seconds. Scalper: the Market Overview of 53 coins sorts where the movement is right now.',
+  d1use: 'Use it as your first screen of the day: Sentiment Score under 40 → the market is timid, be careful with longs; above 60 → euphoria, be careful with late entries. If Dump Bias lights up, L/S is dangerously skewed — confirm on which coins before taking a position against the crowd. Do not trade the Score itself — use it to tilt your bias.',
   d1w: 'The pulse of the entire market on one screen: the live Fear & Greed index, our Market Sentiment Score (0-100, combining Funding, L/S Ratio, OI Change and F&G), the Squeeze Meter with current risks, and a Market Overview of all 53 coins \u2014 price, 24h change, funding, Long/Short and Open Interest for each.',
   d1h: 'Sentiment Score below 40 = fear dominates, above 60 = greed. A red strip on a coin card = negative day, green = positive. The Dump Bias label warns when the L/S ratio is dangerously one-sided.',
   d1s: 'Bybit API (prices, funding, L/S, OI) \u00b7 Alternative.me (F&G) \u00b7 refreshed every 2 minutes.',
+  d2who: 'Beginner: turns "too many people are on one side" into two clear scales and a plain-language sentence. Active trader: the Top 3 cards show where risk is concentrated right now. Scalper: the live 30-second Score catches the build-up before the move itself.',
+  d2use: 'High Dump Risk + price near resistance = a classic short setup on a break down. Do not enter just because the Score is high — wait for the break that releases the crowded longs. Top 3 is a watchlist, not a buy list.',
   d2w: 'SignalCore\u2019s proprietary Squeeze Score: two scales per coin \u2014 Long Squeeze (Dump Risk) and Short Squeeze (Pump Risk), plus the Top 3 highest-risk coins right now with the percentage of traders positioned long.',
   d2h: 'High Dump Risk = crowded longs, a sharp drop is likely on a break down. High Pump Risk = the opposite. The Top 3 cards are the coins that deserve your attention right now.',
   d2s: 'Computed live from Bybit positioning data \u00b7 refreshed every 30 seconds.',
+  d3who: 'Beginner: a clean chart without installing TradingView, plus an L/S bar showing "where the crowd is looking". Active trader: fast switching between coins to check levels. Scalper: candles + volume in one place for micro-timeframe reads.',
+  d3use: 'Use the chart to put an alert in context: a signal only carries weight if price sits at a meaningful level (support/resistance). An L/S bar above ~70% one way = heightened caution, not an automatic entry — it shows risk, not direction.',
   d3w: 'Full TradingView charts for every monitored coin, right inside Telegram \u2014 candles, volume, timeframes. Below: the Long/Short Ratio of the major coins with visual bars.',
   d3h: 'Switch coins with one tap at the top. The L/S bars below show where the crowd is \u2014 above ~70% on one side calls for extra caution.',
   d3s: 'TradingView embed \u00b7 Bybit L/S data.',
+  d4who: 'Beginner: sees what a full trade plan looks like — entry, target, stop — on concrete examples. Active trader: ready levels to check against their own analysis. Scalper: a fast signal with structure, not just "buy".',
+  d4use: 'When it launches: treat every signal as a hypothesis with a clear stop, not a guarantee. The value is in the discipline — predefined Entry/TP/SL remove the impulsive decision. The section is SOON until the strategy goes public with a track record.',
   d4w: 'Concrete trading signals with exact levels: Entry, Take Profit and Stop Loss \u2014 generated by the SignalCore strategy.',
   d4h: 'Every signal also arrives as a Telegram alert. This section launches together with the public release of the strategy.',
   d4s: 'TradingView integration \u00b7 coming soon.',
+  d5who: 'Beginner: learns from real results — sees that losses are part of the game. Active trader: checks whether the strategy fits their style before following it. Scalper: WINRATE and result distribution for a quick edge assessment.',
+  d5use: 'Look at the whole record, not the individual wins: WINRATE + average win/loss ratio say more than a few good trades. The transparency here is the test — if losses are visible too, the numbers are real.',
   d5w: 'A full archive of every past signal with its outcome \u2014 win or loss, nothing deleted, nothing polished.',
   d5h: 'Transparency is part of the product: WINS / LOSSES / WINRATE statistics above the list.',
   d5s: 'Launches together with Signals.',
+  d6who: 'Beginner: understands why the market sometimes "goes crazy" at a certain hour — a macro event. Active trader: the countdown warns them to cut risk before a release. Scalper: knows the exact hour to exit or to wait for volatility.',
+  d6use: 'A red dot (High Impact) = expect a sharp move — many close positions before the release. Practice: do not open new positions right before a High Impact release unless that is exactly what you trade. Actual vs Previous tells you the surprise — that moves price, not the number itself.',
   d6w: 'The economic calendar that moves crypto: CPI, NFP, GDP and Fed rate decisions \u2014 with real values (Actual vs Previous), trend and a countdown to every event.',
   d6h: 'A red dot = High Impact \u2014 the market almost always reacts. The Trend row shows the direction of the data across recent prints.',
   d6s: 'FRED API (the Fed\u2019s official data) \u00b7 live.',
+  d7who: 'Beginner: sees that individual coins have their own catalysts, not just the broad market. Active trader: watches token unlocks — a frequent source of sell-offs. Scalper: a calendar for coin-specific volatility.',
+  d7use: 'A token unlock often = downward pressure, because new supply hits the market — know the dates of the coins you trade. A major exchange listing = the opposite. Use it so an event you could have foreseen does not surprise you.',
   d7w: 'Crypto events from CoinMarketCal: upgrades, listings, token unlocks \u2014 the things that move individual coins.',
   d7h: 'Events are ordered by date; sources are verified by the CoinMarketCal community.',
   d7s: 'CoinMarketCal API.',
@@ -493,23 +556,69 @@ const bg = {
   emaLabel: 'EMA 200', emaDesc: 'Дългосрочната линия. Цена над нея = територия на възходящ тренд.',
   nextAnalysisLabel: 'Следващ анализ:', todayWord: 'днес', tomorrowWord: 'утре',
   gatedTeaser: 'Живи сектори, моментум и позициониране — за членове',
+  navHome: 'Начало',
   navInfo: 'Инфо',
   infoEyebrow: 'ИНФО · ПЪЛНОТО РЪКОВОДСТВО',
-  infoTitle: 'Всичко за SignalCore — от А до Я',
+  infoTitle: 'Всичко за SignalCore',
   infoSub: 'Екосистемата има три части, които работят заедно: Telegram групата (известията), Mini App-ът (терминалът) и този сайт (анализите на живо). Ето какво прави всяка и как да започнеш.',
+  whyLabel: 'ЗАЩО SIGNALCORE',
+  whyIntro: 'Трейдингът се дави в разпръснати данни. Цената е на Bybit, ликвидациите и Open Interest — в Coinglass, графиките — в TradingView, макро събитията — в икономически календар, настроението — в отделен индекс. Докато отвориш и осмислиш всичко, ходът вече е минал. SignalCore събира тези източници на едно място, осмисля ги вместо теб и ти казва не само „какво стана", а „какво означава и защо има значение точно сега".',
+  why1: 'Едно място вместо десет табове — Bybit, Coinglass, TradingView, FRED и Alternative.me, събрани и синхронизирани в общ поток.',
+  why2: 'Осмислен сигнал, не суров номер — всяко известие идва с тълкуване (какво означава състоянието) и риск (какво може да последва), не просто число.',
+  why3: 'Реални данни, нула измислица — всичко се тегли на живо от официалните API-та; при липса на данни се показва „—", никога напудрена стойност.',
+  why4: 'Проактивно, не реактивно — ботът те буди, когато праг е прекрачен, вместо ти да зяпаш графики по цял ден и да чакаш нещо да се случи.',
   stepsLabel: 'КАК ДА ЗАПОЧНЕШ',
   step1t: 'Влез в Telegram групата',
   step1d: 'Натисни бутона или сканирай QR кода — групата е входната точка към всичко.',
-  step2t: 'Отвори Mini App-а',
-  step2d: 'От групата натисни „Отвори Мини Приложението" — терминалът със 7-те таба се отваря директно в Telegram.',
-  step3t: 'Регистрирай се на сайта',
-  step3d: 'С имейл и парола. Регистрацията отключва достъпа до SignalCore Pro бутона в Telegram групата.',
+  step2t: 'Регистрирай се на сайта',
+  step2d: 'С имейл и парола. Регистрацията отключва достъпа до SignalCore Pro бутона в Telegram групата.',
+  step3t: 'Отвори Mini App',
+  step3d: 'От групата натисни „Отвори Мини Приложението" — терминалът със 7-те таба се отваря директно в Telegram.',
+  whoLabel: 'ЗА КОГО Е',
+  whoIntro: 'Един и същ поток данни работи по различен начин за различните трейдъри. Ето какво печели всеки от SignalCore:',
+  who1t: 'Начинаещ',
+  who1d: 'Учиш се да четеш пазара без да се давиш в термини. Всяко известие идва с обяснение какво означава и защо има значение, а Инфо разделът и речникът превеждат жаргона. Виждаш как реагира цената на реални сигнали — това е практика без риск.',
+  who1tag: 'разбираш пазара',
+  who2t: 'Активен трейдър',
+  who2d: 'Спестяваш часове зяпане в графики. Ботът те буди само когато праг е прекрачен — екстремен funding, L/S дисбаланс, ликвидна каскада — а бутоните под поста те водят за секунди до Coinglass за потвърждение. Реагираш на движението, не го преследваш.',
+  who2tag: 'спестяваш време',
+  who3t: 'Скалпер / професионалист',
+  who3d: 'Получаваш данните сурови и точни: Squeeze Score на живо, Скенер за дивергенции на 53-те монети, BTC нива от AI анализа два пъти дневно, макро календар с обратно броене. Нула закръгляне, нула забавяне — точните числа, на които стъпваш.',
+  who3tag: 'точни данни, бързо',
   wTgTitle: 'Telegram групата',
   wTgText: 'Тук пристигат сигналите на marketMonitor бота: Ликвидации, Funding Rate, Long/Short Ratio, Fear & Greed и BTC Snapshots с реални TradingView графики — плюс пълният AI анализ на BTC всеки ден в 09:00 и 15:00.',
+  flowLabel: 'РАБОТЕН ПРОЦЕС НА ТРЕЙДЪРА',
+  flowIntro: 'Трите части не са отделни продукти — те са един работен ден. Ето как се връзват от сутрин до вход:',
+  flow1t: 'Сутрин — контекст',
+  flow1d: 'В 09:00 пристига AI анализът на BTC: bias, нива, състояние на 4 таймфрейма. Отваряш сайта за 30 секунди — Trending Sectors и Momentum Leaders ти казват къде е ротацията днес. Вече знаеш посоката, преди пазарът да е задал темпо.',
+  flow2t: 'През деня — готовност',
+  flow2d: 'Известията на бота работят вместо теб. Не зяпаш графики — чакаш ping. Когато дойде (funding, L/S, ликвидация), заглавието и числата ти казват колко остро е и заслужава ли внимание точно сега.',
+  flow3t: 'Проверка — потвърждение',
+  flow3d: 'Известие те заинтересува? Бутоните под поста те водят до Coinglass за секунди, а Скенерът за дивергенции на сайта показва дали и другите данни сочат в същата посока. Едно съвпадение не е сделка — три са сигнал.',
+  flow4t: 'Вход — само с потвърждение',
+  flow4d: 'Чакаш самата цена да потвърди: пробив на ниво от анализа, реакция на подкрепа/съпротива. Чак тогава — вход, с ясен стоп. Всичко преди това беше подготовка; тук поемаш риск съзнателно, не импулсивно.',
   wAppTitle: 'Mini App — 7 таба',
   wAppText: 'Пълноценният търговски терминал в Telegram. Кликни на таб, за да отвориш пълната му страница с реален екран и обяснение как се чете.',
   wSiteTitle: 'Сайтът',
   wSiteText: 'Живите widget-и (Fear & Greed, Market Cap, дистрибуция на цените), анализ секцията със сектори, моментум и BTC/USDT нивата, и Скенерът за дивергенции — уникален за сайта. Пълният достъп е за регистрирани членове.',
+  glossLabel: 'РЕЧНИК НА ТЕРМИНИТЕ',
+  glossIntro: 'Термините, които ще срещаш в известията и табовете — на прост език, веднъж завинаги:',
+  gl1t: 'Funding Rate',
+  gl1d: 'Малка такса, която лонговете и шортовете си плащат взаимно на всеки няколко часа. Положителен funding = лонговете плащат (претъпкани дълги позиции); отрицателен = шортовете плащат. Екстремните стойности издават коя страна е пренатегната.',
+  gl2t: 'Open Interest (OI)',
+  gl2d: 'Общият брой отворени позиции на пазара. Растящ OI + растяща цена = свеж капитал влиза; падащ OI = позиции се затварят (често при ликвидации). Показва дали движението има гориво.',
+  gl3t: 'Long / Short Ratio (L/S)',
+  gl3d: 'Съотношението между трейдъри в дълга и къса позиция. 70% long значи тълпата е предимно дълга — гориво за спад, ако цената тръгне надолу и ги изхвърли (squeeze).',
+  gl4t: 'Squeeze',
+  gl4d: 'Верижна реакция, при която затварящи се позиции ускоряват движението срещу тълпата. Long squeeze = натъпкани лонгове биват изхвърлени надолу; short squeeze = натъпкани шортове — нагоре.',
+  gl5t: 'Ликвидация',
+  gl5d: 'Принудително затваряне на позиция от борсата, когато загубата изяде маржина. Каскада от ликвидации = много позиции падат наведнъж, което рязко ускорява цената.',
+  gl6t: 'EMA',
+  gl6d: 'Плъзгаща се средна, която тежи повече към скорошните цени. EMA-200 е дългосрочен ориентир — цена над нея = по-скоро бичи контекст, под нея = мечи. Линиите на графиката в известията са EMA.',
+  gl7t: 'RSI',
+  gl7d: 'Индикатор 0-100 за инерцията. Над 70 = презакупено (възможен отдих надолу), под 30 = препродадено (възможен отскок). Не е самостоятелен сигнал — контекст.',
+  gl8t: 'Bias',
+  gl8d: 'Общият уклон на пазара според анализа — bullish (нагоре), bearish (надолу) или neutral. Задава посоката, в която търсиш сделки този ден.',
   proTitle: 'SignalCore Pro',
   proText: 'Pro е платеният достъп до пълната функционалност. В момента се активира с безплатна регистрация на сайта (имейл + парола) — след нея получаваш достъп до Pro бутона в Telegram групата.',
   shareLabel: 'СПОДЕЛИ SIGNALCORE',
@@ -523,6 +632,8 @@ const bg = {
   anat4: 'Тълкуването — 💡 какво означава състоянието (Market is overly bullish) и ⚡ какъв е рискът (Potential long squeeze / dump). Изводът е сервиран, не го смяташ ти.',
   anat5: 'Хаштаговете — #LongShort #XRP. Кликни хаштаг в Telegram и виждаш всички минали известия от същия тип или за същата монета.',
   anat6: 'Бутоните — под всеки пост има преки пътища за проверка на данните с един клик (виж по-долу).',
+  anatUseLabel: 'КАК СЕ ИЗПОЛЗВА НА ПРАКТИКА',
+  anatUseBody: 'Не четеш известието отгоре надолу като новина — сканираш го за 3 секунди: заглавният ред ти казва ТИПА (какво стана), числата — КОЛКО остро е (79.7% е по-важно от 62%), графиката — КЪДЕ спрямо нивата стои цената. Ако трите съвпадат с това, което вече следиш, отваряш бутоните за проверка. Ако не — просто отбелязваш и продължаваш. Известието е покана да погледнеш, не заповед да действаш.',
   btnLabel: 'КЪДЕ ВОДЯТ БУТОНИТЕ ПОД ВСЕКИ ПОСТ',
   btn1: 'L/S Ratio — отваря Long/Short съотношенията на живо в Coinglass: проверяваш дали дисбалансът от сигнала още стои.',
   btn2: '{COIN} Coinglass — пълната страница на монетата в Coinglass: Open Interest, funding и ликвидации на едно място.',
@@ -530,11 +641,11 @@ const bg = {
   btn4: 'Liquidation Levels — конкретните ценови нива с най-много натрупани ликвидации за тази монета.',
   btn5: 'SignalCore Pro — Pro панелът с пълната функционалност. Активира се след регистрация на сайта (имейл + парола).',
   typesLabel: 'ПЕТТЕ ТИПА ИЗВЕСТИЯ — КОГА ИДВАТ И ЗАЩО ИМАТ ЗНАЧЕНИЕ',
-  tge1: 'Ликвидации — идва при голяма каскада от принудително затворени позиции. Защо има значение: рязкото изчистване често бележи локално дъно/връх, защото „слабите ръце" вече са вън.',
-  tge2: 'Funding Rate — идва при екстремен funding. Защо има значение: едната страна плаща скъпо, за да държи позиции — претъпкване, което пазарът обича да наказва.',
-  tge3: 'Long/Short Ratio — идва при рязък дисбаланс (както в примера: 79.7% long). Защо има значение: гориво за squeeze — същата логика като Скенера за дивергенции на сайта.',
-  tge4: 'Fear & Greed — идва при смяна на режима на настроението. Защо има значение: екстремният страх исторически е зона на натрупване, екстремната алчност — на раздаване.',
-  tge5: 'BTC Snapshots — периодични снимки на BTC графиката с нива. Защо има значение: контекстът на пазара, без да отваряш TradingView.',
+  tge1: 'Ликвидации — идва при голяма каскада от принудително затворени позиции. Защо има значение: рязкото изчистване често бележи локално дъно/връх, защото „слабите ръце" вече са вън. → Как да реагираш: не гони самата каскада; изчакай цената да спре да прави нови екстреми и потвърди с Heatmap-а дали стоповете вече са изчистени.',
+  tge2: 'Funding Rate — идва при екстремен funding. Защо има значение: едната страна плаща скъпо, за да държи позиции — претъпкване, което пазарът обича да наказва. → Как да реагираш: третирай го като предупреждение за пренатегната страна, не като директен вход — комбинирай с L/S и нивото на цената, преди да мислиш за контра-позиция.',
+  tge3: 'Long/Short Ratio — идва при рязък дисбаланс (както в примера: 79.7% long). Защо има значение: гориво за squeeze — същата логика като Скенера за дивергенции на сайта. → Как да реагираш: провери дали дисбалансът съвпада с нивото на цената (тълпата дълга близо до съпротива = по-опасно) и дали Скенерът на сайта го маркира независимо.',
+  tge4: 'Fear & Greed — идва при смяна на режима на настроението. Защо има значение: екстремният страх исторически е зона на натрупване, екстремната алчност — на раздаване. → Как да реагираш: това е бавен, фонов сигнал, не тригер за секунди — използвай го, за да наклониш пристрастието си (търсиш ли повече longs или shorts тази седмица), не за конкретен вход.',
+  tge5: 'BTC Snapshots — периодични снимки на BTC графиката с нива. Защо има значение: контекстът на пазара, без да отваряш TradingView. → Как да реагираш: използвай ги за бърза ориентация преди сделка на алткойн — BTC диктува посоката; ако BTC е на ключово ниво, изчакай реакцията му, преди да влезеш другаде.',
   tgAnalysisT: 'AI АНАЛИЗЪТ В 09:00 И 15:00',
   tgAnalysisD: 'Два пъти дневно пристига пълният технически разбор на BTC: RSI, Stochastic, MACD и EMA-200 на 4 таймфрейма, точните зони на подкрепа/съпротива и общ bias. Това са същите нива, които виждаш на сайта в BTC/USDT картата — двете винаги съвпадат, защото идват от един и същ анализ.',
   tgWatchT: 'КАКВО ДА СЛЕДИШ НА ПРАКТИКА',
@@ -552,24 +663,40 @@ const bg = {
   sSite4: 'Панелът с известията: живите таблици зад всеки тип сигнал — топ 10 OI промени, funding на всички монети, L/S на всички монети. Пълният достъп е след вход.',
   viewTabBtn: 'Виж пълната страница с реалния екран →',
   backLabel: '\u2190 \u041d\u0430\u0437\u0430\u0434 \u043a\u044a\u043c \u043f\u0440\u0435\u0433\u043b\u0435\u0434\u0430', tabWhatLabel: '\u041a\u0410\u041a\u0412\u041e \u041f\u041e\u041a\u0410\u0417\u0412\u0410', tabHowLabel: '\u041a\u0410\u041a \u0421\u0415 \u0427\u0415\u0422\u0415', tabSrcLabel: '\u0418\u0417\u0422\u041e\u0427\u041d\u0418\u041a \u041d\u0410 \u0414\u0410\u041d\u041d\u0418\u0422\u0415', tabOpenCta: '\u041e\u0442\u0432\u043e\u0440\u0438 \u0433\u043e \u0432 Telegram',
+  tabWhoLabel: 'ЗА КОГО Е ПОЛЕЗНО',
+  tabUseLabel: 'КАК ДА ГО ИЗПОЛЗВАШ',
+  d1who: 'Начинаещ: една карта, от която разбираш „в какво настроение е пазарът днес" без да отваряш нищо друго. Активен трейдър: бърз сутрешен скрийнинг — Sentiment Score + Dump Bias за 10 секунди. Скалпер: Market Overview на 53-те монети подрежда къде има движение точно сега.',
+  d1use: 'Ползвай го като първи екран за деня: Sentiment Score под 40 → пазарът е плах, внимавай с longs; над 60 → еуфория, внимавай с късни входове. Ако Dump Bias свети, значи L/S е опасно натежал — потвърди на кои монети преди да заемеш позиция срещу тълпата. Не търгувай самия Score — използвай го, за да наклониш пристрастието си.',
   d1w: 'Пулсът на целия пазар на един екран: Fear & Greed индексът на живо, нашият Market Sentiment Score (0-100, комбиниращ Funding, L/S Ratio, OI Change и F&G), Squeeze Meter с текущите рискове и Market Overview на всичките 53 монети — цена, 24h промяна, funding, Long/Short и Open Interest за всяка.',
   d1h: 'Sentiment Score под 40 = страхът доминира, над 60 = алчността. Червена лента върху карта на монета = отрицателен ден, зелена = положителен. Етикетът Dump Bias предупреждава, когато L/S съотношението е опасно натежало в една посока.',
   d1s: 'Bybit API (цени, funding, L/S, OI) · Alternative.me (F&G) · обновяване на всеки 2 минути.',
+  d2who: 'Начинаещ: превежда „твърде много хора са от едната страна" в две ясни скали и изречение на човешки език. Активен трейдър: Топ 3 картите казват къде е риск-концентрацията точно сега. Скалпер: живият Score на 30 секунди хваща натрупването преди самото движение.',
+  d2use: 'Висок Dump Risk + цена близо до съпротива = класически сетъп за къса позиция при пробив надолу. Не влизай само защото Score-ът е висок — изчакай пробива, който освобождава натрупаните longs. Топ 3 е списък за наблюдение, не списък за покупка.',
   d2w: 'Собственият Squeeze Score на SignalCore: две скали за всяка монета — Long Squeeze (Dump Risk) и Short Squeeze (Pump Risk), плюс Топ 3 на най-рисковите монети в момента с процента на long трейдърите.',
   d2h: 'Висок Dump Risk = претъпкани long позиции — рязък спад е вероятен при пробив надолу. Висок Pump Risk = обратното. Топ 3 картите са монетите, които заслужават внимание точно сега.',
   d2s: 'Изчислява се на живо от позиционните данни на Bybit · обновяване на всеки 30 секунди.',
+  d3who: 'Начинаещ: чиста графика без да инсталираш TradingView, плюс L/S лента, която показва „накъде гледа тълпата". Активен трейдър: бърза смяна между монети за проверка на нива. Скалпер: свещи + обем на едно място за микро-таймфрейм четене.',
+  d3use: 'Използвай графиката за да сложиш известието в контекст: сигналът има тежест само ако цената е на смислено ниво (съпротива/подкрепа). L/S лентата над ~70% в една посока = повишено внимание, не автоматичен вход — тя показва риск, не посока.',
   d3w: 'Пълноценни TradingView графики за всяка следена монета, директно в Telegram — свещи, обем, таймфреймове. Отдолу: Long/Short Ratio на основните монети с визуални ленти.',
   d3h: 'Сменяш монетата с един клик отгоре. L/S лентите показват къде е тълпата — над ~70% в една посока изисква повишено внимание.',
   d3s: 'TradingView embed · Bybit L/S данни.',
+  d4who: 'Начинаещ: вижда как изглежда пълен план за сделка — вход, цел, стоп — на конкретни примери. Активен трейдър: готови нива за проверка срещу собствения анализ. Скалпер: бърз сигнал със структура, не просто „купувай".',
+  d4use: 'Когато стартира: третирай всеки сигнал като хипотеза с ясен стоп, не като гаранция. Стойността е в дисциплината — предефинирани Вход/TP/SL махат импулсивното решение. Секцията е СКОРО, докато стратегията се пусне публично с проследим рекорд.',
   d4w: 'Конкретни търговски сигнали с точни нива: Вход, Take Profit и Stop Loss — генерирани от стратегията на SignalCore.',
   d4h: 'Всеки сигнал пристига и като Telegram известие. Секцията стартира заедно с публичното пускане на стратегията.',
   d4s: 'TradingView интеграция · очаквайте скоро.',
+  d5who: 'Начинаещ: учи се от реални резултати — вижда, че и загубите са част от играта. Активен трейдър: проверява дали стратегията пасва на неговия стил преди да я следва. Скалпер: WINRATE и разпределение на резултатите за бърза оценка на edge-а.',
+  d5use: 'Гледай целия рекорд, не отделните печалби: WINRATE + средно съотношение печалба/загуба казват повече от няколко добри сделки. Прозрачността тук е тестът — ако и загубите са видими, числата са реални.',
   d5w: 'Пълен архив на всички минали сигнали с резултата им — печалба или загуба, без изтриване и без разкрасяване.',
   d5h: 'Прозрачността е част от продукта: статистика WINS / LOSSES / WINRATE над списъка.',
   d5s: 'Стартира заедно със Signals.',
+  d6who: 'Начинаещ: разбира защо пазарът понякога „полудява" в определен час — макро събитие. Активен трейдър: обратното броене го предупреждава да намали риска преди новина. Скалпер: знае точния час, в който да излезе или да чака волатилността.',
+  d6use: 'Червена точка (High Impact) = очаквай рязко движение — мнозина затварят позиции преди събитието. Практика: не отваряй нови позиции малко преди High Impact новина, освен ако точно това не търгуваш. Actual срещу Previous ти казва изненадата — тя движи цената, не самото число.',
   d6w: 'Икономическият календар, който движи крипто: CPI, NFP, GDP и решенията на Fed — с реални стойности (Actual vs Previous), тренд и обратно броене до всяко събитие.',
   d6h: 'Червена точка = High Impact — пазарът почти винаги реагира. Редът Trend показва посоката на данните от последните изчитания.',
   d6s: 'FRED API (официалните данни на Fed) · на живо.',
+  d7who: 'Начинаещ: вижда, че отделни монети имат свои катализатори, не само общия пазар. Активен трейдър: следи отключвания на токени (unlock) — чест източник на разпродажби. Скалпер: календар за монето-специфична волатилност.',
+  d7use: 'Отключване на токени (unlock) често = натиск надолу, защото нов offer излиза на пазара — знай датите на монетите, които търгуваш. Листване на голяма борса = обратното. Използвай го за да не те изненада събитие, което си могъл да предвидиш.',
   d7w: 'Крипто събития от CoinMarketCal: ъпгрейди, листвания, отключвания на токени — нещата, които движат отделните монети.',
   d7h: 'Събитията са подредени по дата; източниците се верифицират от общността на CoinMarketCal.',
   d7s: 'CoinMarketCal API.',
@@ -594,7 +721,7 @@ function getT() {
 // ══════════════════════════════════════════════
 const state = {
   theme: 'dark', lang: 'bg', tf: '15m', alert: 0, tabShot: 0, page: 'home', from: 'home',
-  logos: {}, loggedIn: false,
+  logos: {}, loggedIn: true,
   market: [],            // gainers & losers (CoinGecko live)
   tickerData: [],        // top ticker strip (CoinGecko live)
   btcAnalysis: null,     // btc-analysis.json (Claude Code pipeline)
@@ -635,11 +762,12 @@ function animateCount(el) {
 function renderNav() {
   const t = getT();
   document.getElementById('nav-links').innerHTML = `
+    <a href="#top" onclick="goHomeThen()" style="color:var(--dim)">${t.navHome}</a>
     <a href="#tabs" onclick="goHomeThen()" style="color:var(--dim)">${t.navFeatures}</a>
     <a href="#alerts" onclick="goHomeThen()" style="color:var(--dim)">${t.navAlerts}</a>
     <a href="#analysis" onclick="goHomeThen()" style="color:var(--dim)">${t.navAnalysis}</a>
     <a href="#data" onclick="goHomeThen()" style="color:var(--dim)">${t.navData}</a>
-    <a href="javascript:void(0)" onclick="openInfoPage()" style="color:var(--amber)">${t.navInfo}</a>`;
+    <a href="javascript:void(0)" onclick="openInfoPage()" style="color:var(--dim)">${t.navInfo}</a>`;
 }
 
 function renderLangButtons() {
@@ -668,8 +796,7 @@ function renderAuthActions() {
       <a href="${TG_URL}" target="_blank" class="hv-d" style="display:inline-flex;align-items:center;gap:8px;padding:10px 17px;border-radius:9px;font-weight:700;font-size:14px;white-space:nowrap;color:var(--amber-ink);background:var(--amber);transition:transform .2s,filter .2s">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M21.9 4.3 2.9 11.6c-1.1.4-1 1 0 1.3l4.9 1.5 1.9 5.9c.2.6.4.9 1 .9.4 0 .6-.2.9-.5l2.5-2.4 4.9 3.6c.9.5 1.5.2 1.7-.8l3.1-14.6c.3-1.3-.5-1.9-1.8-1.7z"></path></svg>
         ${t.openApp}
-      </a>
-      <button onclick="signOut()" class="hv-b" style="padding:9px 12px;border-radius:9px;background:none;border:1px solid var(--border);color:var(--dim);font-family:Hanken Grotesk,sans-serif;font-weight:600;font-size:13px;cursor:pointer;white-space:nowrap">${t.signOut}</button>`;
+      </a>`;
   } else {
     el.innerHTML = `
       <button onclick="signIn()" class="hv-c" style="padding:10px 17px;border-radius:9px;background:none;border:1px solid var(--border2);color:var(--text);font-family:Hanken Grotesk,sans-serif;font-weight:700;font-size:14px;cursor:pointer;white-space:nowrap;transition:.2s">${t.signIn}</button>
@@ -1519,6 +1646,8 @@ function renderTabDetail() {
           <div style="font-family:JetBrains Mono,monospace;font-size:11px;letter-spacing:.1em;color:var(--amber);font-weight:700;margin-bottom:10px">${t.tabHowLabel}</div>
           <p style="font-size:15.5px;line-height:1.65;color:var(--dim);margin:0">${how}</p>
         </div>
+        ${t[`d${i + 1}who`] ? `<div style="margin-top:14px;padding:20px 22px;border-radius:14px;background:var(--surface);border:1px solid var(--border)"><div style="font-family:JetBrains Mono,monospace;font-size:11px;letter-spacing:.1em;color:var(--amber);font-weight:700;margin-bottom:10px">${t.tabWhoLabel}</div><p style="font-size:15.5px;line-height:1.65;color:var(--dim);margin:0">${t[`d${i + 1}who`]}</p></div>` : ''}
+        ${t[`d${i + 1}use`] ? `<div style="margin-top:14px;padding:20px 22px;border-radius:14px;background:var(--surface);border:1px solid var(--border)"><div style="font-family:JetBrains Mono,monospace;font-size:11px;letter-spacing:.1em;color:var(--amber);font-weight:700;margin-bottom:10px">${t.tabUseLabel}</div><p style="font-size:15.5px;line-height:1.65;color:var(--text);margin:0">${t[`d${i + 1}use`]}</p></div>` : ''}
         <div style="margin-top:14px;padding:16px 22px;border-radius:14px;background:var(--surface);border:1px solid var(--border);display:flex;align-items:center;gap:12px">
           <div style="font-family:JetBrains Mono,monospace;font-size:11px;letter-spacing:.1em;color:var(--mute);font-weight:700;flex-shrink:0">${t.tabSrcLabel}</div>
           <div style="font-family:JetBrains Mono,monospace;font-size:12.5px;color:var(--dim)">${src}</div>
@@ -1603,6 +1732,17 @@ function renderInfoPage() {
     <h2 style="font-family:Sora,sans-serif;font-weight:800;font-size:46px;letter-spacing:-.03em;margin:14px 0 0;line-height:1.05;max-width:640px">${t.infoTitle}</h2>
     <p style="font-size:16.5px;line-height:1.62;color:var(--dim);margin:16px 0 0;max-width:640px">${t.infoSub}</p>
 
+    <div style="font-family:JetBrains Mono,monospace;font-size:11.5px;letter-spacing:.14em;color:var(--amber);font-weight:700;margin:48px 0 16px">${t.whyLabel}</div>
+    <div style="padding:26px 28px;border-radius:18px;background:var(--card);border:1px solid var(--border)">
+      <p style="font-size:15.5px;line-height:1.68;color:var(--dim);margin:0 0 18px">${t.whyIntro}</p>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+        ${[t.why1, t.why2, t.why3, t.why4].map((x) => `
+          <div style="display:flex;gap:11px;padding:16px 18px;border-radius:12px;background:var(--surface);border:1px solid var(--border);font-size:14px;line-height:1.55;color:var(--dim)">
+            <span style="color:var(--amber);flex-shrink:0;font-weight:700">✓</span><span>${x}</span>
+          </div>`).join('')}
+      </div>
+    </div>
+
     <div style="font-family:JetBrains Mono,monospace;font-size:11.5px;letter-spacing:.14em;color:var(--amber);font-weight:700;margin:48px 0 16px">${t.stepsLabel}</div>
     <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px">
       ${[[t.step1t, t.step1d], [t.step2t, t.step2d], [t.step3t, t.step3d]].map(([st, sd], i) => `
@@ -1610,6 +1750,19 @@ function renderInfoPage() {
           <div style="font-family:JetBrains Mono,monospace;font-size:13px;font-weight:700;color:var(--amber)">0${i + 1}</div>
           <h3 style="font-family:Sora,sans-serif;font-weight:700;font-size:18px;margin:12px 0 0">${st}</h3>
           <p style="font-size:14px;line-height:1.55;color:var(--dim);margin:8px 0 0">${sd}</p>
+        </div>`).join('')}
+    </div>
+
+    <!-- ═══ ЗА КОГО Е — 3 профила ═══ -->
+    <div style="font-family:JetBrains Mono,monospace;font-size:11.5px;letter-spacing:.14em;color:var(--amber);font-weight:700;margin:48px 0 8px">${t.whoLabel}</div>
+    <p style="font-size:15px;line-height:1.6;color:var(--dim);margin:0 0 16px;max-width:680px">${t.whoIntro}</p>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px">
+      ${[[t.who1t, t.who1d, t.who1tag], [t.who2t, t.who2d, t.who2tag], [t.who3t, t.who3d, t.who3tag]].map(([wt, wd, wtag], i) => `
+        <div style="display:flex;flex-direction:column;padding:24px;border-radius:16px;background:var(--card);border:1px solid var(--border)">
+          <div style="font-family:JetBrains Mono,monospace;font-size:13px;font-weight:700;color:var(--amber)">0${i + 1}</div>
+          <h3 style="font-family:Sora,sans-serif;font-weight:700;font-size:19px;margin:12px 0 0">${wt}</h3>
+          <p style="font-size:14px;line-height:1.6;color:var(--dim);margin:10px 0 16px;flex-grow:1">${wd}</p>
+          <span style="align-self:flex-start;font-family:JetBrains Mono,monospace;font-size:10.5px;letter-spacing:.06em;padding:5px 11px;border-radius:6px;color:var(--amber);background:var(--amber-soft);border:1px solid color-mix(in srgb,var(--amber) 30%,transparent)">${wtag}</span>
         </div>`).join('')}
     </div>
 
@@ -1631,10 +1784,23 @@ function renderInfoPage() {
       </div>
 
       ${subCard(t.anatLabel, `<p style="font-size:14.5px;line-height:1.6;color:var(--dim);margin:0 0 6px">${t.anatIntro}</p>` + numList([t.anat1, t.anat2, t.anat3, t.anat4, t.anat5, t.anat6]))}
+      ${subCard(t.anatUseLabel, `<p style="font-size:14.5px;line-height:1.65;color:var(--text);margin:0">${t.anatUseBody}</p>`)}
       ${subCard(t.btnLabel, numList([t.btn1, t.btn2, t.btn3, t.btn4, t.btn5]))}
       ${subCard(t.typesLabel, numList([t.tge1, t.tge2, t.tge3, t.tge4, t.tge5]))}
       ${subCard(t.tgAnalysisT, `<p style="font-size:14.5px;line-height:1.65;color:var(--dim);margin:0">${t.tgAnalysisD}</p>`)}
       ${subCard(t.tgWatchT, `<p style="font-size:14.5px;line-height:1.65;color:var(--text);margin:0">${t.tgWatchD}</p>`)}
+    </div>
+
+    <!-- ═══ РАБОТЕН ПРОЦЕС — 4 стъпки ═══ -->
+    <div style="font-family:JetBrains Mono,monospace;font-size:11.5px;letter-spacing:.14em;color:var(--amber);font-weight:700;margin:40px 0 8px">${t.flowLabel}</div>
+    <p style="font-size:15px;line-height:1.6;color:var(--dim);margin:0 0 16px;max-width:680px">${t.flowIntro}</p>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px">
+      ${[[t.flow1t, t.flow1d], [t.flow2t, t.flow2d], [t.flow3t, t.flow3d], [t.flow4t, t.flow4d]].map(([ft, fd], i) => `
+        <div style="position:relative;padding:22px 20px;border-radius:14px;background:var(--card);border:1px solid var(--border)">
+          <div style="font-family:JetBrains Mono,monospace;font-size:22px;font-weight:800;color:color-mix(in srgb,var(--amber) 35%,transparent);line-height:1">0${i + 1}</div>
+          <h3 style="font-family:Sora,sans-serif;font-weight:700;font-size:16px;margin:10px 0 0">${ft}</h3>
+          <p style="font-size:13.5px;line-height:1.55;color:var(--dim);margin:8px 0 0">${fd}</p>
+        </div>`).join('')}
     </div>
 
     <!-- ═══ MINI APP — 7 таба, подробно ═══ -->
@@ -1657,6 +1823,19 @@ function renderInfoPage() {
     <div style="margin-top:16px;padding:28px;border-radius:18px;background:var(--card);border:1px solid var(--border)">
       <h3 style="font-family:Sora,sans-serif;font-weight:800;font-size:26px;margin:0">${t.wSiteTitle}</h3>
       ${numList([t.sSite1, t.sSite2, t.sSite3, t.sSite4])}
+    </div>
+
+    <!-- ═══ РЕЧНИК ═══ -->
+    <div style="margin-top:16px;padding:28px;border-radius:18px;background:var(--card);border:1px solid var(--border)">
+      <div style="font-family:JetBrains Mono,monospace;font-size:11.5px;letter-spacing:.14em;color:var(--amber);font-weight:700">${t.glossLabel}</div>
+      <p style="font-size:15px;line-height:1.6;color:var(--dim);margin:12px 0 18px;max-width:680px">${t.glossIntro}</p>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+        ${[[t.gl1t,t.gl1d],[t.gl2t,t.gl2d],[t.gl3t,t.gl3d],[t.gl4t,t.gl4d],[t.gl5t,t.gl5d],[t.gl6t,t.gl6d],[t.gl7t,t.gl7d],[t.gl8t,t.gl8d]].map(([gt,gd]) => `
+          <div style="padding:18px 20px;border-radius:12px;background:var(--surface);border:1px solid var(--border)">
+            <b style="font-family:JetBrains Mono,monospace;font-size:13.5px;color:var(--amber)">${gt}</b>
+            <p style="font-size:13.5px;line-height:1.58;color:var(--dim);margin:8px 0 0">${gd}</p>
+          </div>`).join('')}
+      </div>
     </div>
 
     <!-- ═══ PRO ═══ -->
