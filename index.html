@@ -155,7 +155,7 @@
             <span style="width:5px;height:5px;background:var(--amber);border-radius:1px"></span>
           </span>
         </span>
-        <span style="font-family:Sora,sans-serif;font-weight:800;font-size:19px;letter-spacing:-.02em">Signal <span style="color:var(--amber)">Core</span></span>
+        <span style="font-family:Sora,sans-serif;font-weight:800;font-size:19px;letter-spacing:-.02em;white-space:nowrap">Signal <span style="color:var(--amber)">Core</span></span>
       </a>
 
       <nav id="nav-links" style="display:flex;gap:28px;align-items:center;font-size:14.5px;font-weight:600"></nav>
@@ -323,6 +323,12 @@
     <div id="info-page-body"></div>
   </section>
 
+
+  <section id="learn-page" style="display:none;position:relative;z-index:2;max-width:1000px;margin:0 auto;padding:40px 28px 80px">
+    <button onclick="closeLearnPage()" id="learn-back-btn" class="hv-b" style="display:inline-flex;align-items:center;gap:8px;padding:10px 18px;border-radius:10px;background:var(--surface);border:1px solid var(--border);color:var(--dim);font-family:Hanken Grotesk,sans-serif;font-weight:600;font-size:14px;cursor:pointer;margin-bottom:30px;transition:.2s"></button>
+    <div id="learn-page-body"></div>
+  </section>
+
   <section id="data" style="position:relative;z-index:2;max-width:1200px;margin:0 auto;padding:96px 28px 20px;text-align:center">
     <div data-reveal="" id="data-eyebrow" style="font-family:JetBrains Mono,monospace;font-size:12.5px;letter-spacing:.18em;color:var(--mute);font-weight:700"></div>
     <div data-reveal="" style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:34px">
@@ -433,7 +439,7 @@ const en = {
   emaLabel: 'EMA 200', emaDesc: 'The long-term line. Price above it = uptrend territory.',
   nextAnalysisLabel: 'Next analysis:', todayWord: 'today', tomorrowWord: 'tomorrow',
   gatedTeaser: 'Live sectors, momentum & positioning — for members',
-  navHome: 'Home', navInfo: 'Info', infoEyebrow: 'INFO \u00b7 THE FULL GUIDE', infoTitle: 'Everything about SignalCore',
+  navHome: 'Home', navLearn: 'Must Know', learnBack: '← Back', learnEyebrow: 'THINGS YOU MUST KNOW', learnTitle: 'Things You Must Know', learnIntro: 'Short, clear explanations of the tools and signals behind SignalCore — in plain language, with examples. So you do not follow the numbers blindly, but understand what is behind them.', divTitle: 'Divergence Scanner', divWhat: 'A divergence is when two things that usually move together start moving in opposite directions. That split often means the current move is weak inside and a reversal is coming. The scanner watches all 53 coins and surfaces these splits for you.', divType1: 'Price up + Open Interest down — price rises but the total number of open positions falls. The mechanic: the rise comes not from new buyers but from shorts closing (short covering). The fuel runs out — once shorts are gone, nothing pushes up. A weak rally prone to reversing down.', divType2: 'Extreme funding against the price direction — funding is the fee between longs and shorts. If it is strongly positive (longs pay dearly) while price stalls or falls, the crowd is packed into longs but the market does not reward them. A crowded side the market loves to flush. The reverse holds for strongly negative funding.', divType3: 'L/S above ~72% + falling price — over 72% of traders are long but price is dropping. A classic trap: too many on one side while price moves against them. If the drop continues, those longs liquidate in a cascade → a sharp fall (long squeeze).', divReadLabel: 'HOW TO READ IT', divRead: 'Strong signal: when TWO or THREE conditions line up on one coin at once (e.g. L/S 75% + extreme funding + price falling). Noise: a single weak split on a low-popularity coin. Lifespan: usually hours to 1-2 days. If it is not resolved (by a reversal or liquidations) within a day or two, it loses strength — the market has adapted.', divUseLabel: 'HOW TO USE IT', divUse: 'A divergence says "there is tension here", not "enter now". You enter once confirmation is added: (1) divergence + a level from the BTC analysis (price at support/resistance) = a strong entry; (2) divergence + a high Squeeze Score on the same coin = confirmation; (3) divergence + extreme funding in the same direction = double confirmation. Ignore it when it stands alone with none of the above — then it is just observation.', divWeakLabel: 'WEAKNESSES — WHEN IT LIES', divWeak: 'Low liquidity (small coins) — noisy data, L/S jumps from few positions. News — on strong news fundamentals beat the technicals; the divergence is irrelevant. Delivery/expiry days — OI drops artificially from expiring contracts, not a real outflow. That is why you never trade on it alone — it points to where to look, not when to press the button.', divExLabel: 'HISTORICAL EXAMPLES', divEx1: 'Long squeeze: L/S reaches 78%, price starts falling, funding still positive → a liquidation cascade shoves price sharply down within hours (a classic at tops).', divEx2: 'Short covering rally (type a): price rises, OI falls → once shorts are exhausted, the rally stalls and a pullback follows.', divEx3: 'Crowded funding: funding extremely positive for days on a sideways price → a sharp correction that flushes the paid-up longs.', navInfo: 'Info', infoEyebrow: 'INFO \u00b7 THE FULL GUIDE', infoTitle: 'Everything about SignalCore',
   infoSub: 'The ecosystem has three parts working together: the Telegram group (the alerts), the Mini App (the terminal) and this website (the live analytics). Here is what each one does and how to get started.',
   whyLabel: 'WHY SIGNALCORE',
   whyIntro: 'Trading drowns in scattered data. Price is on Bybit, liquidations and Open Interest live in Coinglass, charts in TradingView, macro events in an economic calendar, sentiment in a separate index. By the time you open and process it all, the move has already happened. SignalCore pulls these sources into one place, interprets them for you, and tells you not just "what happened" but "what it means and why it matters right now".',
@@ -608,6 +614,26 @@ const bg = {
   nextAnalysisLabel: 'Следващ анализ:', todayWord: 'днес', tomorrowWord: 'утре',
   gatedTeaser: 'Живи сектори, моментум и позициониране — за членове',
   navHome: 'Начало',
+  navLearn: 'Трябва да знаеш',
+  learnBack: '← Назад',
+  learnEyebrow: 'ТРЯБВА ДА ЗНАЕШ ТОВА',
+  learnTitle: 'Трябва да знаеш това',
+  learnIntro: 'Кратки, ясни обяснения на инструментите и сигналите зад SignalCore — на прост език, с примери. За да не следваш числата сляпо, а да разбираш какво стои зад тях.',
+  divTitle: 'Divergence Scanner',
+  divWhat: 'Дивергенция е когато две неща, които обикновено вървят заедно, тръгнат в различни посоки. Това „разминаване" често значи, че сегашният ход е слаб отвътре и предстои обрат. Скенерът следи всичките 53 монети и вади тези разминавания сам, вместо ти да ги търсиш ръчно.',
+  divType1: 'Цена ↑ + Open Interest ↓ — цената се качва, но общият брой отворени позиции пада. Механиката: качването не идва от нови купувачи, а от затварящи се шортове (short covering). Тоест „горивото" се изчерпва — щом шортовете свършат, няма кой да бута нагоре. Слаб растеж, склонен към обрат надолу.',
+  divType2: 'Екстремен funding срещу посоката на цената — funding е таксата между лонгове и шортове. Ако е силно положителен (лонговете плащат скъпо), а цената не расте или пада — значи тълпата е натъпкана в лонгове, но пазарът не ги възнаграждава. Претъпкана страна, която пазарът обича да „изчисти". Обратното важи за силно отрицателен funding.',
+  divType3: 'L/S над ~72% + падаща цена — над 72% от трейдърите са в лонг, но цената пада. Класически капан: твърде много хора от една страна, а цената върви срещу тях. Ако падането продължи, тези лонгове се ликвидират каскадно → рязък спад (long squeeze).',
+  divReadLabel: 'КАК СЕ ЧЕТЕ',
+  divRead: 'Силен сигнал: когато ДВЕ или ТРИ от условията съвпаднат на една монета едновременно (напр. L/S 75% + funding екстремен + цена пада). Шум: единично, слабо разминаване на нископопулярна монета. Живот на дивергенцията: обикновено часове до 1-2 дни. Ако не се „разреши" (с обрат или ликвидации) до ден-два, губи сила — пазарът се е адаптирал.',
+  divUseLabel: 'КАК СЕ ПОЛЗВА',
+  divUse: 'Дивергенцията казва „тук има напрежение", не „влизай сега". Вход става, когато се добави потвърждение: (1) дивергенция + ниво от BTC анализа (цената е на съпротива/подкрепа) = силен вход; (2) дивергенция + висок Squeeze Score на същата монета = потвърждение; (3) дивергенция + екстремен funding в същата посока = двойно потвърждение. Игнорира се, когато е сама, без нито едно от горните — тогава е само наблюдение.',
+  divWeakLabel: 'СЛАБОСТИ — КОГА ЛЪЖЕ',
+  divWeak: 'Ниска ликвидност (малки монети) — данните са шумни, L/S скача от малко позиции. Новини — при силна новина фундаментът бие техниката; дивергенцията е без значение. Delivery/expiry дни — OI пада изкуствено заради изтичащи контракти, не заради реален отлив. Затова никога не се търгува само по него — той посочва къде да гледаш, не кога да натиснеш копчето.',
+  divExLabel: 'ИСТОРИЧЕСКИ ПРИМЕРИ',
+  divEx1: 'Long squeeze: L/S достига 78%, цената почва да пада, funding още положителен → каскада ликвидации избутва цената рязко надолу за часове (класика при върхове).',
+  divEx2: 'Short covering rally (тип а): цена расте, OI пада → щом шортовете се изчерпат, растежът спира и следва отбив.',
+  divEx3: 'Претъпкан funding: funding екстремно положителен дни наред при странична цена → рязка корекция, която „изчиства" платените лонгове.',
   navInfo: 'Инфо',
   infoEyebrow: 'ИНФО · ПЪЛНОТО РЪКОВОДСТВО',
   infoTitle: 'Всичко за SignalCore',
@@ -812,13 +838,21 @@ function animateCount(el) {
 
 function renderNav() {
   const t = getT();
-  document.getElementById('nav-links').innerHTML = `
+  const el = document.getElementById('nav-links');
+  if (state.page === 'learn') {
+    el.innerHTML = `
+      <a href="javascript:void(0)" onclick="closeLearnPage()" style="color:var(--dim)">${t.learnBack}</a>
+      <a href="javascript:void(0)" onclick="renderLearnPage();window.scrollTo({top:0})" style="color:var(--amber)">${t.divTitle}</a>`;
+    return;
+  }
+  el.innerHTML = `
     <a href="#top" onclick="goHomeThen()" style="color:var(--dim)">${t.navHome}</a>
     <a href="#tabs" onclick="goHomeThen()" style="color:var(--dim)">${t.navFeatures}</a>
     <a href="#alerts" onclick="goHomeThen()" style="color:var(--dim)">${t.navAlerts}</a>
     <a href="#analysis" onclick="goHomeThen()" style="color:var(--dim)">${t.navAnalysis}</a>
     <a href="#data" onclick="goHomeThen()" style="color:var(--dim)">${t.navData}</a>
-    <a href="javascript:void(0)" onclick="openInfoPage()" style="color:var(--dim)">${t.navInfo}</a>`;
+    <a href="javascript:void(0)" onclick="openInfoPage()" style="color:var(--dim)">${t.navInfo}</a>
+    <a href="javascript:void(0)" onclick="openLearnPage()" style="color:var(--dim)">${t.navLearn}</a>`;
 }
 
 function renderLangButtons() {
@@ -1723,6 +1757,8 @@ function renderPageVisibility() {
   if (detail) detail.style.display = state.page === 'tab' ? 'block' : 'none';
   const info = document.getElementById('info-page');
   if (info) info.style.display = state.page === 'info' ? 'block' : 'none';
+  const learn = document.getElementById('learn-page');
+  if (learn) learn.style.display = state.page === 'learn' ? 'block' : 'none';
 }
 
 function openTabPage(i) {
@@ -1752,6 +1788,46 @@ function openInfoPage() {
   renderInfoPage();
   renderPageVisibility();
   window.scrollTo({ top: 0 });
+}
+
+function openLearnPage() {
+  state.page = 'learn';
+  renderLearnPage();
+  renderNav();
+  renderPageVisibility();
+  window.scrollTo({ top: 0 });
+}
+function closeLearnPage() {
+  state.page = 'home';
+  renderNav();
+  renderPageVisibility();
+  window.scrollTo({ top: 0 });
+}
+function renderLearnPage() {
+  const t = getT();
+  document.getElementById('learn-back-btn').textContent = t.learnBack;
+  const label = (txt) => `<div style="font-family:JetBrains Mono,monospace;font-size:11px;letter-spacing:.12em;color:var(--amber);font-weight:700;margin:22px 0 8px">${txt}</div>`;
+  const numRow = (n, txt) => `<div style="display:flex;gap:14px;padding:15px 0;border-bottom:1px solid var(--border)"><span style="font-family:JetBrains Mono,monospace;font-size:13px;color:var(--amber);font-weight:700;flex-shrink:0">0${n}</span><span style="font-size:14.5px;line-height:1.6;color:var(--dim)">${txt}</span></div>`;
+  document.getElementById('learn-page-body').innerHTML = `
+    <div style="font-family:JetBrains Mono,monospace;font-size:11.5px;letter-spacing:.14em;color:var(--amber);font-weight:700">${t.learnEyebrow}</div>
+    <h1 style="font-family:Sora,sans-serif;font-weight:800;font-size:48px;line-height:1.05;margin:14px 0 0">${t.learnTitle}</h1>
+    <p style="font-size:16px;line-height:1.7;color:var(--dim);margin:18px 0 40px;max-width:680px">${t.learnIntro}</p>
+
+    <div style="padding:28px;border-radius:18px;background:var(--card);border:1px solid var(--border)">
+      <h2 style="font-family:Sora,sans-serif;font-weight:700;font-size:26px;margin:0">${t.divTitle}</h2>
+      <p style="font-size:14.5px;line-height:1.65;color:var(--dim);margin:14px 0 6px">${t.divWhat}</p>
+      ${label('ТРИТЕ ТИПА, КОИТО ЗАСИЧА')}
+      ${numRow(1, t.divType1)}
+      ${numRow(2, t.divType2)}
+      ${numRow(3, t.divType3)}
+      ${label(t.divReadLabel)}<p style="font-size:14.5px;line-height:1.65;color:var(--dim);margin:0">${t.divRead}</p>
+      ${label(t.divUseLabel)}<p style="font-size:14.5px;line-height:1.65;color:var(--text);margin:0">${t.divUse}</p>
+      ${label(t.divWeakLabel)}<p style="font-size:14.5px;line-height:1.65;color:var(--dim);margin:0">${t.divWeak}</p>
+      ${label(t.divExLabel)}
+      ${numRow(1, t.divEx1)}
+      ${numRow(2, t.divEx2)}
+      ${numRow(3, t.divEx3)}
+    </div>`;
 }
 function closeInfoPage() {
   state.page = 'home';
@@ -1964,6 +2040,7 @@ function renderAll() {
 
   if (state.page === 'tab') renderTabDetail();
   if (state.page === 'info') renderInfoPage();
+  if (state.page === 'learn') renderLearnPage();
   renderPageVisibility();
 
   setupRevealObservers();
