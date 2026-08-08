@@ -208,6 +208,13 @@
     <div id="hero-card"></div>
   </section>
 
+  <section id="insights" style="position:relative;z-index:2;max-width:1200px;margin:0 auto;padding:20px 28px 40px">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
+      <div id="smart-money-col" style="padding:26px 28px;border-radius:18px;background:var(--card);border:1px solid var(--border)"></div>
+      <div id="hot-liq-col" style="padding:26px 28px;border-radius:18px;background:var(--card);border:1px solid var(--border)"></div>
+    </div>
+  </section>
+
   <!-- (removed: duplicate hardcoded ticker strip — the live ticker at the very top is the only one) -->
 
   <section id="analysis" style="position:relative;z-index:2;max-width:1200px;margin:0 auto;padding:40px 28px;border-top:none">
@@ -410,8 +417,9 @@ const en = {
   glTitle: 'Gainers & Losers', glSource: 'source: coingecko.com', glLoading: 'Loading market data…',
   tickerConnecting: '· connecting to market data ·',
   heroBadge: 'LIVE · REFRESHED EVERY 2 MINUTES',
-  h1a: "You don't follow the market.", h1b: 'You predict it.',
-  heroDesc: 'While others guess — you already know.\nLive liquidations. Squeeze signals. BTC analysis twice daily.\nOnly data. Only facts. No noise.',
+  smEyebrow: 'SMART MONEY vs CROWD', smTitle: 'Smart Money vs Crowd', smSub: 'When the big players bet against the crowd', smEmpty: 'No divergence right now', smCrowd: 'Crowd', smTop: 'Top', smLong: 'LONG', smShort: 'SHORT',
+  hlEyebrow: 'HOT LIQUIDATIONS · 24H', hlTitle: '95% Liquidations', hlSub: 'Coins where one side was almost fully wiped', hlEmpty: 'Calm market — no 95% liquidations', hlTail: 'liquidations in the last 24H',
+  h1a: "You don't follow the market.", h1b: 'You predict it.',  heroDesc: 'While others guess — you already know.\nLive liquidations. Squeeze signals. BTC analysis twice daily.\nOnly data. Only facts. No noise.',
   heroBtn1: 'Join Telegram', heroBtn2: "See what's inside",
   stat1: 'monitored coins', stat2: 'in-app tabs', stat3: 'monitoring',
   tabsEyebrow: 'MINI APP · 7 TABS', tabsTitle: 'A full trading terminal inside Telegram',
@@ -584,6 +592,8 @@ const bg = {
   glTitle: 'Печеливши и губещи', glSource: 'източник: coingecko.com', glLoading: 'Зареждане на пазарните данни…',
   tickerConnecting: '· свързване с пазарните данни ·',
   heroBadge: 'НА ЖИВО · ОБНОВЯВА СЕ НА ВСЕКИ 2 МИНУТИ',
+  smEyebrow: 'SMART MONEY vs CROWD', smTitle: 'Едрите срещу тълпата', smSub: 'Когато големите играчи залагат обратно на тълпата', smEmpty: 'Няма разминавания в момента', smCrowd: 'Тълпа', smTop: 'Едри', smLong: 'LONG', smShort: 'SHORT',
+  hlEyebrow: 'HOT LIQUIDATIONS · 24H', hlTitle: '95% ликвидации', hlSub: 'Монети, при които едната страна е почти напълно изтрита', hlEmpty: 'Спокоен пазар — няма 95% ликвидации', hlTail: 'ликвидации за последните 24ч',
   h1a: 'Не следваш пазара.', h1b: 'Предвиждаш го.',
   heroDesc: 'Докато другите гадаят — ти вече знаеш.\nЖиви ликвидации. Squeeze сигнали. BTC анализ два пъти дневно.\nСамо данни. Само факти. Без шум.',
   heroBtn1: 'Join Telegram', heroBtn2: 'Виж какво има вътре',
@@ -1416,6 +1426,50 @@ function renderBtcAnalysisBody() {
     <div style="font-family:JetBrains Mono,monospace;font-size:12px;color:var(--mute);margin-top:10px">AI breakdown over live TradingView data · last updated ${d.updated} · this is not financial advice</div>`;
 }
 
+function renderInsights() {
+  const t = getT();
+  const smEl = document.getElementById('smart-money-col');
+  const hlEl = document.getElementById('hot-liq-col');
+  if (!smEl || !hlEl) return;
+  const GREEN = 'var(--green)', RED = 'var(--red)';
+  const eyebrow = (txt) => `<div style="font-family:JetBrains Mono,monospace;font-size:11.5px;letter-spacing:.16em;color:var(--amber);font-weight:700">${txt}</div>`;
+  const head = (title, sub) => `<h2 style="font-family:Sora,sans-serif;font-weight:800;font-size:26px;letter-spacing:-.02em;margin:12px 0 0;line-height:1.1">${title}</h2><p style="font-size:14px;line-height:1.5;color:var(--dim);margin:8px 0 20px">${sub}</p>`;
+  const muted = (txt) => `<p style="font-size:14px;color:var(--mute);margin:0">${txt}</p>`;
+  const sideChip = (label, isLong, pct) => {
+    const word = isLong ? t.smLong : t.smShort;
+    const col = isLong ? GREEN : RED;
+    return `<span style="font-family:JetBrains Mono,monospace;font-size:12.5px;color:var(--dim)">${label}: <span style="color:${col};font-weight:700">${word} ${pct}%</span></span>`;
+  };
+  const drawSmart = (arr) => {
+    let h = eyebrow(t.smEyebrow) + head(t.smTitle, t.smSub);
+    if (!arr || !arr.length) { smEl.innerHTML = h + muted(t.smEmpty); return; }
+    h += arr.map((it) => {
+      const cLong = it.crowdLong > 50, cPct = cLong ? it.crowdLong : 100 - it.crowdLong;
+      const tLong = it.topLong > 50, tPct = tLong ? it.topLong : 100 - it.topLong;
+      return `<div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px 16px;padding:14px 0;border-bottom:1px solid var(--border)">
+        <span style="font-family:Sora,sans-serif;font-weight:700;font-size:15px">${it.coin}</span>
+        <span style="display:flex;gap:16px;flex-wrap:wrap">${sideChip(t.smCrowd, cLong, cPct)}${sideChip(t.smTop, tLong, tPct)}</span>
+      </div>`;
+    }).join('');
+    smEl.innerHTML = h;
+  };
+  const drawHot = (arr) => {
+    let h = eyebrow(t.hlEyebrow) + head(t.hlTitle, t.hlSub);
+    if (!arr || !arr.length) { hlEl.innerHTML = h + muted(t.hlEmpty); return; }
+    h += arr.map((it) => {
+      const col = it.side === 'LONG' ? GREEN : RED;
+      return `<div style="padding:14px 0;border-bottom:1px solid var(--border);font-family:JetBrains Mono,monospace;font-size:13.5px;color:var(--dim);line-height:1.5">
+        <span style="font-family:Sora,sans-serif;font-weight:700;font-size:15px;color:var(--text)">${it.coin}</span> — <b style="color:var(--text)">${it.pct}%</b> <span style="color:${col};font-weight:700">${it.side}</span> ${t.hlTail}
+      </div>`;
+    }).join('');
+    hlEl.innerHTML = h;
+  };
+  drawSmart([]); drawHot([]);
+  getDataJson()
+    .then((data) => { drawSmart(data.smartMoney); drawHot(data.hotLiquidations); })
+    .catch(() => { drawSmart([]); drawHot([]); });
+}
+
 function renderAlertsHeader() {
   const t = getT();
   document.getElementById('al-eyebrow').textContent = t.alertsEyebrow;
@@ -2093,6 +2147,7 @@ function renderAll() {
   renderTicker();
   renderHeroText();
   renderHeroCard();
+  renderInsights();
   renderAnalysisHeader();
   renderAnalysisLegend();
   renderAnalysisGating();
